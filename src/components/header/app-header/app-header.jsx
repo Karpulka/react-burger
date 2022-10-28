@@ -3,7 +3,6 @@ import styles from './app-header.module.css';
 import AppHeaderNav from '../app-header-nav/app-header-nav';
 import AppHeaderButton from '../app-header-button/app-header-button';
 import { Logo } from '@ya.praktikum/react-developer-burger-ui-components';
-import { ButtonTypes } from '../app-header-button/app-header-button';
 
 function AppHeader() {
   return (
@@ -13,9 +12,7 @@ function AppHeader() {
         <div className={styles.logo}>
           <Logo />
         </div>
-        <AppHeaderButton icon="ProfileIcon" type={ButtonTypes.secondary}>
-          Личный кабинет
-        </AppHeaderButton>
+        <AppHeaderButton icon="ProfileIcon">Личный кабинет</AppHeaderButton>
       </section>
     </header>
   );

@@ -1,7 +1,6 @@
 .button {
     composes: button button_type_primary button_size_medium from '../../../../node_modules/@ya.praktikum/react-developer-burger-ui-components/dist/ui/button.css';
     background: transparent;
-    border: 1px dashed #4C4CFF;
     padding: 16px 20px;
     color: #F2F2F3;
     display: flex;
@@ -9,6 +8,7 @@
 
 .button:hover {
     cursor: pointer;
+    box-shadow: none;
 }
 
 .button__icon {

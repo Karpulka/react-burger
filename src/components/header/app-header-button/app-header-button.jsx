@@ -10,26 +10,53 @@ export const ButtonTypes = {
   success: 'success',
 };
 
-function AppHeaderButton(props) {
-  const { icon, type, children } = props;
-  const IconComponent = icon ? uiComponents[icon] : '';
-  const textColorClass = type === ButtonTypes.secondary ? 'text_color_inactive' : '';
-  return (
-    <button className={styles.button}>
-      <span className={styles.button__icon}>{IconComponent && <IconComponent type={type} />}</span>
-      <span className={`${styles.button__text} ${textColorClass}`}>{children}</span>
-    </button>
-  );
+class AppHeaderButton extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      buttonType: this.props.isActive ? ButtonTypes.primary : ButtonTypes.secondary,
+    };
+  }
+
+  toggleButtonType = () => {
+    if (!this.props.isActive) {
+      this.setState((prevState) => ({
+        buttonType:
+          prevState.buttonType === ButtonTypes.secondary
+            ? ButtonTypes.primary
+            : ButtonTypes.secondary,
+      }));
+    }
+  };
+
+  render() {
+    const { icon, children } = this.props;
+    const IconComponent = icon ? uiComponents[icon] : '';
+    const textColorClass =
+      this.state.buttonType === ButtonTypes.secondary ? 'text_color_inactive' : '';
+    return (
+      <button
+        className={styles.button}
+        onMouseEnter={this.toggleButtonType}
+        onMouseLeave={this.toggleButtonType}>
+        <span className={styles.button__icon}>
+          {IconComponent && <IconComponent type={this.state.buttonType} />}
+        </span>
+        <span className={`${styles.button__text} ${textColorClass}`}>{children}</span>
+      </button>
+    );
+  }
 }
 
 AppHeaderButton.defaultProps = {
-  type: 'primary',
+  isActive: false,
 };
 
 AppHeaderButton.propTypes = {
   icon: PropTypes.string,
   children: PropTypes.string,
-  type: ButtonTypes.primary | ButtonTypes.secondary | ButtonTypes.error | ButtonTypes.success,
+  isActive: PropTypes.bool,
 };
 
 export default AppHeaderButton;

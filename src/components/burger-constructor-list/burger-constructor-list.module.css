@@ -1,0 +1,11 @@
+.ingredients {
+    color: #F2F2F3;
+}
+
+.list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px 24px;
+    margin-left: 16px;
+    margin-top: 24px;
+}
