@@ -9,7 +9,7 @@ function AppBurgerIngredientsList({ title, ingredients, anchor }) {
       <h2 className="text text_type_main-medium">{title}</h2>
       <div className={styles.list}>
         {ingredients.map((ingredient) => {
-          const { _id, __v, ...ingredientProps } = ingredient;
+          const { __v, ...ingredientProps } = ingredient;
           return <AppBurgerIngredientsItem {...ingredientProps} key={ingredient._id} />;
         })}
       </div>

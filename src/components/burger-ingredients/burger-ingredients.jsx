@@ -4,7 +4,7 @@ import AppBurgerIngredientsList from '../burger-ingredients-list/burger-ingredie
 import styles from './burger-ingredients.module.css';
 import { mocks } from '../../utils/data';
 
-const ingredientTypes = {
+export const IngredientTypes = {
   bun: 'bun',
   main: 'main',
   sauce: 'sauce',
@@ -17,18 +17,19 @@ const filteringredients = (ingredients = [], type) => {
 function AppBurgerIngredients() {
   const tabs = [
     {
-      value: ingredientTypes.bun,
+      value: IngredientTypes.bun,
       text: 'Булки',
     },
     {
-      value: ingredientTypes.sauce,
+      value: IngredientTypes.sauce,
       text: 'Соусы',
     },
     {
-      value: ingredientTypes.main,
+      value: IngredientTypes.main,
       text: 'Начинки',
     },
   ];
+
   return (
     <section className={styles.section}>
       <AppTabs tabs={tabs} />

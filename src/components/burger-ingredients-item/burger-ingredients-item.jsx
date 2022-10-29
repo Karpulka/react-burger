@@ -8,16 +8,18 @@ class AppBurgerIngredientsItem extends React.Component {
     count: 0,
   };
 
-  onClick = () => {
+  onClick = (event) => {
+    event.preventDefault();
+
     this.setState((prevState) => ({
       count: prevState.count + 1,
     }));
   };
 
   render() {
-    const { image, name, price } = this.props;
+    const { image, name, price, _id } = this.props;
     return (
-      <div className={styles.ingredient} onClick={this.onClick}>
+      <div className={`${styles.ingredient} ingredient__item`} onClick={this.onClick} id={_id}>
         <img src={image} alt={name} className={styles.image} />
         <div className={styles.price}>
           <span className="mr-2">{price}</span> <CurrencyIcon type="primary" />
@@ -30,6 +32,7 @@ class AppBurgerIngredientsItem extends React.Component {
 }
 
 AppBurgerIngredientsItem.propTypes = {
+  _id: PropTypes.string,
   name: PropTypes.string.isRequired,
   type: PropTypes.string,
   proteins: PropTypes.number,
