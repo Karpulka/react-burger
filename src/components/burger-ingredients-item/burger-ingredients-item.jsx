@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
+import AppPrice from '../price/price';
+import { Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-ingredients-item.module.css';
 
 class AppBurgerIngredientsItem extends React.Component {
@@ -21,9 +22,8 @@ class AppBurgerIngredientsItem extends React.Component {
     return (
       <div className={`${styles.ingredient} ingredient__item`} onClick={this.onClick} id={_id}>
         <img src={image} alt={name} className={styles.image} />
-        <div className={styles.price}>
-          <span className="mr-2">{price}</span> <CurrencyIcon type="primary" />
-        </div>
+
+        <AppPrice price={price} />
         <div className={styles.name}>{name}</div>
         {this.state.count > 0 && <Counter count={this.state.count} size="default" />}
       </div>

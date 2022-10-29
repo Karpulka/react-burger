@@ -1,8 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
+import AppBurgerConstructorList from '../burger-constructor-list/burger-constructor-list';
+import AppPrice from '../price/price';
 import { IngredientTypes } from '../burger-ingredients/burger-ingredients';
+import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { removeElementInArrayByIndex } from '../../utils/utils';
+import styles from './burger-constructor.module.css';
 
 class AppBurgerConstructor extends React.Component {
   constructor(props) {
@@ -10,6 +13,7 @@ class AppBurgerConstructor extends React.Component {
 
     this.state = {
       selectedIngredients: [],
+      resultPrice: 0,
     };
   }
 
@@ -26,6 +30,14 @@ class AppBurgerConstructor extends React.Component {
     this.addIngredientsWithBun(bunIndex);
   };
 
+  getResultPrice = (ingredients) => {
+    if (ingredients && ingredients.length) {
+      return ingredients.reduce((sum, ingredient) => sum + ingredient.price, 0);
+    }
+
+    return 0;
+  };
+
   addIngredientsWithoutBun = () => {
     const currentBunIndex = this.state.selectedIngredients.findIndex(
       (ingredient) => ingredient.type === IngredientTypes.bun
@@ -33,16 +45,22 @@ class AppBurgerConstructor extends React.Component {
 
     if (currentBunIndex > -1) {
       const currentLength = this.state.selectedIngredients.length;
-      this.setState((prevState) => ({
-        selectedIngredients: [].concat(
+      this.setState((prevState) => {
+        const updatedIngredients = [].concat(
           prevState.selectedIngredients[0],
           removeElementInArrayByIndex(this.props.ingredients, currentBunIndex),
           prevState.selectedIngredients[currentLength - 1]
-        ),
-      }));
+        );
+        return {
+          resultPrice: this.getResultPrice(updatedIngredients),
+          selectedIngredients: updatedIngredients,
+        };
+      });
     } else {
+      const updatedIngredients = [...this.props.ingredients];
       this.setState({
-        selectedIngredients: [...this.props.ingredients],
+        resultPrice: this.getResultPrice(updatedIngredients),
+        selectedIngredients: updatedIngredients,
       });
     }
   };
@@ -55,9 +73,10 @@ class AppBurgerConstructor extends React.Component {
       name: `${this.props.ingredients[bunIndex].name} (низ)`,
     });
     const otherIngredients = removeElementInArrayByIndex(this.props.ingredients, bunIndex);
-
+    const updateIngredients = [].concat([bunTop], otherIngredients, [bunBottom]);
     this.setState({
-      selectedIngredients: [].concat([bunTop], otherIngredients, [bunBottom]),
+      resultPrice: this.getResultPrice(updateIngredients),
+      selectedIngredients: updateIngredients,
     });
   };
 
@@ -73,35 +92,19 @@ class AppBurgerConstructor extends React.Component {
 
   render() {
     return (
-      <div className="constructor">
-        <div className="constructor__list">
-          {this.state.selectedIngredients &&
-            this.state.selectedIngredients.map((ingredient, key) => {
-              let props = {
-                text: ingredient.name,
-                thumbnail: ingredient.image_mobile,
-                price: ingredient.price,
-              };
-              const isBun = ingredient.type === IngredientTypes.bun;
-
-              if (key === 0 && isBun) {
-                props.type = 'top';
-                props.isLocked = true;
-              }
-
-              if (key === this.state.selectedIngredients.length - 1 && isBun) {
-                props.type = 'bottom';
-                props.isLocked = true;
-              }
-
-              return (
-                <div className="constructor__item" key={`${ingredient._id}-${key}`}>
-                  <ConstructorElement {...props} />
-                </div>
-              );
-            })}
+      <section className={styles.section}>
+        <div className={styles['custom-scroll']}>
+          <AppBurgerConstructorList ingredients={this.state.selectedIngredients} />
         </div>
-      </div>
+        {this.state.resultPrice > 0 && (
+          <div className={`${styles.result}`}>
+            <AppPrice price={this.state.resultPrice} />
+            <Button type="primary" size="large" htmlType="button">
+              Оформить заказ
+            </Button>
+          </div>
+        )}
+      </section>
     );
   }
 }
