@@ -1,23 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import AppBurgerConstructorItem from '../burger-constructor-item/burger-constructor-item';
-import styles from './burger-constructor-list.module.css';
+import AppBurgerIngredientsItem from '../burger-ingredients-item/burger-ingredients-item';
+import styles from './burger-ingredients-list.module.css';
 
-function AppBurgerConstructorList({ title, ingredients, anchor }) {
+function AppBurgerIngredientsList({ title, ingredients, anchor }) {
   return (
     <div className={styles.ingredients} id={anchor}>
       <h2 className="text text_type_main-medium">{title}</h2>
       <div className={styles.list}>
         {ingredients.map((ingredient) => {
           const { _id, __v, ...ingredientProps } = ingredient;
-          return <AppBurgerConstructorItem {...ingredientProps} key={ingredient._id} />;
+          return <AppBurgerIngredientsItem {...ingredientProps} key={ingredient._id} />;
         })}
       </div>
     </div>
   );
 }
 
-AppBurgerConstructorList.propTypes = {
+AppBurgerIngredientsList.propTypes = {
   title: PropTypes.string,
   ingredients: PropTypes.arrayOf(
     PropTypes.shape({
@@ -38,4 +38,4 @@ AppBurgerConstructorList.propTypes = {
   anchor: PropTypes.string.isRequired,
 };
 
-export default AppBurgerConstructorList;
+export default AppBurgerIngredientsList;

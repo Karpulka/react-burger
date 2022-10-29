@@ -1,7 +1,7 @@
 import React from 'react';
 import AppTabs from '../tabs/tabs';
-import AppBurgerConstructorList from '../burger-constructor-list/burger-constructor-list';
-import styles from './burger-constructor.module.css';
+import AppBurgerIngredientsList from '../burger-ingredients-list/burger-ingredients-list';
+import styles from './burger-ingredients.module.css';
 import { mocks } from '../../utils/data';
 
 const ingredientTypes = {
@@ -14,7 +14,7 @@ const filteringredients = (ingredients = [], type) => {
   return ingredients.filter((item) => item.type === type);
 };
 
-function AppBurgerConstructor() {
+function AppBurgerIngredients() {
   const tabs = [
     {
       value: ingredientTypes.bun,
@@ -37,7 +37,7 @@ function AppBurgerConstructor() {
           const ingredients = filteringredients(mocks, tab.value);
           return (
             ingredients && (
-              <AppBurgerConstructorList
+              <AppBurgerIngredientsList
                 ingredients={ingredients}
                 title={tab.text}
                 anchor={tab.value}
@@ -51,4 +51,4 @@ function AppBurgerConstructor() {
   );
 }
 
-export default AppBurgerConstructor;
+export default AppBurgerIngredients;

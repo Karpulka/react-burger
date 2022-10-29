@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
-import styles from './burger-constructor-item.module.css';
+import styles from './burger-ingredients-item.module.css';
 
-class AppBurgerConstructorItem extends React.Component {
+class AppBurgerIngredientsItem extends React.Component {
   state = {
     count: 0,
   };
@@ -29,7 +29,7 @@ class AppBurgerConstructorItem extends React.Component {
   }
 }
 
-AppBurgerConstructorItem.propTypes = {
+AppBurgerIngredientsItem.propTypes = {
   name: PropTypes.string.isRequired,
   type: PropTypes.string,
   proteins: PropTypes.number,
@@ -42,4 +42,4 @@ AppBurgerConstructorItem.propTypes = {
   image_large: PropTypes.string,
 };
 
-export default AppBurgerConstructorItem;
+export default AppBurgerIngredientsItem;
