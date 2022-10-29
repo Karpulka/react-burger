@@ -4,6 +4,12 @@ import styles from './burger-constructor-list.module.css';
 import { IngredientTypes } from '../burger-ingredients/burger-ingredients';
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
+const onDeleteClick = (event) => {
+  event.preventDefault();
+  const parentElement = event.target.closest('.constructor__item');
+  parentElement.classList.add('deliting');
+};
+
 function AppBurgerConstructorList(props) {
   return (
     <div className={styles.list}>
@@ -19,16 +25,19 @@ function AppBurgerConstructorList(props) {
           if (key === 0 && isBun) {
             elementProps.type = 'top';
             elementProps.isLocked = true;
-          }
-
-          if (key === props.ingredients.length - 1 && isBun) {
+          } else if (key === props.ingredients.length - 1 && isBun) {
             elementProps.type = 'bottom';
             elementProps.isLocked = true;
+          } else {
+            elementProps.handleClose = onDeleteClick;
           }
 
           return (
-            <div className={styles.item} key={`${ingredient._id}-${key}`}>
-              {!elementProps.type && <DragIcon type="primary" />}{' '}
+            <div
+              className={`${styles.item} constructor__item`}
+              key={`${ingredient._id}-${key}`}
+              data-ingredient={ingredient._id}>
+              {!elementProps.type && <DragIcon type="primary" />}
               <ConstructorElement {...elementProps} />
             </div>
           );

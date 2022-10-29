@@ -4,7 +4,7 @@ import AppBurgerIngredients, { IngredientTypes } from '../burger-ingredients/bur
 import AppBurgerConstructor from '../burger-constructor/burger-constructor';
 import styles from './app.module.css';
 import { mocks } from '../../utils/data';
-import { updateElementInArrayByIndex } from '../../utils/utils';
+import { updateElementInArrayByIndex, removeElementInArrayByIndex } from '../../utils/utils';
 
 class App extends React.Component {
   constructor(props) {
@@ -60,20 +60,24 @@ class App extends React.Component {
     }
   };
 
-  removeIngredient = (event, ingredientId) => {
-    // this.setState((prevState) => {
-    //   const ingredientIndex = prevState.ingredients.findIndex(
-    //     (ingredient) => ingredient._id === ingredientId
-    //   );
-    //
-    //   if (ingredientIndex > -1) {
-    //     return {
-    //       ingredients: prevState.ingredients.splice(ingredientIndex, 1),
-    //     };
-    //   }
-    //
-    //   return { ingredients: prevState.ingredients };
-    // });
+  removeIngredient = (event) => {
+    const parentElement = event.target.closest('.constructor__item');
+    if (parentElement) {
+      const ingredientId = parentElement.getAttribute('data-ingredient');
+      this.setState((prevState) => {
+        const ingredientIndex = prevState.ingredients.findIndex(
+          (ingredient) => ingredient._id === ingredientId
+        );
+
+        if (ingredientIndex > -1) {
+          return {
+            ingredients: removeElementInArrayByIndex(prevState.ingredients, ingredientIndex),
+          };
+        }
+
+        return { ingredients: prevState.ingredients };
+      });
+    }
   };
 
   render() {
