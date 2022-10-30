@@ -5,13 +5,11 @@ import { IngredientTypes } from '../burger-ingredients/burger-ingredients';
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { IngredientType } from '../../utils/types';
 
-const onDeleteClick = (event) => {
-  event.preventDefault();
-  const parentElement = event.target.closest('.constructor__item');
-  parentElement.classList.add('deliting');
-};
-
 function BurgerConstructorList(props) {
+  const onDeleteClick = (ingredientId) => {
+    props.removeIngredient(ingredientId);
+  };
+
   return (
     <div className={styles.list}>
       {props.ingredients &&
@@ -30,14 +28,11 @@ function BurgerConstructorList(props) {
             elementProps.type = 'bottom';
             elementProps.isLocked = true;
           } else {
-            elementProps.handleClose = onDeleteClick;
+            elementProps.handleClose = onDeleteClick.bind({}, ingredient._id);
           }
 
           return (
-            <div
-              className={`${styles.item} constructor__item`}
-              key={`${ingredient._id}-${key}`}
-              data-ingredient={ingredient._id}>
+            <div className={`${styles.item} constructor__item`} key={`${ingredient._id}-${key}`}>
               {!elementProps.type && <DragIcon type="primary" />}
               <ConstructorElement {...elementProps} />
             </div>
@@ -49,6 +44,7 @@ function BurgerConstructorList(props) {
 
 BurgerConstructorList.propTypes = {
   ingredients: PropTypes.arrayOf(PropTypes.shape(IngredientType)),
+  removeIngredient: PropTypes.func,
 };
 
 export default BurgerConstructorList;

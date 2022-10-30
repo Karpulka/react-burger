@@ -12,7 +12,6 @@ function BurgerIngredientsItem(props) {
       className={`${styles.ingredient} ingredient__item`}
       onClick={props.ingredientClick.bind({}, props.ingredient)}>
       <img src={image} alt={name} className={styles.image} />
-
       <Price price={price} />
       <div className={styles.name}>{name}</div>
       {props.count > 0 && <Counter count={props.count} size="default" />}

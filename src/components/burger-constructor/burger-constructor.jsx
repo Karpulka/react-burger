@@ -95,7 +95,10 @@ class BurgerConstructor extends React.Component {
     return (
       <section className={styles.section}>
         <div className={styles['custom-scroll']}>
-          <BurgerConstructorList ingredients={this.state.selectedIngredients} />
+          <BurgerConstructorList
+            ingredients={this.state.selectedIngredients}
+            removeIngredient={this.props.removeIngredient}
+          />
         </div>
         {this.state.resultPrice > 0 && (
           <div className={`${styles.result}`}>
@@ -112,6 +115,7 @@ class BurgerConstructor extends React.Component {
 
 BurgerConstructor.propTypes = {
   ingredients: PropTypes.arrayOf(PropTypes.shape(IngredientType)),
+  removeIngredient: PropTypes.func,
 };
 
 export default BurgerConstructor;

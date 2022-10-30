@@ -3,7 +3,6 @@ import Header from '../header/header/header';
 import BurgerIngredients, { IngredientTypes } from '../burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
 import styles from './app.module.css';
-import { mocks } from '../../utils/data';
 import { updateElementInArrayByIndex, removeElementInArrayByIndex } from '../../utils/utils';
 
 class App extends React.Component {
@@ -12,15 +11,6 @@ class App extends React.Component {
     this.state = {
       ingredients: [],
     };
-    this.allIngredients = mocks;
-  }
-
-  componentDidMount() {
-    document.addEventListener('click', this.removeIngredient);
-  }
-
-  componentWillUnmount() {
-    document.removeEventListener('click', this.removeIngredient);
   }
 
   addIngredient = (ingredient) => {
@@ -51,10 +41,8 @@ class App extends React.Component {
     }
   };
 
-  removeIngredient = (event) => {
-    const parentElement = event.target.closest('.constructor__item');
-    if (parentElement) {
-      const ingredientId = parentElement.getAttribute('data-ingredient');
+  removeIngredient = (ingredientId) => {
+    if (ingredientId) {
       this.setState((prevState) => {
         const ingredientIndex = prevState.ingredients.findIndex(
           (ingredient) => ingredient._id === ingredientId
@@ -83,7 +71,10 @@ class App extends React.Component {
             addIngredient={this.addIngredient}
             selectedIngredients={this.state.ingredients}
           />
-          <BurgerConstructor ingredients={this.state.ingredients} />
+          <BurgerConstructor
+            ingredients={this.state.ingredients}
+            removeIngredient={this.removeIngredient}
+          />
         </main>
       </div>
     );
