@@ -4,7 +4,7 @@ import BurgerIngredientsItem from '../burger-ingredients-item/burger-ingredients
 import { IngredientType } from '../../utils/types';
 import styles from './burger-ingredients-list.module.css';
 
-function BurgerIngredientsList({ title, ingredients, anchor, addIngredient, selectedIngredients }) {
+function BurgerIngredientsList({ title, ingredients, addIngredient, selectedIngredients }) {
   const onIngredientClick = (ingredient) => {
     addIngredient(ingredient);
   };
@@ -17,7 +17,7 @@ function BurgerIngredientsList({ title, ingredients, anchor, addIngredient, sele
   };
 
   return (
-    <div className={styles.ingredients} id={anchor}>
+    <div className={styles.ingredients}>
       <h2 className="text text_type_main-medium">{title}</h2>
       <div className={styles.list}>
         {ingredients.map((ingredient) => {
@@ -38,7 +38,6 @@ function BurgerIngredientsList({ title, ingredients, anchor, addIngredient, sele
 BurgerIngredientsList.propTypes = {
   title: PropTypes.string,
   ingredients: PropTypes.arrayOf(PropTypes.shape(IngredientType)),
-  anchor: PropTypes.string.isRequired,
   addIngredient: PropTypes.func,
   selectedIngredients: PropTypes.arrayOf(PropTypes.shape(IngredientType)),
 };

@@ -2,29 +2,25 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 
-const onClick = (anchor, setCurrent) => {
-  const element = document.getElementById(anchor);
-  element.scrollIntoView({
-    behavior: 'smooth',
-  });
-  setCurrent(anchor);
-};
-
-function Tabs({ tabs }) {
+function Tabs({ tabs, onTabChange }) {
   const isTabs = tabs && tabs.length;
   const [current, setCurrent] = React.useState(tabs[0].value);
+
+  const onTabClick = (tabValue) => {
+    setCurrent(tabValue);
+    onTabChange(tabValue);
+  };
 
   return (
     <>
       {isTabs && (
         <div style={{ display: 'flex' }}>
           {tabs.map((tab) => {
-            const anchor = tab.value;
             return (
               <Tab
                 value={tab.value}
                 active={current === tab.value}
-                onClick={onClick.bind(this, anchor, setCurrent)}
+                onClick={onTabClick.bind({}, tab.value)}
                 key={tab.value}>
                 {tab.text}
               </Tab>
@@ -43,6 +39,7 @@ Tabs.propTypes = {
       text: PropTypes.string,
     })
   ),
+  onTabChange: PropTypes.func,
 };
 
 export default Tabs;

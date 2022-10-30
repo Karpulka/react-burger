@@ -32,21 +32,33 @@ function BurgerIngredients(props) {
     },
   ];
 
+  const tabRefs = [];
+
+  const onTabChange = (tabValue) => {
+    const tabIndex = tabs.findIndex((tab) => tab.value === tabValue);
+    if (tabIndex > -1) {
+      tabRefs[tabIndex].scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <section className={styles.section}>
-      <Tabs tabs={tabs} />
+      <Tabs tabs={tabs} onTabChange={onTabChange} />
       <div className={styles['custom-scroll']}>
-        {tabs.map((tab) => {
+        {tabs.map((tab, key) => {
           const ingredients = filteringredients(mocks, tab.value);
           const burgerListProps = {
             addIngredient: props.addIngredient,
             selectedIngredients: props.selectedIngredients,
             ingredients: ingredients,
             title: tab.text,
-            anchor: tab.value,
           };
           return (
-            ingredients && <BurgerIngredientsList {...burgerListProps} key={`${tab.value}-list`} />
+            ingredients && (
+              <div ref={(tabRef) => (tabRefs[key] = tabRef)} key={`${tab.value}-list`}>
+                <BurgerIngredientsList {...burgerListProps} />
+              </div>
+            )
           );
         })}
       </div>
