@@ -5,6 +5,7 @@ import Price from '../price/price';
 import { IngredientTypes } from '../burger-ingredients/burger-ingredients';
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { removeElementInArrayByIndex } from '../../utils/utils';
+import { IngredientType } from '../../utils/types';
 import styles from './burger-constructor.module.css';
 
 class BurgerConstructor extends React.Component {
@@ -110,21 +111,7 @@ class BurgerConstructor extends React.Component {
 }
 
 BurgerConstructor.propTypes = {
-  ingredients: PropTypes.arrayOf(
-    PropTypes.shape({
-      _id: PropTypes.string,
-      name: PropTypes.string,
-      type: PropTypes.string,
-      proteins: PropTypes.number,
-      fat: PropTypes.number,
-      carbohydrates: PropTypes.number,
-      calories: PropTypes.number,
-      price: PropTypes.number,
-      image: PropTypes.string,
-      image_mobile: PropTypes.string,
-      image_large: PropTypes.string,
-    })
-  ),
+  ingredients: PropTypes.arrayOf(PropTypes.shape(IngredientType)),
 };
 
 export default BurgerConstructor;
