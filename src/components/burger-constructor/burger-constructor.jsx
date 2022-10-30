@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import BurgerConstructorList from '../burger-constructor-list/burger-constructor-list';
+import BurgerConstructorListParts from '../burger-constructor-list-parts/burger-constructor-list-parts';
 import Price from '../price/price';
 import { IngredientTypes } from '../burger-ingredients/burger-ingredients';
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -94,12 +94,10 @@ class BurgerConstructor extends React.Component {
   render() {
     return (
       <section className={styles.section}>
-        <div className={styles['custom-scroll']}>
-          <BurgerConstructorList
-            ingredients={this.state.selectedIngredients}
-            removeIngredient={this.props.removeIngredient}
-          />
-        </div>
+        <BurgerConstructorListParts
+          ingredients={this.state.selectedIngredients}
+          removeIngredient={this.props.removeIngredient}
+        />
         {this.state.resultPrice > 0 && (
           <div className={`${styles.result}`}>
             <Price price={this.state.resultPrice} />

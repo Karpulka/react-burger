@@ -13,6 +13,7 @@ function BurgerConstructorList(props) {
   return (
     <div className={styles.list}>
       {props.ingredients &&
+        props.ingredients.length &&
         props.ingredients.map((ingredient, key) => {
           let elementProps = {
             text: ingredient.name,
@@ -21,7 +22,7 @@ function BurgerConstructorList(props) {
           };
           const isBun = ingredient.type === IngredientTypes.bun;
 
-          if (key === 0 && isBun) {
+          if (key === 0 && isBun && !props.isLastPart) {
             elementProps.type = 'top';
             elementProps.isLocked = true;
           } else if (key === props.ingredients.length - 1 && isBun) {
@@ -42,9 +43,14 @@ function BurgerConstructorList(props) {
   );
 }
 
+BurgerConstructorList.defaultProps = {
+  isLastPart: false,
+};
+
 BurgerConstructorList.propTypes = {
   ingredients: PropTypes.arrayOf(PropTypes.shape(IngredientType)),
   removeIngredient: PropTypes.func,
+  isLastPart: PropTypes.bool,
 };
 
 export default BurgerConstructorList;
