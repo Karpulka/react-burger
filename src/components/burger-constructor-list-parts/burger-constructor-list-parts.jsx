@@ -2,14 +2,27 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { IngredientType } from '../../utils/types';
 import BurgerConstructorList from '../burger-constructor-list/burger-constructor-list';
+import { IngredientTypes } from '../burger-ingredients/burger-ingredients';
 import styles from './burger-constructor-list-parts.module.css';
 
 function BurgerConstructorListParts({ ingredients, removeIngredient }) {
   const isIngredients = ingredients && ingredients.length;
-  const firstPartIngredients = isIngredients ? [ingredients[0]] : [];
-  const centralPart =
-    isIngredients && ingredients.length > 2 ? ingredients.slice(1, ingredients.length - 2) : [];
-  const lastPartIngredients = isIngredients ? [ingredients[ingredients.length - 1]] : [];
+  const isBun =
+    isIngredients && ingredients.find((ingredient) => ingredient.type === IngredientTypes.bun);
+
+  const firstPartIngredients =
+    isIngredients && ingredients[0].type === IngredientTypes.bun ? [ingredients[0]] : [];
+
+  const centralPart = !isBun
+    ? ingredients
+    : isIngredients && ingredients.length > 2
+    ? ingredients.slice(1, ingredients.length - 1)
+    : [];
+
+  const lastPartIngredients =
+    isIngredients && ingredients[ingredients.length - 1].type === IngredientTypes.bun
+      ? [ingredients[ingredients.length - 1]]
+      : [];
 
   return (
     <>

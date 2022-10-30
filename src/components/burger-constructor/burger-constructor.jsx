@@ -24,11 +24,10 @@ class BurgerConstructor extends React.Component {
     );
 
     if (bunIndex === -1) {
-      this.addIngredientsWithoutBun();
-      return;
+      return this.props.ingredients;
     }
 
-    this.addIngredientsWithBun(bunIndex);
+    return this.addIngredientsWithBun(bunIndex);
   };
 
   getResultPrice = (ingredients) => {
@@ -39,33 +38,6 @@ class BurgerConstructor extends React.Component {
     return 0;
   };
 
-  addIngredientsWithoutBun = () => {
-    const currentBunIndex = this.state.selectedIngredients.findIndex(
-      (ingredient) => ingredient.type === IngredientTypes.bun
-    );
-
-    if (currentBunIndex > -1) {
-      const currentLength = this.state.selectedIngredients.length;
-      this.setState((prevState) => {
-        const updatedIngredients = [].concat(
-          prevState.selectedIngredients[0],
-          removeElementInArrayByIndex(this.props.ingredients, currentBunIndex),
-          prevState.selectedIngredients[currentLength - 1]
-        );
-        return {
-          resultPrice: this.getResultPrice(updatedIngredients),
-          selectedIngredients: updatedIngredients,
-        };
-      });
-    } else {
-      const updatedIngredients = [...this.props.ingredients];
-      this.setState({
-        resultPrice: this.getResultPrice(updatedIngredients),
-        selectedIngredients: updatedIngredients,
-      });
-    }
-  };
-
   addIngredientsWithBun = (bunIndex) => {
     const bunTop = Object.assign({}, this.props.ingredients[bunIndex], {
       name: `${this.props.ingredients[bunIndex].name} (верх)`,
@@ -74,33 +46,21 @@ class BurgerConstructor extends React.Component {
       name: `${this.props.ingredients[bunIndex].name} (низ)`,
     });
     const otherIngredients = removeElementInArrayByIndex(this.props.ingredients, bunIndex);
-    const updateIngredients = [].concat([bunTop], otherIngredients, [bunBottom]);
-    this.setState({
-      resultPrice: this.getResultPrice(updateIngredients),
-      selectedIngredients: updateIngredients,
-    });
+    return [].concat([bunTop], otherIngredients, [bunBottom]);
   };
 
-  componentDidMount() {
-    this.prepareIngredients();
-  }
-
-  componentDidUpdate(prevProps) {
-    if (this.props.ingredients !== prevProps.ingredients) {
-      this.prepareIngredients();
-    }
-  }
-
   render() {
+    const selectedIngredients = this.prepareIngredients();
+    const resultPrice = this.getResultPrice(selectedIngredients);
     return (
       <section className={styles.section}>
         <BurgerConstructorListParts
-          ingredients={this.state.selectedIngredients}
+          ingredients={selectedIngredients}
           removeIngredient={this.props.removeIngredient}
         />
-        {this.state.resultPrice > 0 && (
+        {resultPrice > 0 && (
           <div className={`${styles.result}`}>
-            <Price price={this.state.resultPrice} />
+            <Price price={resultPrice} />
             <Button type="primary" size="large" htmlType="button">
               Оформить заказ
             </Button>
