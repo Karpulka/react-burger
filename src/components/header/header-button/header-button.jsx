@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styles from './app-header-button.module.css';
+import styles from './header-button.module.css';
 import * as uiComponents from '@ya.praktikum/react-developer-burger-ui-components';
 
 export const ButtonTypes = {
@@ -10,7 +10,7 @@ export const ButtonTypes = {
   success: 'success',
 };
 
-class AppHeaderButton extends React.Component {
+class HeaderButton extends React.Component {
   constructor(props) {
     super(props);
 
@@ -49,14 +49,14 @@ class AppHeaderButton extends React.Component {
   }
 }
 
-AppHeaderButton.defaultProps = {
+HeaderButton.defaultProps = {
   isActive: false,
 };
 
-AppHeaderButton.propTypes = {
+HeaderButton.propTypes = {
   icon: PropTypes.string,
   children: PropTypes.string,
   isActive: PropTypes.bool,
 };
 
-export default AppHeaderButton;
+export default HeaderButton;

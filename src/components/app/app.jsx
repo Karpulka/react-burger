@@ -1,7 +1,7 @@
 import React from 'react';
-import AppHeader from '../header/app-header/app-header';
-import AppBurgerIngredients, { IngredientTypes } from '../burger-ingredients/burger-ingredients';
-import AppBurgerConstructor from '../burger-constructor/burger-constructor';
+import Header from '../header/header/header';
+import BurgerIngredients, { IngredientTypes } from '../burger-ingredients/burger-ingredients';
+import BurgerConstructor from '../burger-constructor/burger-constructor';
 import styles from './app.module.css';
 import { mocks } from '../../utils/data';
 import { updateElementInArrayByIndex, removeElementInArrayByIndex } from '../../utils/utils';
@@ -83,13 +83,13 @@ class App extends React.Component {
   render() {
     return (
       <div className="main">
-        <AppHeader />
+        <Header />
         <section className="container">
           <h1 className={styles.h1}>Соберите бургер</h1>
         </section>
         <main className={styles.container}>
-          <AppBurgerIngredients />
-          <AppBurgerConstructor ingredients={this.state.ingredients} />
+          <BurgerIngredients />
+          <BurgerConstructor ingredients={this.state.ingredients} />
         </main>
       </div>
     );

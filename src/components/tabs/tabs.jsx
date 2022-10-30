@@ -10,7 +10,7 @@ const onClick = (anchor, setCurrent) => {
   setCurrent(anchor);
 };
 
-function AppTabs({ tabs }) {
+function Tabs({ tabs }) {
   const isTabs = tabs && tabs.length;
   const [current, setCurrent] = React.useState(tabs[0].value);
 
@@ -36,7 +36,7 @@ function AppTabs({ tabs }) {
   );
 }
 
-AppTabs.propTypes = {
+Tabs.propTypes = {
   tabs: PropTypes.arrayOf(
     PropTypes.shape({
       value: PropTypes.string,
@@ -45,4 +45,4 @@ AppTabs.propTypes = {
   ),
 };
 
-export default AppTabs;
+export default Tabs;

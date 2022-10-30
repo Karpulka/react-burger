@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import AppBurgerConstructorList from '../burger-constructor-list/burger-constructor-list';
-import AppPrice from '../price/price';
+import BurgerConstructorList from '../burger-constructor-list/burger-constructor-list';
+import Price from '../price/price';
 import { IngredientTypes } from '../burger-ingredients/burger-ingredients';
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { removeElementInArrayByIndex } from '../../utils/utils';
 import styles from './burger-constructor.module.css';
 
-class AppBurgerConstructor extends React.Component {
+class BurgerConstructor extends React.Component {
   constructor(props) {
     super(props);
 
@@ -94,11 +94,11 @@ class AppBurgerConstructor extends React.Component {
     return (
       <section className={styles.section}>
         <div className={styles['custom-scroll']}>
-          <AppBurgerConstructorList ingredients={this.state.selectedIngredients} />
+          <BurgerConstructorList ingredients={this.state.selectedIngredients} />
         </div>
         {this.state.resultPrice > 0 && (
           <div className={`${styles.result}`}>
-            <AppPrice price={this.state.resultPrice} />
+            <Price price={this.state.resultPrice} />
             <Button type="primary" size="large" htmlType="button">
               Оформить заказ
             </Button>
@@ -109,7 +109,7 @@ class AppBurgerConstructor extends React.Component {
   }
 }
 
-AppBurgerConstructor.propTypes = {
+BurgerConstructor.propTypes = {
   ingredients: PropTypes.arrayOf(
     PropTypes.shape({
       _id: PropTypes.string,
@@ -127,4 +127,4 @@ AppBurgerConstructor.propTypes = {
   ),
 };
 
-export default AppBurgerConstructor;
+export default BurgerConstructor;

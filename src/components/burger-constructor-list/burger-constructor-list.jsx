@@ -10,7 +10,7 @@ const onDeleteClick = (event) => {
   parentElement.classList.add('deliting');
 };
 
-function AppBurgerConstructorList(props) {
+function BurgerConstructorList(props) {
   return (
     <div className={styles.list}>
       {props.ingredients &&
@@ -46,7 +46,7 @@ function AppBurgerConstructorList(props) {
   );
 }
 
-AppBurgerConstructorList.propTypes = {
+BurgerConstructorList.propTypes = {
   ingredients: PropTypes.arrayOf(
     PropTypes.shape({
       _id: PropTypes.string,
@@ -64,4 +64,4 @@ AppBurgerConstructorList.propTypes = {
   ),
 };
 
-export default AppBurgerConstructorList;
+export default BurgerConstructorList;

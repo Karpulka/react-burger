@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import AppPrice from '../price/price';
+import Price from '../price/price';
 import { Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-ingredients-item.module.css';
 
-class AppBurgerIngredientsItem extends React.Component {
+class BurgerIngredientsItem extends React.Component {
   state = {
     count: 0,
   };
@@ -23,7 +23,7 @@ class AppBurgerIngredientsItem extends React.Component {
       <div className={`${styles.ingredient} ingredient__item`} onClick={this.onClick} id={_id}>
         <img src={image} alt={name} className={styles.image} />
 
-        <AppPrice price={price} />
+        <Price price={price} />
         <div className={styles.name}>{name}</div>
         {this.state.count > 0 && <Counter count={this.state.count} size="default" />}
       </div>
@@ -31,7 +31,7 @@ class AppBurgerIngredientsItem extends React.Component {
   }
 }
 
-AppBurgerIngredientsItem.propTypes = {
+BurgerIngredientsItem.propTypes = {
   _id: PropTypes.string,
   name: PropTypes.string.isRequired,
   type: PropTypes.string,
@@ -45,4 +45,4 @@ AppBurgerIngredientsItem.propTypes = {
   image_large: PropTypes.string,
 };
 
-export default AppBurgerIngredientsItem;
+export default BurgerIngredientsItem;

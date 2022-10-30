@@ -1,6 +1,6 @@
 import React from 'react';
-import AppTabs from '../tabs/tabs';
-import AppBurgerIngredientsList from '../burger-ingredients-list/burger-ingredients-list';
+import Tabs from '../tabs/tabs';
+import BurgerIngredientsList from '../burger-ingredients-list/burger-ingredients-list';
 import styles from './burger-ingredients.module.css';
 import { mocks } from '../../utils/data';
 
@@ -14,7 +14,7 @@ const filteringredients = (ingredients = [], type) => {
   return ingredients.filter((item) => item.type === type);
 };
 
-function AppBurgerIngredients() {
+function BurgerIngredients() {
   const tabs = [
     {
       value: IngredientTypes.bun,
@@ -32,13 +32,13 @@ function AppBurgerIngredients() {
 
   return (
     <section className={styles.section}>
-      <AppTabs tabs={tabs} />
+      <Tabs tabs={tabs} />
       <div className={styles['custom-scroll']}>
         {tabs.map((tab) => {
           const ingredients = filteringredients(mocks, tab.value);
           return (
             ingredients && (
-              <AppBurgerIngredientsList
+              <BurgerIngredientsList
                 ingredients={ingredients}
                 title={tab.text}
                 anchor={tab.value}
@@ -52,4 +52,4 @@ function AppBurgerIngredients() {
   );
 }
 
-export default AppBurgerIngredients;
+export default BurgerIngredients;
