@@ -10,19 +10,16 @@ function BurgerConstructorListParts({ ingredients, removeIngredient }) {
   const isBun =
     isIngredients && ingredients.find((ingredient) => ingredient.type === IngredientTypes.bun);
 
-  const firstPartIngredients =
-    isIngredients && ingredients[0].type === IngredientTypes.bun ? [ingredients[0]] : [];
+  const isFirstPartIngredients = isIngredients && ingredients[0].type === IngredientTypes.bun;
+  const firstPartIngredients = isFirstPartIngredients ? [ingredients[0]] : [];
 
-  const centralPart = !isBun
-    ? ingredients
-    : isIngredients && ingredients.length > 2
-    ? ingredients.slice(1, ingredients.length - 1)
-    : [];
+  const isBunIngredientsValue =
+    isIngredients && ingredients.length > 2 ? ingredients.slice(1, ingredients.length - 1) : [];
+  const centralPart = isBun ? isBunIngredientsValue : ingredients;
 
-  const lastPartIngredients =
-    isIngredients && ingredients[ingredients.length - 1].type === IngredientTypes.bun
-      ? [ingredients[ingredients.length - 1]]
-      : [];
+  const isLastPartIngredients =
+    isIngredients && ingredients[ingredients.length - 1].type === IngredientTypes.bun;
+  const lastPartIngredients = isLastPartIngredients ? [ingredients[ingredients.length - 1]] : [];
 
   return (
     <>

@@ -11,35 +11,42 @@ function BurgerConstructorList(props) {
   };
 
   return (
-    <div className={styles.list}>
-      {props.ingredients &&
-        props.ingredients.length &&
-        props.ingredients.map((ingredient, key) => {
-          let elementProps = {
-            text: ingredient.name,
-            thumbnail: ingredient.image_mobile,
-            price: ingredient.price,
-          };
-          const isBun = ingredient.type === IngredientTypes.bun;
+    <>
+      {props.ingredients && props.ingredients.length ? (
+        <div className={styles.list}>
+          {props.ingredients.map((ingredient, key) => {
+            let elementProps = {
+              text: ingredient.name,
+              thumbnail: ingredient.image_mobile,
+              price: ingredient.price,
+            };
+            const isBun = ingredient.type === IngredientTypes.bun;
+            let classValue = '';
 
-          if (key === 0 && isBun && !props.isLastPart) {
-            elementProps.type = 'top';
-            elementProps.isLocked = true;
-          } else if (key === props.ingredients.length - 1 && isBun) {
-            elementProps.type = 'bottom';
-            elementProps.isLocked = true;
-          } else {
-            elementProps.handleClose = onDeleteClick.bind({}, ingredient._id);
-          }
+            if (key === 0 && isBun && !props.isLastPart) {
+              elementProps.type = 'top';
+              elementProps.isLocked = true;
+              classValue = styles['first-item'];
+            } else if (key === props.ingredients.length - 1 && isBun) {
+              elementProps.type = 'bottom';
+              elementProps.isLocked = true;
+              classValue = styles['last-item'];
+            } else {
+              elementProps.handleClose = onDeleteClick.bind({}, ingredient._id);
+            }
 
-          return (
-            <div className={`${styles.item} constructor__item`} key={`${ingredient._id}-${key}`}>
-              {!elementProps.type && <DragIcon type="primary" />}
-              <ConstructorElement {...elementProps} />
-            </div>
-          );
-        })}
-    </div>
+            return (
+              <div
+                className={`${styles.item} ${classValue} constructor__item`}
+                key={`${ingredient._id}-${key}`}>
+                {!elementProps.type && <DragIcon type="primary" />}
+                <ConstructorElement {...elementProps} />
+              </div>
+            );
+          })}
+        </div>
+      ) : null}
+    </>
   );
 }
 

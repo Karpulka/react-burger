@@ -12,3 +12,13 @@
     justify-content: flex-end;
     column-gap: 8px;
 }
+
+.first-item {
+    margin-right: 8px;
+    margin-bottom: 16px;
+}
+
+.last-item {
+    margin-right: 8px;
+    margin-top: 16px;
+}
