@@ -16,47 +16,38 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    document.addEventListener('click', this.addIngredient);
     document.addEventListener('click', this.removeIngredient);
   }
 
   componentWillUnmount() {
-    document.removeEventListener('click', this.addIngredient);
     document.removeEventListener('click', this.removeIngredient);
   }
 
-  addIngredient = (event) => {
-    const parentElement = event.target.closest('.ingredient__item');
+  addIngredient = (ingredient) => {
+    if (ingredient) {
+      const isIngredientBun = ingredient.type === IngredientTypes.bun;
+      const isBunInIngridientsIndex = this.state.ingredients.findIndex(
+        (ingredient) => ingredient.type === IngredientTypes.bun
+      );
 
-    if (parentElement) {
-      const ingredientId = parentElement.getAttribute('id');
-      const ingredient = this.allIngredients.find((ingredient) => ingredient._id === ingredientId);
-
-      if (ingredient) {
-        const isIngredientBun = ingredient.type === IngredientTypes.bun;
-        const isBunInIngridientsIndex = this.state.ingredients.findIndex(
-          (ingredient) => ingredient.type === IngredientTypes.bun
-        );
-
-        if (isIngredientBun && isBunInIngridientsIndex > -1) {
-          this.setState((prevState) => {
-            return {
-              ingredients: updateElementInArrayByIndex(
-                prevState.ingredients,
-                isBunInIngridientsIndex,
-                ingredient
-              ),
-            };
-          });
-          return;
-        }
-
+      if (isIngredientBun && isBunInIngridientsIndex > -1) {
         this.setState((prevState) => {
           return {
-            ingredients: [...prevState.ingredients, ingredient],
+            ingredients: updateElementInArrayByIndex(
+              prevState.ingredients,
+              isBunInIngridientsIndex,
+              ingredient
+            ),
           };
         });
+        return;
       }
+
+      this.setState((prevState) => {
+        return {
+          ingredients: [...prevState.ingredients, ingredient],
+        };
+      });
     }
   };
 
@@ -88,7 +79,10 @@ class App extends React.Component {
           <h1 className={styles.h1}>Соберите бургер</h1>
         </section>
         <main className={styles.container}>
-          <BurgerIngredients />
+          <BurgerIngredients
+            addIngredient={this.addIngredient}
+            selectedIngredients={this.state.ingredients}
+          />
           <BurgerConstructor ingredients={this.state.ingredients} />
         </main>
       </div>

@@ -1,6 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Tabs from '../tabs/tabs';
 import BurgerIngredientsList from '../burger-ingredients-list/burger-ingredients-list';
+import { IngredientType } from '../../utils/types';
 import styles from './burger-ingredients.module.css';
 import { mocks } from '../../utils/data';
 
@@ -14,7 +16,7 @@ const filteringredients = (ingredients = [], type) => {
   return ingredients.filter((item) => item.type === type);
 };
 
-function BurgerIngredients() {
+function BurgerIngredients(props) {
   const tabs = [
     {
       value: IngredientTypes.bun,
@@ -36,20 +38,25 @@ function BurgerIngredients() {
       <div className={styles['custom-scroll']}>
         {tabs.map((tab) => {
           const ingredients = filteringredients(mocks, tab.value);
+          const burgerListProps = {
+            addIngredient: props.addIngredient,
+            selectedIngredients: props.selectedIngredients,
+            ingredients: ingredients,
+            title: tab.text,
+            anchor: tab.value,
+          };
           return (
-            ingredients && (
-              <BurgerIngredientsList
-                ingredients={ingredients}
-                title={tab.text}
-                anchor={tab.value}
-                key={`${tab.value}-list`}
-              />
-            )
+            ingredients && <BurgerIngredientsList {...burgerListProps} key={`${tab.value}-list`} />
           );
         })}
       </div>
     </section>
   );
 }
+
+BurgerIngredients.propTypes = {
+  addIngredient: PropTypes.func,
+  selectedIngredients: PropTypes.arrayOf(PropTypes.shape(IngredientType)),
+};
 
 export default BurgerIngredients;
