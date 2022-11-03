@@ -10,43 +10,33 @@ export const ButtonTypes = {
   success: 'success',
 };
 
-class HeaderButton extends React.Component {
-  constructor(props) {
-    super(props);
+function HeaderButton(props) {
+  const [buttonType, setButtonType] = React.useState(
+    props.isActive ? ButtonTypes.primary : ButtonTypes.secondary
+  );
 
-    this.state = {
-      buttonType: this.props.isActive ? ButtonTypes.primary : ButtonTypes.secondary,
-    };
-  }
-
-  toggleButtonType = () => {
-    if (!this.props.isActive) {
-      this.setState((prevState) => ({
-        buttonType:
-          prevState.buttonType === ButtonTypes.secondary
-            ? ButtonTypes.primary
-            : ButtonTypes.secondary,
-      }));
+  const toggleButtonType = () => {
+    if (!props.isActive) {
+      setButtonType((prevState) =>
+        prevState === ButtonTypes.secondary ? ButtonTypes.primary : ButtonTypes.secondary
+      );
     }
   };
 
-  render() {
-    const { icon, children } = this.props;
-    const IconComponent = icon ? uiComponents[icon] : '';
-    const textColorClass =
-      this.state.buttonType === ButtonTypes.secondary ? 'text_color_inactive' : '';
-    return (
-      <button
-        className={styles.button}
-        onMouseEnter={this.toggleButtonType}
-        onMouseLeave={this.toggleButtonType}>
-        <span className={styles.button__icon}>
-          {IconComponent && <IconComponent type={this.state.buttonType} />}
-        </span>
-        <span className={`${styles.button__text} ${textColorClass}`}>{children}</span>
-      </button>
-    );
-  }
+  const { icon, children } = props;
+  const IconComponent = icon ? uiComponents[icon] : '';
+  const textColorClass = buttonType === ButtonTypes.secondary ? 'text_color_inactive' : '';
+  return (
+    <button
+      className={styles.button}
+      onMouseEnter={toggleButtonType}
+      onMouseLeave={toggleButtonType}>
+      <span className={styles.button__icon}>
+        {IconComponent && <IconComponent type={buttonType} />}
+      </span>
+      <span className={`${styles.button__text} ${textColorClass}`}>{children}</span>
+    </button>
+  );
 }
 
 HeaderButton.defaultProps = {

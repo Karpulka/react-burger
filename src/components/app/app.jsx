@@ -5,80 +5,55 @@ import BurgerConstructor from '../burger-constructor/burger-constructor';
 import styles from './app.module.css';
 import { updateElementInArrayByIndex, removeElementInArrayByIndex } from '../../utils/utils';
 
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      ingredients: [],
-    };
-  }
+function App() {
+  const [ingredients, setIngredients] = React.useState([]);
 
-  addIngredient = (ingredient) => {
+  const addIngredient = (ingredient) => {
     if (ingredient) {
       const isIngredientBun = ingredient.type === IngredientTypes.bun;
-      const isBunInIngridientsIndex = this.state.ingredients.findIndex(
+      const isBunInIngridientsIndex = ingredients.findIndex(
         (ingredient) => ingredient.type === IngredientTypes.bun
       );
 
       if (isIngredientBun && isBunInIngridientsIndex > -1) {
-        this.setState((prevState) => {
-          return {
-            ingredients: updateElementInArrayByIndex(
-              prevState.ingredients,
-              isBunInIngridientsIndex,
-              ingredient
-            ),
-          };
-        });
+        setIngredients((prevState) =>
+          updateElementInArrayByIndex(prevState, isBunInIngridientsIndex, ingredient)
+        );
         return;
       }
 
-      this.setState((prevState) => {
-        return {
-          ingredients: [...prevState.ingredients, ingredient],
-        };
-      });
+      setIngredients((prevState) => [...prevState, ingredient]);
     }
   };
 
-  removeIngredient = (ingredientId) => {
+  const removeIngredient = (ingredientId) => {
     if (ingredientId) {
-      this.setState((prevState) => {
-        const ingredientIndex = prevState.ingredients.findIndex(
+      setIngredients((prevState) => {
+        const ingredientIndex = prevState.findIndex(
           (ingredient) => ingredient._id === ingredientId
         );
 
         if (ingredientIndex > -1) {
-          return {
-            ingredients: removeElementInArrayByIndex(prevState.ingredients, ingredientIndex),
-          };
+          return removeElementInArrayByIndex(prevState, ingredientIndex);
         }
 
-        return { ingredients: prevState.ingredients };
+        return prevState;
       });
     }
   };
 
-  render() {
-    return (
-      <div className="main">
-        <Header />
-        <section className="container">
-          <h1 className={styles.h1}>Соберите бургер</h1>
-        </section>
-        <main className={styles.container}>
-          <BurgerIngredients
-            addIngredient={this.addIngredient}
-            selectedIngredients={this.state.ingredients}
-          />
-          <BurgerConstructor
-            ingredients={this.state.ingredients}
-            removeIngredient={this.removeIngredient}
-          />
-        </main>
-      </div>
-    );
-  }
+  return (
+    <div className="main">
+      <Header />
+      <section className="container">
+        <h1 className={styles.h1}>Соберите бургер</h1>
+      </section>
+      <main className={styles.container}>
+        <BurgerIngredients addIngredient={addIngredient} selectedIngredients={ingredients} />
+        <BurgerConstructor ingredients={ingredients} removeIngredient={removeIngredient} />
+      </main>
+    </div>
+  );
 }
 
 export default App;

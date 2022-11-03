@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
+import styles from './tabs.module.css';
 
 function Tabs({ tabs, onTabChange }) {
   const isTabs = tabs && tabs.length;
@@ -14,7 +15,7 @@ function Tabs({ tabs, onTabChange }) {
   return (
     <>
       {isTabs && (
-        <div style={{ display: 'flex' }}>
+        <div className={styles.tabs}>
           {tabs.map((tab) => {
             return (
               <Tab
