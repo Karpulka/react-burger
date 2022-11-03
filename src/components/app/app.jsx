@@ -1,12 +1,34 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '../header/header/header';
 import BurgerIngredients, { IngredientTypes } from '../burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
 import styles from './app.module.css';
 import { updateElementInArrayByIndex, removeElementInArrayByIndex } from '../../utils/utils';
 
+const API_URL = 'https://norma.nomoreparties.space/api';
+
 function App() {
-  const [ingredients, setIngredients] = React.useState([]);
+  const [ingredients, setIngredients] = useState([]);
+  const [allIngredients, setAllIngredients] = useState([]);
+
+  useEffect(() => {
+    const getIngredients = async () => {
+      try {
+        const res = await fetch(`${API_URL}/ingredients`);
+        const allIngredients = await res.json();
+
+        if (allIngredients.success && allIngredients.data.length) {
+          setAllIngredients(allIngredients.data);
+        } else {
+          throw res;
+        }
+      } catch (e) {
+        console.log('Fetch ingredients error', e);
+        console.error(e);
+      }
+    };
+    getIngredients();
+  }, []);
 
   const addIngredient = (ingredient) => {
     if (ingredient) {
@@ -48,10 +70,22 @@ function App() {
       <section className="container">
         <h1 className={styles.h1}>Соберите бургер</h1>
       </section>
-      <main className={styles.container}>
-        <BurgerIngredients addIngredient={addIngredient} selectedIngredients={ingredients} />
-        <BurgerConstructor ingredients={ingredients} removeIngredient={removeIngredient} />
-      </main>
+      {allIngredients.length ? (
+        <main className={styles.container}>
+          <BurgerIngredients
+            addIngredient={addIngredient}
+            selectedIngredients={ingredients}
+            allIngredients={allIngredients}
+          />
+          <BurgerConstructor ingredients={ingredients} removeIngredient={removeIngredient} />)
+        </main>
+      ) : (
+        <h2 className={styles.error}>
+          Сервис временно не доступен :(
+          <br />
+          Пожалуйста, попробуйте позже.
+        </h2>
+      )}
     </div>
   );
 }

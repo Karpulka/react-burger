@@ -4,7 +4,6 @@ import Tabs from '../tabs/tabs';
 import BurgerIngredientsList from '../burger-ingredients-list/burger-ingredients-list';
 import { IngredientType } from '../../utils/types';
 import styles from './burger-ingredients.module.css';
-import { mocks } from '../../utils/data';
 
 export const IngredientTypes = {
   bun: 'bun',
@@ -46,7 +45,7 @@ function BurgerIngredients(props) {
       <Tabs tabs={tabs} onTabChange={onTabChange} />
       <div className={styles['custom-scroll']}>
         {tabs.map((tab, key) => {
-          const ingredients = filteringredients(mocks, tab.value);
+          const ingredients = filteringredients(props.allIngredients, tab.value);
           const burgerListProps = {
             addIngredient: props.addIngredient,
             selectedIngredients: props.selectedIngredients,
@@ -69,6 +68,7 @@ function BurgerIngredients(props) {
 BurgerIngredients.propTypes = {
   addIngredient: PropTypes.func,
   selectedIngredients: PropTypes.arrayOf(PropTypes.shape(IngredientType)),
+  allIngredients: PropTypes.arrayOf(PropTypes.shape(IngredientType)),
 };
 
 export default BurgerIngredients;
