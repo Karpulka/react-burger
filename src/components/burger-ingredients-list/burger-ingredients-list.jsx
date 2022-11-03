@@ -1,11 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import BurgerIngredientsItem from '../burger-ingredients-item/burger-ingredients-item';
+import Modal from '../modal/modal';
 import { IngredientType } from '../../utils/types';
 import styles from './burger-ingredients-list.module.css';
 
 function BurgerIngredientsList({ title, ingredients, addIngredient, selectedIngredients }) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const onIngredientClick = (ingredient) => {
+    setIsModalOpen(true);
     addIngredient(ingredient);
   };
 
@@ -16,22 +20,33 @@ function BurgerIngredientsList({ title, ingredients, addIngredient, selectedIngr
     );
   };
 
+  const onModalClose = () => {
+    setIsModalOpen(false);
+  };
+
   return (
-    <div className={styles.ingredients}>
-      <h2 className="text text_type_main-medium">{title}</h2>
-      <div className={styles.list}>
-        {ingredients.map((ingredient) => {
-          return (
-            <BurgerIngredientsItem
-              ingredient={ingredient}
-              ingredientClick={onIngredientClick}
-              count={ingredientCount(ingredient._id)}
-              key={ingredient._id}
-            />
-          );
-        })}
+    <>
+      <div className={styles.ingredients}>
+        <h2 className="text text_type_main-medium">{title}</h2>
+        <div className={styles.list}>
+          {ingredients.map((ingredient) => {
+            return (
+              <BurgerIngredientsItem
+                ingredient={ingredient}
+                ingredientClick={onIngredientClick}
+                count={ingredientCount(ingredient._id)}
+                key={ingredient._id}
+              />
+            );
+          })}
+        </div>
       </div>
-    </div>
+      {isModalOpen && (
+        <Modal header={'test'} onClose={onModalClose}>
+          ???
+        </Modal>
+      )}
+    </>
   );
 }
 

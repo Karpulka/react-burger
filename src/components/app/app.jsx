@@ -77,7 +77,7 @@ function App() {
             selectedIngredients={ingredients}
             allIngredients={allIngredients}
           />
-          <BurgerConstructor ingredients={ingredients} removeIngredient={removeIngredient} />)
+          <BurgerConstructor ingredients={ingredients} removeIngredient={removeIngredient} />
         </main>
       ) : (
         <h2 className={styles.error}>
