@@ -1,0 +1,33 @@
+.ingredient {
+    display: flex;
+    flex-direction: column;
+    color: #F2F2F3;
+    align-items: center;
+}
+
+.image {
+    display: block;
+    max-width: 480px;
+    margin-bottom: 16px;
+}
+
+.info {
+    display: flex;
+    margin: 32px 0 20px;
+    flex-wrap: wrap;
+    column-gap: 20px;
+}
+
+.info-item {
+    composes: text text_type_main-default text_color_inactive from '~@ya.praktikum/react-developer-burger-ui-components/dist/ui/common.css';
+    min-width: 112px;
+    text-align: center;
+    align-self: stretch;
+    flex-grow: 0;
+}
+
+.info-value {
+    composes: text text_type_digits-default from '~@ya.praktikum/react-developer-burger-ui-components/dist/ui/common.css';
+    display: block;
+    margin-top: 8px;
+}

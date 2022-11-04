@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Header from '../header/header/header';
+import AppHeader from '../app-header/app-header';
 import BurgerIngredients, { IngredientTypes } from '../burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
 import styles from './app.module.css';
@@ -64,9 +64,13 @@ function App() {
     }
   };
 
+  const removeAllIngredients = () => {
+    setIngredients([]);
+  };
+
   return (
     <div className="main">
-      <Header />
+      <AppHeader />
       <section className="container">
         <h1 className={styles.h1}>Соберите бургер</h1>
       </section>
@@ -77,7 +81,11 @@ function App() {
             selectedIngredients={ingredients}
             allIngredients={allIngredients}
           />
-          <BurgerConstructor ingredients={ingredients} removeIngredient={removeIngredient} />
+          <BurgerConstructor
+            ingredients={ingredients}
+            removeIngredient={removeIngredient}
+            removeAllIngredients={removeAllIngredients}
+          />
         </main>
       ) : (
         <h2 className={styles.error}>

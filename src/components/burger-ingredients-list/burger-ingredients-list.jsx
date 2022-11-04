@@ -1,15 +1,18 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import BurgerIngredientsItem from '../burger-ingredients-item/burger-ingredients-item';
+import IngredientDetails from '../ingredient-details/ingredient-details';
 import Modal from '../modal/modal';
 import { IngredientType } from '../../utils/types';
 import styles from './burger-ingredients-list.module.css';
 
 function BurgerIngredientsList({ title, ingredients, addIngredient, selectedIngredients }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [openedIngredient, setOpenedIngredient] = useState({});
 
   const onIngredientClick = (ingredient) => {
     setIsModalOpen(true);
+    setOpenedIngredient(ingredient);
     addIngredient(ingredient);
   };
 
@@ -22,6 +25,7 @@ function BurgerIngredientsList({ title, ingredients, addIngredient, selectedIngr
 
   const onModalClose = () => {
     setIsModalOpen(false);
+    setOpenedIngredient({});
   };
 
   return (
@@ -42,8 +46,8 @@ function BurgerIngredientsList({ title, ingredients, addIngredient, selectedIngr
         </div>
       </div>
       {isModalOpen && (
-        <Modal header={'test'} onClose={onModalClose}>
-          ???
+        <Modal header={'Детали ингредиента'} onClose={onModalClose}>
+          <IngredientDetails {...openedIngredient} />
         </Modal>
       )}
     </>
