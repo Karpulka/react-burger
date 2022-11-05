@@ -24,7 +24,7 @@ function Modal(props) {
 
   return ReactDOM.createPortal(
     <>
-      <div className={styles['modal-wrapped']} onClick={onClose}>
+      <div className={styles['modal-wrapped']}>
         <div className={styles.modal}>
           <div className={styles.close}>
             <CloseIcon type="primary" onClick={onClose} />
