@@ -10,6 +10,7 @@ const API_URL = 'https://norma.nomoreparties.space/api';
 function App() {
   const [ingredients, setIngredients] = useState([]);
   const [allIngredients, setAllIngredients] = useState([]);
+  const [isRequestEnded, setIsRequestEnded] = useState(false);
 
   useEffect(() => {
     const getIngredients = async () => {
@@ -17,6 +18,7 @@ function App() {
         const res = await fetch(`${API_URL}/ingredients`);
 
         if (!res.ok) {
+          setIsRequestEnded(true);
           return Promise.reject(`Ошибка ${res.status}`);
         }
 
@@ -24,10 +26,12 @@ function App() {
 
         if (allIngredients.success && allIngredients.data.length) {
           setAllIngredients(allIngredients.data);
+          setIsRequestEnded(true);
         } else {
           throw res;
         }
       } catch (e) {
+        setIsRequestEnded(true);
         console.log('Fetch ingredients error', e);
         console.error(e);
       }
@@ -93,11 +97,13 @@ function App() {
           />
         </main>
       ) : (
-        <h2 className={styles.error}>
-          Сервис временно не доступен :(
-          <br />
-          Пожалуйста, попробуйте позже.
-        </h2>
+        isRequestEnded && (
+          <h2 className={styles.error}>
+            Сервис временно не доступен :(
+            <br />
+            Пожалуйста, попробуйте позже.
+          </h2>
+        )
       )}
     </div>
   );
