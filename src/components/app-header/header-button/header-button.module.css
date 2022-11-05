@@ -2,7 +2,7 @@
     composes: button button_type_primary button_size_medium from '../../../../node_modules/@ya.praktikum/react-developer-burger-ui-components/dist/ui/button.css';
     background: transparent;
     padding: 16px 20px;
-    color: #F2F2F3;
+    color: var(--grey);
     display: flex;
 }
 

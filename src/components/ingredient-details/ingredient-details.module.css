@@ -1,7 +1,7 @@
 .ingredient {
     display: flex;
     flex-direction: column;
-    color: #F2F2F3;
+    color: var(--grey);
     align-items: center;
 }
 
