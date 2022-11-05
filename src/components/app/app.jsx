@@ -15,6 +15,11 @@ function App() {
     const getIngredients = async () => {
       try {
         const res = await fetch(`${API_URL}/ingredients`);
+
+        if (!res.ok) {
+          return Promise.reject(`Ошибка ${res.status}`);
+        }
+
         const allIngredients = await res.json();
 
         if (allIngredients.success && allIngredients.data.length) {
