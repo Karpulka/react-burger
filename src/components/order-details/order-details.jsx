@@ -7,7 +7,7 @@ import { NewOrderContext } from '../../services/newOrderContext';
 function OrderDetails() {
   const image = orderMocks.image ? orderMocks.image : doneImg;
   const { newOrder } = useContext(NewOrderContext);
-  console.log(newOrder);
+
   return (
     <div className={styles['order-result']}>
       {newOrder ? (
