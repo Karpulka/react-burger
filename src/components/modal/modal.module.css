@@ -1,0 +1,46 @@
+.modal-wrapped {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    max-height: 100%;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.modal-wrapped::-webkit-scrollbar {
+    display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.modal-wrapped {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+.modal {
+    position: relative;
+    width: 100%;
+    max-width: 720px;
+    margin: 0 auto;
+    background: var(--header-bg);
+    border: 1px solid rgba(76, 76, 255, 0.2);
+    box-shadow: 0px 24px 32px rgba(0, 0, 0, 0.04), 0px 16px 24px rgba(0, 0, 0, 0.04), 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 0px 1px rgba(0, 0, 0, 0.04);
+    border-radius: 40px;
+    padding: 40px;
+}
+
+.close {
+    position: absolute;
+    top: 60px;
+    right: 40px;
+    cursor: pointer;
+}
+
+.header {
+    composes: text text_type_main-large from '~@ya.praktikum/react-developer-burger-ui-components/dist/ui/common.css';
+    padding: 12px 0;
+    color: var(--grey);
+}

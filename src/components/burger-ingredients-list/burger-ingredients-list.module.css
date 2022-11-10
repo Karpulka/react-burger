@@ -1,5 +1,5 @@
 .ingredients {
-    color: #F2F2F3;
+    color: var(--grey);
 }
 
 .list {

@@ -1,0 +1,20 @@
+.order-result {
+    color: var(--grey);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 80px 0;
+}
+
+.number {
+    composes: text text_type_digits-large from '~@ya.praktikum/react-developer-burger-ui-components/dist/ui/common.css';
+    margin-bottom: 32px;
+    text-shadow: 0px 0px 16px rgba(51, 51, 255, 0.25), 0px 0px 8px rgba(51, 51, 255, 0.25), 0px 4px 32px rgba(51, 51, 255, 0.5);
+}
+
+.image {
+    width: 120px;
+    display: block;
+    margin-bottom: 60px;
+}

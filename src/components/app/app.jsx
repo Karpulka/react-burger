@@ -1,84 +1,112 @@
-import React from 'react';
-import Header from '../header/header/header';
+import React, { useState, useEffect } from 'react';
+import AppHeader from '../app-header/app-header';
 import BurgerIngredients, { IngredientTypes } from '../burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
 import styles from './app.module.css';
 import { updateElementInArrayByIndex, removeElementInArrayByIndex } from '../../utils/utils';
 
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      ingredients: [],
-    };
-  }
+const API_URL = 'https://norma.nomoreparties.space/api';
 
-  addIngredient = (ingredient) => {
+function App() {
+  const [ingredients, setIngredients] = useState([]);
+  const [allIngredients, setAllIngredients] = useState([]);
+  const [isRequestEnded, setIsRequestEnded] = useState(false);
+
+  useEffect(() => {
+    const getIngredients = async () => {
+      try {
+        const res = await fetch(`${API_URL}/ingredients`);
+
+        if (!res.ok) {
+          setIsRequestEnded(true);
+          return Promise.reject(`Ошибка ${res.status}`);
+        }
+
+        const allIngredients = await res.json();
+
+        if (allIngredients.success && allIngredients.data.length) {
+          setAllIngredients(allIngredients.data);
+          setIsRequestEnded(true);
+        } else {
+          throw res;
+        }
+      } catch (e) {
+        setIsRequestEnded(true);
+        console.log('Fetch ingredients error', e);
+        console.error(e);
+      }
+    };
+    getIngredients();
+  }, []);
+
+  const addIngredient = (ingredient) => {
     if (ingredient) {
       const isIngredientBun = ingredient.type === IngredientTypes.bun;
-      const isBunInIngridientsIndex = this.state.ingredients.findIndex(
+      const isBunInIngridientsIndex = ingredients.findIndex(
         (ingredient) => ingredient.type === IngredientTypes.bun
       );
 
       if (isIngredientBun && isBunInIngridientsIndex > -1) {
-        this.setState((prevState) => {
-          return {
-            ingredients: updateElementInArrayByIndex(
-              prevState.ingredients,
-              isBunInIngridientsIndex,
-              ingredient
-            ),
-          };
-        });
+        setIngredients((prevState) =>
+          updateElementInArrayByIndex(prevState, isBunInIngridientsIndex, ingredient)
+        );
         return;
       }
 
-      this.setState((prevState) => {
-        return {
-          ingredients: [...prevState.ingredients, ingredient],
-        };
-      });
+      setIngredients((prevState) => [...prevState, ingredient]);
     }
   };
 
-  removeIngredient = (ingredientId) => {
+  const removeIngredient = (ingredientId) => {
     if (ingredientId) {
-      this.setState((prevState) => {
-        const ingredientIndex = prevState.ingredients.findIndex(
+      setIngredients((prevState) => {
+        const ingredientIndex = prevState.findIndex(
           (ingredient) => ingredient._id === ingredientId
         );
 
         if (ingredientIndex > -1) {
-          return {
-            ingredients: removeElementInArrayByIndex(prevState.ingredients, ingredientIndex),
-          };
+          return removeElementInArrayByIndex(prevState, ingredientIndex);
         }
 
-        return { ingredients: prevState.ingredients };
+        return prevState;
       });
     }
   };
 
-  render() {
-    return (
-      <div className="main">
-        <Header />
-        <section className="container">
-          <h1 className={styles.h1}>Соберите бургер</h1>
-        </section>
+  const removeAllIngredients = () => {
+    setIngredients([]);
+  };
+
+  return (
+    <div className="main">
+      <AppHeader />
+      <section className="container">
+        <h1 className={styles.h1}>Соберите бургер</h1>
+      </section>
+      {allIngredients.length ? (
         <main className={styles.container}>
           <BurgerIngredients
-            addIngredient={this.addIngredient}
-            selectedIngredients={this.state.ingredients}
+            addIngredient={addIngredient}
+            selectedIngredients={ingredients}
+            allIngredients={allIngredients}
           />
           <BurgerConstructor
-            ingredients={this.state.ingredients}
-            removeIngredient={this.removeIngredient}
+            ingredients={ingredients}
+            removeIngredient={removeIngredient}
+            removeAllIngredients={removeAllIngredients}
           />
         </main>
-      </div>
-    );
-  }
+      ) : (
+        isRequestEnded && (
+          <h2 className={styles.error}>
+            Сервис временно не доступен :(
+            <br />
+            Пожалуйста, попробуйте позже.
+          </h2>
+        )
+      )}
+    </div>
+  );
 }
 
 export default App;

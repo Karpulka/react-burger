@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-
 export const IngredientType = {
   _id: PropTypes.string,
   name: PropTypes.string,

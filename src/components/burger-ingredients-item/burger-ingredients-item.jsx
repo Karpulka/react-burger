@@ -24,5 +24,4 @@ BurgerIngredientsItem.propTypes = {
   ingredientClick: PropTypes.func,
   count: PropTypes.number,
 };
-
 export default BurgerIngredientsItem;

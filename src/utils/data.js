@@ -210,3 +210,11 @@ export const mocks = [
     __v: 0,
   },
 ];
+
+export const orderMocks = {
+  orderNumber: '034536',
+  text: 'идентификатор заказа',
+  image: '',
+  status: 'Ваш заказ начали готовить',
+  description: 'Дождитесь готовности на орбитальной станции',
+};
