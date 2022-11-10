@@ -6,7 +6,7 @@ import { IngredientsContext } from '../../services/ingredientsContext';
 import { removeElementInArrayByIndex } from '../../utils/utils';
 
 function BurgerConstructorListParts() {
-  const { selectedIngredients, setSelectedIngredients } = useContext(IngredientsContext);
+  const { selectedIngredients } = useContext(IngredientsContext);
 
   const prepareIngredients = () => {
     const bunIndex = selectedIngredients.findIndex(
@@ -31,22 +31,6 @@ function BurgerConstructorListParts() {
     return [].concat([bunTop], otherIngredients, [bunBottom]);
   };
 
-  const removeIngredient = (ingredientId) => {
-    if (ingredientId) {
-      setSelectedIngredients((prevState) => {
-        const ingredientIndex = prevState.findIndex(
-          (ingredient) => ingredient._id === ingredientId
-        );
-
-        if (ingredientIndex > -1) {
-          return removeElementInArrayByIndex(prevState, ingredientIndex);
-        }
-
-        return prevState;
-      });
-    }
-  };
-
   const ingredients = prepareIngredients();
   const isIngredients = ingredients && ingredients.length;
   const isBun =
@@ -65,18 +49,11 @@ function BurgerConstructorListParts() {
 
   return (
     <>
-      <BurgerConstructorList
-        ingredients={firstPartIngredients}
-        removeIngredient={removeIngredient}
-      />
+      <BurgerConstructorList ingredients={firstPartIngredients} />
       <div className={styles['custom-scroll']}>
-        <BurgerConstructorList ingredients={centralPart} removeIngredient={removeIngredient} />
+        <BurgerConstructorList ingredients={centralPart} />
       </div>
-      <BurgerConstructorList
-        ingredients={lastPartIngredients}
-        removeIngredient={removeIngredient}
-        isLastPart={true}
-      />
+      <BurgerConstructorList ingredients={lastPartIngredients} isLastPart={true} />
     </>
   );
 }

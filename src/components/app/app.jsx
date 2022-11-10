@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
 import AppHeader from '../app-header/app-header';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
 import { IngredientsContext } from '../../services/ingredientsContext';
+import { ResultPriceContext } from '../../services/resultPriceContext';
 import styles from './app.module.css';
 
 const API_URL = 'https://norma.nomoreparties.space/api';
@@ -11,6 +12,23 @@ function App() {
   const [selectedIngredients, setSelectedIngredients] = useState([]);
   const [allIngredients, setAllIngredients] = useState([]);
   const [isRequestEnded, setIsRequestEnded] = useState(false);
+
+  const priceReducer = (state, action) => {
+    switch (action.type) {
+      case 'add':
+        return { price: state.price + action.payload };
+      case 'remove':
+        return { price: state.price - action.payload };
+      case 'reset':
+        return initialPriceState;
+      default:
+        throw new Error(`Wrong type of action: ${action.type}`);
+    }
+  };
+
+  const initialPriceState = { price: 0 };
+
+  const [resultPrice, priceDispatcher] = useReducer(priceReducer, initialPriceState);
 
   useEffect(() => {
     const getIngredients = async () => {
@@ -47,8 +65,10 @@ function App() {
       {allIngredients.length ? (
         <main className={styles.container}>
           <IngredientsContext.Provider value={{ selectedIngredients, setSelectedIngredients }}>
-            <BurgerIngredients allIngredients={allIngredients} />
-            <BurgerConstructor />
+            <ResultPriceContext.Provider value={{ resultPrice, priceDispatcher }}>
+              <BurgerIngredients allIngredients={allIngredients} />
+              <BurgerConstructor />
+            </ResultPriceContext.Provider>
           </IngredientsContext.Provider>
         </main>
       ) : (

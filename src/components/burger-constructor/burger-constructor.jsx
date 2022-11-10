@@ -6,18 +6,12 @@ import Modal from '../modal/modal';
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-constructor.module.css';
 import { IngredientsContext } from '../../services/ingredientsContext';
+import { ResultPriceContext } from '../../services/resultPriceContext';
 
 function BurgerConstructor() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { selectedIngredients, setSelectedIngredients } = useContext(IngredientsContext);
-
-  const getResultPrice = (ingredients) => {
-    if (ingredients && ingredients.length) {
-      return ingredients.reduce((sum, ingredient) => sum + ingredient.price, 0);
-    }
-
-    return 0;
-  };
+  const { setSelectedIngredients } = useContext(IngredientsContext);
+  const { resultPrice, priceDispatcher } = useContext(ResultPriceContext);
 
   const onCreateOrderClick = () => {
     setIsModalOpen(true);
@@ -25,6 +19,7 @@ function BurgerConstructor() {
 
   const removeAllIngredients = () => {
     setSelectedIngredients([]);
+    priceDispatcher({ type: 'reset' });
   };
 
   const onModalClose = () => {
@@ -32,15 +27,13 @@ function BurgerConstructor() {
     removeAllIngredients();
   };
 
-  const resultPrice = getResultPrice(selectedIngredients);
-
   return (
     <>
       <section className={styles.section}>
         <BurgerConstructorListParts />
-        {resultPrice > 0 && (
+        {resultPrice.price > 0 && (
           <div className={`${styles.result}`}>
-            <Price price={resultPrice} />
+            <Price price={resultPrice.price} />
             <Button type="primary" size="large" htmlType="button" onClick={onCreateOrderClick}>
               Оформить заказ
             </Button>

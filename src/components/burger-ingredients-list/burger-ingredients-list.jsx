@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import BurgerIngredientsItem from '../burger-ingredients-item/burger-ingredients-item';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import { IngredientsContext } from '../../services/ingredientsContext';
+import { ResultPriceContext } from '../../services/resultPriceContext';
 import Modal from '../modal/modal';
 import { IngredientType } from '../../utils/types';
 import styles from './burger-ingredients-list.module.css';
@@ -14,22 +15,30 @@ function BurgerIngredientsList({ title, ingredients }) {
   const [openedIngredient, setOpenedIngredient] = useState({});
 
   const { selectedIngredients, setSelectedIngredients } = useContext(IngredientsContext);
+  const { priceDispatcher } = useContext(ResultPriceContext);
 
   const addIngredient = (ingredient) => {
     if (ingredient) {
       const isIngredientBun = ingredient.type === IngredientTypes.bun;
-      const isBunInIngridientsIndex = ingredients.findIndex(
+      const isBunInIngridientsIndex = selectedIngredients.findIndex(
         (ingredient) => ingredient.type === IngredientTypes.bun
       );
 
-      if (isIngredientBun && isBunInIngridientsIndex > -1) {
-        setSelectedIngredients((prevState) =>
-          updateElementInArrayByIndex(prevState, isBunInIngridientsIndex, ingredient)
-        );
+      const price = isIngredientBun ? ingredient.price * 2 : ingredient.price;
+      priceDispatcher({ type: 'add', payload: price });
+
+      if (!isIngredientBun || isBunInIngridientsIndex === -1) {
+        setSelectedIngredients((prevState) => [...prevState, ingredient]);
         return;
       }
 
-      setSelectedIngredients((prevState) => [...prevState, ingredient]);
+      setSelectedIngredients((prevState) =>
+        updateElementInArrayByIndex(prevState, isBunInIngridientsIndex, ingredient)
+      );
+      priceDispatcher({
+        type: 'remove',
+        payload: selectedIngredients[isBunInIngridientsIndex].price * 2,
+      });
     }
   };
 
