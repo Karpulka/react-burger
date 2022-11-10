@@ -47,8 +47,6 @@ function BurgerIngredients(props) {
         {tabs.map((tab, key) => {
           const ingredients = filteringredients(props.allIngredients, tab.value);
           const burgerListProps = {
-            addIngredient: props.addIngredient,
-            selectedIngredients: props.selectedIngredients,
             ingredients: ingredients,
             title: tab.text,
           };
@@ -66,8 +64,6 @@ function BurgerIngredients(props) {
 }
 
 BurgerIngredients.propTypes = {
-  addIngredient: PropTypes.func,
-  selectedIngredients: PropTypes.arrayOf(PropTypes.shape(IngredientType)),
   allIngredients: PropTypes.arrayOf(PropTypes.shape(IngredientType)),
 };
 

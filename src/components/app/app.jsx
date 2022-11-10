@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import AppHeader from '../app-header/app-header';
-import BurgerIngredients, { IngredientTypes } from '../burger-ingredients/burger-ingredients';
+import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
+import { IngredientsContext } from '../../services/ingredientsContext';
 import styles from './app.module.css';
-import { updateElementInArrayByIndex, removeElementInArrayByIndex } from '../../utils/utils';
 
 const API_URL = 'https://norma.nomoreparties.space/api';
 
 function App() {
-  const [ingredients, setIngredients] = useState([]);
+  const [selectedIngredients, setSelectedIngredients] = useState([]);
   const [allIngredients, setAllIngredients] = useState([]);
   const [isRequestEnded, setIsRequestEnded] = useState(false);
 
@@ -18,7 +18,6 @@ function App() {
         const res = await fetch(`${API_URL}/ingredients`);
 
         if (!res.ok) {
-          setIsRequestEnded(true);
           return Promise.reject(`Ошибка ${res.status}`);
         }
 
@@ -26,56 +25,18 @@ function App() {
 
         if (allIngredients.success && allIngredients.data.length) {
           setAllIngredients(allIngredients.data);
-          setIsRequestEnded(true);
         } else {
           throw res;
         }
       } catch (e) {
-        setIsRequestEnded(true);
         console.log('Fetch ingredients error', e);
         console.error(e);
+      } finally {
+        setIsRequestEnded(true);
       }
     };
     getIngredients();
   }, []);
-
-  const addIngredient = (ingredient) => {
-    if (ingredient) {
-      const isIngredientBun = ingredient.type === IngredientTypes.bun;
-      const isBunInIngridientsIndex = ingredients.findIndex(
-        (ingredient) => ingredient.type === IngredientTypes.bun
-      );
-
-      if (isIngredientBun && isBunInIngridientsIndex > -1) {
-        setIngredients((prevState) =>
-          updateElementInArrayByIndex(prevState, isBunInIngridientsIndex, ingredient)
-        );
-        return;
-      }
-
-      setIngredients((prevState) => [...prevState, ingredient]);
-    }
-  };
-
-  const removeIngredient = (ingredientId) => {
-    if (ingredientId) {
-      setIngredients((prevState) => {
-        const ingredientIndex = prevState.findIndex(
-          (ingredient) => ingredient._id === ingredientId
-        );
-
-        if (ingredientIndex > -1) {
-          return removeElementInArrayByIndex(prevState, ingredientIndex);
-        }
-
-        return prevState;
-      });
-    }
-  };
-
-  const removeAllIngredients = () => {
-    setIngredients([]);
-  };
 
   return (
     <div className="main">
@@ -85,16 +46,10 @@ function App() {
       </section>
       {allIngredients.length ? (
         <main className={styles.container}>
-          <BurgerIngredients
-            addIngredient={addIngredient}
-            selectedIngredients={ingredients}
-            allIngredients={allIngredients}
-          />
-          <BurgerConstructor
-            ingredients={ingredients}
-            removeIngredient={removeIngredient}
-            removeAllIngredients={removeAllIngredients}
-          />
+          <IngredientsContext.Provider value={{ selectedIngredients, setSelectedIngredients }}>
+            <BurgerIngredients allIngredients={allIngredients} />
+            <BurgerConstructor />
+          </IngredientsContext.Provider>
         </main>
       ) : (
         isRequestEnded && (

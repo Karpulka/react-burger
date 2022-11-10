@@ -1,11 +1,53 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { IngredientType } from '../../utils/types';
+import React, { useContext } from 'react';
 import BurgerConstructorList from '../burger-constructor-list/burger-constructor-list';
 import { IngredientTypes } from '../burger-ingredients/burger-ingredients';
 import styles from './burger-constructor-list-parts.module.css';
+import { IngredientsContext } from '../../services/ingredientsContext';
+import { removeElementInArrayByIndex } from '../../utils/utils';
 
-function BurgerConstructorListParts({ ingredients, removeIngredient }) {
+function BurgerConstructorListParts() {
+  const { selectedIngredients, setSelectedIngredients } = useContext(IngredientsContext);
+
+  const prepareIngredients = () => {
+    const bunIndex = selectedIngredients.findIndex(
+      (ingredient) => ingredient.type === IngredientTypes.bun
+    );
+
+    if (bunIndex === -1) {
+      return selectedIngredients;
+    }
+
+    return addIngredientsWithBun(bunIndex);
+  };
+
+  const addIngredientsWithBun = (bunIndex) => {
+    const bunTop = Object.assign({}, selectedIngredients[bunIndex], {
+      name: `${selectedIngredients[bunIndex].name} (верх)`,
+    });
+    const bunBottom = Object.assign({}, selectedIngredients[bunIndex], {
+      name: `${selectedIngredients[bunIndex].name} (низ)`,
+    });
+    const otherIngredients = removeElementInArrayByIndex(selectedIngredients, bunIndex);
+    return [].concat([bunTop], otherIngredients, [bunBottom]);
+  };
+
+  const removeIngredient = (ingredientId) => {
+    if (ingredientId) {
+      setSelectedIngredients((prevState) => {
+        const ingredientIndex = prevState.findIndex(
+          (ingredient) => ingredient._id === ingredientId
+        );
+
+        if (ingredientIndex > -1) {
+          return removeElementInArrayByIndex(prevState, ingredientIndex);
+        }
+
+        return prevState;
+      });
+    }
+  };
+
+  const ingredients = prepareIngredients();
   const isIngredients = ingredients && ingredients.length;
   const isBun =
     isIngredients && ingredients.find((ingredient) => ingredient.type === IngredientTypes.bun);
@@ -38,10 +80,5 @@ function BurgerConstructorListParts({ ingredients, removeIngredient }) {
     </>
   );
 }
-
-BurgerConstructorListParts.propTypes = {
-  ingredients: PropTypes.arrayOf(PropTypes.shape(IngredientType)),
-  removeIngredient: PropTypes.func,
-};
 
 export default BurgerConstructorListParts;
