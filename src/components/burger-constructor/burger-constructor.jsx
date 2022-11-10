@@ -7,13 +7,19 @@ import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-constructor.module.css';
 import { IngredientsContext } from '../../services/ingredientsContext';
 import { ResultPriceContext } from '../../services/resultPriceContext';
+import { apiRequest } from '../../utils/api';
+import { NewOrderContext } from '../../services/newOrderContext';
 
 function BurgerConstructor() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { setSelectedIngredients } = useContext(IngredientsContext);
+  const { selectedIngredients, setSelectedIngredients } = useContext(IngredientsContext);
   const { resultPrice, priceDispatcher } = useContext(ResultPriceContext);
+  const [newOrder, setNewOrder] = useState({});
 
-  const onCreateOrderClick = () => {
+  const onCreateOrderClick = async () => {
+    const ingredients = selectedIngredients.map((ingredient) => ingredient._id);
+    const order = await apiRequest('/orders', { ingredients }, 'POST');
+    setNewOrder(order);
     setIsModalOpen(true);
   };
 
@@ -25,6 +31,7 @@ function BurgerConstructor() {
   const onModalClose = () => {
     setIsModalOpen(false);
     removeAllIngredients();
+    setNewOrder({});
   };
 
   return (
@@ -42,7 +49,9 @@ function BurgerConstructor() {
       </section>
       {isModalOpen && (
         <Modal onClose={onModalClose}>
-          <OrderDetails />
+          <NewOrderContext.Provider value={{ newOrder }}>
+            <OrderDetails />
+          </NewOrderContext.Provider>
         </Modal>
       )}
     </>

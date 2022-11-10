@@ -4,9 +4,8 @@ import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
 import { IngredientsContext } from '../../services/ingredientsContext';
 import { ResultPriceContext } from '../../services/resultPriceContext';
+import { apiRequest } from '../../utils/api';
 import styles from './app.module.css';
-
-const API_URL = 'https://norma.nomoreparties.space/api';
 
 function App() {
   const [selectedIngredients, setSelectedIngredients] = useState([]);
@@ -33,18 +32,12 @@ function App() {
   useEffect(() => {
     const getIngredients = async () => {
       try {
-        const res = await fetch(`${API_URL}/ingredients`);
+        const allIngredients = await apiRequest(`/ingredients`);
 
-        if (!res.ok) {
-          return Promise.reject(`Ошибка ${res.status}`);
-        }
-
-        const allIngredients = await res.json();
-
-        if (allIngredients.success && allIngredients.data.length) {
+        if (allIngredients.data.length) {
           setAllIngredients(allIngredients.data);
         } else {
-          throw res;
+          throw allIngredients;
         }
       } catch (e) {
         console.log('Fetch ingredients error', e);
