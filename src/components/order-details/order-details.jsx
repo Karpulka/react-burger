@@ -1,18 +1,17 @@
-import React, { useContext } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import doneImg from '../../images/done.png';
 import styles from './order-details.module.css';
 import { orderMocks } from '../../utils/data';
-import { NewOrderContext } from '../../services/newOrderContext';
 
-function OrderDetails() {
+function OrderDetails(props) {
   const image = orderMocks.image ? orderMocks.image : doneImg;
-  const { newOrder } = useContext(NewOrderContext);
 
   return (
     <div className={styles['order-result']}>
-      {newOrder ? (
+      {props.orderNumber ? (
         <>
-          <div className={styles.number}>{newOrder.order.number}</div>
+          <div className={styles.number}>{props.orderNumber}</div>
           <div className="text text_type_main-medium mb-15">{orderMocks.text}</div>
           <img src={image} alt="Order created" className={styles.image} />
           <p className="text text_type_main-default mb-2">{orderMocks.status}</p>
@@ -30,5 +29,9 @@ function OrderDetails() {
     </div>
   );
 }
+
+OrderDetails.propTypes = {
+  orderNumber: PropTypes.number,
+};
 
 export default OrderDetails;

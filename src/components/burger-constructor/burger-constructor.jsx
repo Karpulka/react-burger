@@ -8,7 +8,6 @@ import styles from './burger-constructor.module.css';
 import { IngredientsContext } from '../../services/ingredientsContext';
 import { ResultPriceContext } from '../../services/resultPriceContext';
 import { apiRequest } from '../../utils/api';
-import { NewOrderContext } from '../../services/newOrderContext';
 
 function BurgerConstructor() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -17,10 +16,16 @@ function BurgerConstructor() {
   const [newOrder, setNewOrder] = useState({});
 
   const onCreateOrderClick = async () => {
-    const ingredients = selectedIngredients.map((ingredient) => ingredient._id);
-    const order = await apiRequest('/orders', { ingredients }, 'POST');
-    setNewOrder(order);
-    setIsModalOpen(true);
+    try {
+      const ingredients = selectedIngredients.map((ingredient) => ingredient._id);
+      const order = await apiRequest('/orders', { ingredients }, 'POST');
+      setNewOrder(order);
+    } catch (e) {
+      console.log(`Fetch post order error`, e);
+      console.error(e);
+    } finally {
+      setIsModalOpen(true);
+    }
   };
 
   const removeAllIngredients = () => {
@@ -33,6 +38,8 @@ function BurgerConstructor() {
     removeAllIngredients();
     setNewOrder({});
   };
+
+  const orderNumber = newOrder && newOrder.order && newOrder.order.number;
 
   return (
     <>
@@ -49,9 +56,7 @@ function BurgerConstructor() {
       </section>
       {isModalOpen && (
         <Modal onClose={onModalClose}>
-          <NewOrderContext.Provider value={{ newOrder }}>
-            <OrderDetails />
-          </NewOrderContext.Provider>
+          <OrderDetails orderNumber={orderNumber} />
         </Modal>
       )}
     </>
