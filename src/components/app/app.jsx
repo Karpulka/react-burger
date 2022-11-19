@@ -1,53 +1,18 @@
-import React, { useState, useEffect, useReducer } from 'react';
+import React, { useEffect } from 'react';
 import AppHeader from '../app-header/app-header';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
-import { IngredientsContext } from '../../services/ingredientsContext';
-import { ResultPriceContext } from '../../services/resultPriceContext';
-import { apiRequest } from '../../utils/api';
+import { getIngredients } from '../../services/actions/ingredients';
+import { useDispatch, useSelector } from 'react-redux';
 import styles from './app.module.css';
 
 function App() {
-  const [selectedIngredients, setSelectedIngredients] = useState([]);
-  const [allIngredients, setAllIngredients] = useState([]);
-  const [isRequestEnded, setIsRequestEnded] = useState(false);
-
-  const priceReducer = (state, action) => {
-    switch (action.type) {
-      case 'add':
-        return { price: state.price + action.payload };
-      case 'remove':
-        return { price: state.price - action.payload };
-      case 'reset':
-        return initialPriceState;
-      default:
-        throw new Error(`Wrong type of action: ${action.type}`);
-    }
-  };
-
-  const initialPriceState = { price: 0 };
-
-  const [resultPrice, priceDispatcher] = useReducer(priceReducer, initialPriceState);
+  const dispatch = useDispatch();
+  const { ingredientsRequest, ingredientsFailed } = useSelector((state) => state.ingredients);
 
   useEffect(() => {
-    const getIngredients = async () => {
-      try {
-        const allIngredients = await apiRequest(`/ingredients`);
-
-        if (allIngredients.data.length) {
-          setAllIngredients(allIngredients.data);
-        } else {
-          throw allIngredients;
-        }
-      } catch (e) {
-        console.log('Fetch ingredients error', e);
-        console.error(e);
-      } finally {
-        setIsRequestEnded(true);
-      }
-    };
-    getIngredients();
-  }, []);
+    dispatch(getIngredients());
+  }, [dispatch]);
 
   return (
     <div className="main">
@@ -55,17 +20,13 @@ function App() {
       <section className="container">
         <h1 className={styles.h1}>Соберите бургер</h1>
       </section>
-      {allIngredients.length ? (
+      {!ingredientsRequest && !ingredientsFailed ? (
         <main className={styles.container}>
-          <IngredientsContext.Provider value={{ selectedIngredients, setSelectedIngredients }}>
-            <ResultPriceContext.Provider value={{ resultPrice, priceDispatcher }}>
-              <BurgerIngredients allIngredients={allIngredients} />
-              <BurgerConstructor />
-            </ResultPriceContext.Provider>
-          </IngredientsContext.Provider>
+          <BurgerIngredients />
+          <BurgerConstructor />
         </main>
       ) : (
-        isRequestEnded && (
+        ingredientsFailed && (
           <h2 className={styles.error}>
             Сервис временно не доступен :(
             <br />

@@ -1,23 +1,17 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './burger-constructor-list.module.css';
 import { IngredientTypes } from '../burger-ingredients/burger-ingredients';
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { IngredientType } from '../../utils/types';
-import { ResultPriceContext } from '../../services/resultPriceContext';
-import { IngredientsContext } from '../../services/ingredientsContext';
+import { removeIngredient } from '../../services/reducers/ingredients';
+import { useDispatch } from 'react-redux';
 
 function BurgerConstructorList(props) {
-  const { selectedIngredients, setSelectedIngredients } = useContext(IngredientsContext);
-  const { priceDispatcher } = useContext(ResultPriceContext);
-
-  const removeIngredient = (ingredient) => {
-    setSelectedIngredients(selectedIngredients.filter((item) => item.key !== ingredient.key));
-    priceDispatcher({ type: 'remove', payload: ingredient.price });
-  };
+  const dispatch = useDispatch();
 
   const onDeleteClick = (ingredient) => {
-    removeIngredient(ingredient);
+    dispatch(removeIngredient(ingredient));
   };
 
   return (

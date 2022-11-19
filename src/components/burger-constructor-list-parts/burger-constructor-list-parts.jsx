@@ -1,12 +1,12 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import BurgerConstructorList from '../burger-constructor-list/burger-constructor-list';
 import { IngredientTypes } from '../burger-ingredients/burger-ingredients';
 import styles from './burger-constructor-list-parts.module.css';
-import { IngredientsContext } from '../../services/ingredientsContext';
 import { removeElementInArrayByIndex } from '../../utils/utils';
+import { useSelector } from 'react-redux';
 
 function BurgerConstructorListParts() {
-  const { selectedIngredients } = useContext(IngredientsContext);
+  const { selected: selectedIngredients } = useSelector((state) => state.ingredients);
 
   const prepareIngredients = () => {
     const bunIndex = selectedIngredients.findIndex(
