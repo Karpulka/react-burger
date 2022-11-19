@@ -1,13 +1,23 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import styles from './burger-constructor-list.module.css';
 import { IngredientTypes } from '../burger-ingredients/burger-ingredients';
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { IngredientType } from '../../utils/types';
+import { ResultPriceContext } from '../../services/resultPriceContext';
+import { IngredientsContext } from '../../services/ingredientsContext';
 
 function BurgerConstructorList(props) {
-  const onDeleteClick = (ingredientId) => {
-    props.removeIngredient(ingredientId);
+  const { selectedIngredients, setSelectedIngredients } = useContext(IngredientsContext);
+  const { priceDispatcher } = useContext(ResultPriceContext);
+
+  const removeIngredient = (ingredient) => {
+    setSelectedIngredients(selectedIngredients.filter((item) => item.key !== ingredient.key));
+    priceDispatcher({ type: 'remove', payload: ingredient.price });
+  };
+
+  const onDeleteClick = (ingredient) => {
+    removeIngredient(ingredient);
   };
 
   return (
@@ -32,13 +42,13 @@ function BurgerConstructorList(props) {
               elementProps.isLocked = true;
               classValue = styles['last-item'];
             } else {
-              elementProps.handleClose = onDeleteClick.bind({}, ingredient._id);
+              elementProps.handleClose = onDeleteClick.bind({}, ingredient);
             }
 
             return (
               <div
                 className={`${styles.item} ${classValue} constructor__item`}
-                key={`${ingredient._id}-${key}`}>
+                key={ingredient.key}>
                 {!elementProps.type && <DragIcon type="primary" />}
                 <ConstructorElement {...elementProps} />
               </div>
@@ -56,7 +66,6 @@ BurgerConstructorList.defaultProps = {
 
 BurgerConstructorList.propTypes = {
   ingredients: PropTypes.arrayOf(PropTypes.shape(IngredientType)),
-  removeIngredient: PropTypes.func,
   isLastPart: PropTypes.bool,
 };
 

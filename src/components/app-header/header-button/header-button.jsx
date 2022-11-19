@@ -44,8 +44,8 @@ HeaderButton.defaultProps = {
 };
 
 HeaderButton.propTypes = {
-  icon: PropTypes.string,
-  children: PropTypes.string,
+  icon: PropTypes.string.isRequired,
+  children: PropTypes.string.isRequired,
   isActive: PropTypes.bool,
 };
 

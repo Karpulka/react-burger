@@ -20,7 +20,7 @@ function BurgerIngredientsItem(props) {
 }
 
 BurgerIngredientsItem.propTypes = {
-  ingredient: PropTypes.shape(IngredientType),
+  ingredient: PropTypes.shape(IngredientType).isRequired,
   ingredientClick: PropTypes.func,
   count: PropTypes.number,
 };

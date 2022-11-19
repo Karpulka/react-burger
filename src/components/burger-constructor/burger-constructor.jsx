@@ -1,71 +1,53 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import React, { useContext, useState } from 'react';
 import BurgerConstructorListParts from '../burger-constructor-list-parts/burger-constructor-list-parts';
 import Price from '../price/price';
 import OrderDetails from '../order-details/order-details';
 import Modal from '../modal/modal';
-import { IngredientTypes } from '../burger-ingredients/burger-ingredients';
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { removeElementInArrayByIndex } from '../../utils/utils';
-import { IngredientType } from '../../utils/types';
 import styles from './burger-constructor.module.css';
+import { IngredientsContext } from '../../services/ingredientsContext';
+import { ResultPriceContext } from '../../services/resultPriceContext';
+import { apiRequest } from '../../utils/api';
 
-function BurgerConstructor(props) {
+function BurgerConstructor() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { selectedIngredients, setSelectedIngredients } = useContext(IngredientsContext);
+  const { resultPrice, priceDispatcher } = useContext(ResultPriceContext);
+  const [newOrder, setNewOrder] = useState({});
 
-  const addIngredientsWithBun = (bunIndex) => {
-    const bunTop = Object.assign({}, props.ingredients[bunIndex], {
-      name: `${props.ingredients[bunIndex].name} (верх)`,
-    });
-    const bunBottom = Object.assign({}, props.ingredients[bunIndex], {
-      name: `${props.ingredients[bunIndex].name} (низ)`,
-    });
-    const otherIngredients = removeElementInArrayByIndex(props.ingredients, bunIndex);
-    return [].concat([bunTop], otherIngredients, [bunBottom]);
-  };
-
-  const prepareIngredients = () => {
-    const bunIndex = props.ingredients.findIndex(
-      (ingredient) => ingredient.type === IngredientTypes.bun
-    );
-
-    if (bunIndex === -1) {
-      return props.ingredients;
+  const onCreateOrderClick = async () => {
+    try {
+      const ingredients = selectedIngredients.map((ingredient) => ingredient._id);
+      const order = await apiRequest('/orders', { ingredients }, 'POST');
+      setNewOrder(order);
+    } catch (e) {
+      console.log(`Fetch post order error`, e);
+      console.error(e);
+    } finally {
+      setIsModalOpen(true);
     }
-
-    return addIngredientsWithBun(bunIndex);
   };
 
-  const getResultPrice = (ingredients) => {
-    if (ingredients && ingredients.length) {
-      return ingredients.reduce((sum, ingredient) => sum + ingredient.price, 0);
-    }
-
-    return 0;
-  };
-
-  const onCreateOrderClick = () => {
-    setIsModalOpen(true);
+  const removeAllIngredients = () => {
+    setSelectedIngredients([]);
+    priceDispatcher({ type: 'reset' });
   };
 
   const onModalClose = () => {
     setIsModalOpen(false);
-    props.removeAllIngredients();
+    removeAllIngredients();
+    setNewOrder({});
   };
 
-  const selectedIngredients = prepareIngredients();
-  const resultPrice = getResultPrice(selectedIngredients);
+  const orderNumber = newOrder && newOrder.order && newOrder.order.number;
 
   return (
     <>
       <section className={styles.section}>
-        <BurgerConstructorListParts
-          ingredients={selectedIngredients}
-          removeIngredient={props.removeIngredient}
-        />
-        {resultPrice > 0 && (
+        <BurgerConstructorListParts />
+        {resultPrice.price > 0 && (
           <div className={`${styles.result}`}>
-            <Price price={resultPrice} />
+            <Price price={resultPrice.price} />
             <Button type="primary" size="large" htmlType="button" onClick={onCreateOrderClick}>
               Оформить заказ
             </Button>
@@ -74,17 +56,11 @@ function BurgerConstructor(props) {
       </section>
       {isModalOpen && (
         <Modal onClose={onModalClose}>
-          <OrderDetails />
+          <OrderDetails orderNumber={orderNumber} />
         </Modal>
       )}
     </>
   );
 }
-
-BurgerConstructor.propTypes = {
-  ingredients: PropTypes.arrayOf(PropTypes.shape(IngredientType)),
-  removeIngredient: PropTypes.func,
-  removeAllIngredients: PropTypes.func,
-};
 
 export default BurgerConstructor;

@@ -1,14 +1,46 @@
-import React, { useState } from 'react';
+import React, { useContext, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import BurgerIngredientsItem from '../burger-ingredients-item/burger-ingredients-item';
 import IngredientDetails from '../ingredient-details/ingredient-details';
+import { IngredientsContext } from '../../services/ingredientsContext';
+import { ResultPriceContext } from '../../services/resultPriceContext';
 import Modal from '../modal/modal';
 import { IngredientType } from '../../utils/types';
 import styles from './burger-ingredients-list.module.css';
+import { IngredientTypes } from '../burger-ingredients/burger-ingredients';
+import { updateElementInArrayByIndex } from '../../utils/utils';
+import { v1 as uuid } from 'uuid';
 
-function BurgerIngredientsList({ title, ingredients, addIngredient, selectedIngredients }) {
+function BurgerIngredientsList({ title, ingredients }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [openedIngredient, setOpenedIngredient] = useState({});
+
+  const { selectedIngredients, setSelectedIngredients } = useContext(IngredientsContext);
+  const { priceDispatcher } = useContext(ResultPriceContext);
+
+  const addIngredient = (ingredient) => {
+    ingredient = { ...ingredient, key: uuid() };
+    const isIngredientBun = ingredient.type === IngredientTypes.bun;
+    const isBunInIngridientsIndex = selectedIngredients.findIndex(
+      (ingredient) => ingredient.type === IngredientTypes.bun
+    );
+
+    const price = isIngredientBun ? ingredient.price * 2 : ingredient.price;
+    priceDispatcher({ type: 'add', payload: price });
+
+    if (!isIngredientBun || isBunInIngridientsIndex === -1) {
+      setSelectedIngredients([...selectedIngredients, ingredient]);
+      return;
+    }
+
+    setSelectedIngredients(
+      updateElementInArrayByIndex(selectedIngredients, isBunInIngridientsIndex, ingredient)
+    );
+    priceDispatcher({
+      type: 'remove',
+      payload: selectedIngredients[isBunInIngridientsIndex].price * 2,
+    });
+  };
 
   const onIngredientClick = (ingredient) => {
     setIsModalOpen(true);
@@ -16,12 +48,15 @@ function BurgerIngredientsList({ title, ingredients, addIngredient, selectedIngr
     addIngredient(ingredient);
   };
 
-  const ingredientCount = (ingredientId) => {
-    return selectedIngredients.reduce(
-      (count, ingredient) => (ingredient._id === ingredientId ? count + 1 : count),
-      0
-    );
-  };
+  const ingredientCount = useMemo(
+    () => (ingredientId) => {
+      return selectedIngredients.reduce(
+        (count, ingredient) => (ingredient._id === ingredientId ? count + 1 : count),
+        0
+      );
+    },
+    [selectedIngredients]
+  );
 
   const onModalClose = () => {
     setIsModalOpen(false);
@@ -57,8 +92,6 @@ function BurgerIngredientsList({ title, ingredients, addIngredient, selectedIngr
 BurgerIngredientsList.propTypes = {
   title: PropTypes.string,
   ingredients: PropTypes.arrayOf(PropTypes.shape(IngredientType)),
-  addIngredient: PropTypes.func,
-  selectedIngredients: PropTypes.arrayOf(PropTypes.shape(IngredientType)),
 };
 
 export default BurgerIngredientsList;
