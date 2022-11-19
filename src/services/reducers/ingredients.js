@@ -43,9 +43,12 @@ const ingredientsSlice = createSlice({
     removeIngredient: (state, action) => {
       state.selected = state.selected.filter((item) => item.key !== action.payload.key);
     },
+    setCurrentIngredient: (state, action) => {
+      state.currentIngredient = action.payload ?? {};
+    },
   },
   extraReducers: (builder) => {
-    builder.addCase(getIngredients.pending, (state, action) => {
+    builder.addCase(getIngredients.pending, (state) => {
       state.ingredientsRequest = true;
     });
     builder.addCase(getIngredients.fulfilled, (state, action) => {
@@ -53,13 +56,14 @@ const ingredientsSlice = createSlice({
       state.ingredientsFailed = false;
       state.ingredientsRequest = false;
     });
-    builder.addCase(getIngredients.rejected, (state, action) => {
+    builder.addCase(getIngredients.rejected, (state) => {
       state.ingredientsFailed = true;
       state.ingredientsRequest = false;
     });
   },
 });
 
-export const { addIngredient, removeIngredient, removeAllIngredients } = ingredientsSlice.actions;
+export const { addIngredient, removeIngredient, removeAllIngredients, setCurrentIngredient } =
+  ingredientsSlice.actions;
 
 export default ingredientsSlice.reducer;

@@ -5,20 +5,21 @@ import IngredientDetails from '../ingredient-details/ingredient-details';
 import Modal from '../modal/modal';
 import { IngredientType } from '../../utils/types';
 import styles from './burger-ingredients-list.module.css';
-import { addIngredient } from '../../services/reducers/ingredients';
+import { addIngredient, setCurrentIngredient } from '../../services/reducers/ingredients';
 
 import { useDispatch, useSelector } from 'react-redux';
 
 function BurgerIngredientsList({ title, ingredients }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [openedIngredient, setOpenedIngredient] = useState({});
 
-  const { selected: selectedIngredients } = useSelector((state) => state.ingredients);
+  const { selected: selectedIngredients, currentIngredient } = useSelector(
+    (state) => state.ingredients
+  );
   const dispatch = useDispatch();
 
   const onIngredientClick = (ingredient) => {
     setIsModalOpen(true);
-    setOpenedIngredient(ingredient);
+    dispatch(setCurrentIngredient(ingredient));
     dispatch(addIngredient(ingredient));
   };
 
@@ -34,7 +35,7 @@ function BurgerIngredientsList({ title, ingredients }) {
 
   const onModalClose = () => {
     setIsModalOpen(false);
-    setOpenedIngredient({});
+    dispatch(setCurrentIngredient({}));
   };
 
   return (
@@ -56,7 +57,7 @@ function BurgerIngredientsList({ title, ingredients }) {
       </div>
       {isModalOpen && (
         <Modal header={'Детали ингредиента'} onClose={onModalClose}>
-          <IngredientDetails {...openedIngredient} />
+          <IngredientDetails {...currentIngredient} />
         </Modal>
       )}
     </>

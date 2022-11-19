@@ -1,5 +1,7 @@
-import ingredientsReducer from './ingredients';
+import ingredientsReducers from './ingredients';
+import orderReducers from './order';
 
 export const rootReducer = {
-  ingredients: ingredientsReducer,
+  ingredients: ingredientsReducers,
+  order: orderReducers,
 };

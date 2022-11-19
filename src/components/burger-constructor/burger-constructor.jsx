@@ -5,15 +5,16 @@ import OrderDetails from '../order-details/order-details';
 import Modal from '../modal/modal';
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-constructor.module.css';
-import { apiRequest } from '../../utils/api';
 import { IngredientTypes } from '../burger-ingredients/burger-ingredients';
 import { useDispatch, useSelector } from 'react-redux';
 import { removeAllIngredients } from '../../services/reducers/ingredients';
+import { createOrder } from '../../services/actions/order';
+import { clearNewOrder } from '../../services/reducers/order';
 
 function BurgerConstructor() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [newOrder, setNewOrder] = useState({});
   const { selected: selectedIngredients } = useSelector((state) => state.ingredients);
+  const { newOrder, orderRequest } = useSelector((state) => state.order);
   const dispatch = useDispatch();
 
   const getResultPrice = (ingredients) => {
@@ -29,22 +30,15 @@ function BurgerConstructor() {
   };
 
   const onCreateOrderClick = async () => {
-    try {
-      const ingredients = selectedIngredients.map((ingredient) => ingredient._id);
-      const order = await apiRequest('/orders', { ingredients }, 'POST');
-      setNewOrder(order);
-    } catch (e) {
-      console.log(`Fetch post order error`, e);
-      console.error(e);
-    } finally {
-      setIsModalOpen(true);
-    }
+    const ingredients = selectedIngredients.map((ingredient) => ingredient._id);
+    dispatch(createOrder({ ingredients }));
+    setIsModalOpen(true);
   };
 
   const onModalClose = () => {
     setIsModalOpen(false);
     dispatch(removeAllIngredients());
-    setNewOrder({});
+    dispatch(clearNewOrder());
   };
 
   const orderNumber = newOrder && newOrder.order && newOrder.order.number;
@@ -63,7 +57,7 @@ function BurgerConstructor() {
           </div>
         )}
       </section>
-      {isModalOpen && (
+      {isModalOpen && !orderRequest && (
         <Modal onClose={onModalClose}>
           <OrderDetails orderNumber={orderNumber} />
         </Modal>
