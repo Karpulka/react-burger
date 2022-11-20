@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import Tabs from '../tabs/tabs';
 import BurgerIngredientsList from '../burger-ingredients-list/burger-ingredients-list';
 import styles from './burger-ingredients.module.css';
@@ -16,6 +16,31 @@ const filteringredients = (ingredients = [], type) => {
 
 function BurgerIngredients() {
   const { all: allIngredients } = useSelector((state) => state.ingredients);
+  const scrollBlockRef = useRef(null);
+  const [currentTab, setCurrentTab] = useState(IngredientTypes.bun);
+  const tabRefs = [];
+
+  let scrollBlockTop = 0;
+
+  const onScrollBlock = () => {
+    const targetValue = 0;
+    scrollBlockTop =
+      scrollBlockTop === 0 ? scrollBlockRef.current.getBoundingClientRect().top : scrollBlockTop;
+    const sortTabsByTop = [...tabRefs].sort((currentTab, prevTab) => {
+      const { top: prevTop } = prevTab.getBoundingClientRect();
+      const { top: currentTop } = currentTab.getBoundingClientRect();
+
+      return (
+        Math.abs(targetValue - currentTop + scrollBlockTop) -
+        Math.abs(targetValue - prevTop + scrollBlockTop)
+      );
+    });
+
+    const tabValue = sortTabsByTop[0].getAttribute('id');
+    if (tabValue !== currentTab) {
+      setCurrentTab(tabValue);
+    }
+  };
 
   const tabs = [
     {
@@ -32,9 +57,8 @@ function BurgerIngredients() {
     },
   ];
 
-  const tabRefs = [];
-
   const onTabChange = (tabValue) => {
+    setCurrentTab(tabValue);
     const tabIndex = tabs.findIndex((tab) => tab.value === tabValue);
     if (tabIndex > -1) {
       tabRefs[tabIndex].scrollIntoView({ behavior: 'smooth' });
@@ -43,8 +67,8 @@ function BurgerIngredients() {
 
   return (
     <section className={styles.section}>
-      <Tabs tabs={tabs} onTabChange={onTabChange} />
-      <div className={styles['custom-scroll']}>
+      <Tabs tabs={tabs} onTabChange={onTabChange} current={currentTab} />
+      <div className={styles['custom-scroll']} onScroll={onScrollBlock} ref={scrollBlockRef}>
         {tabs.map((tab, key) => {
           const ingredients = filteringredients(allIngredients, tab.value);
           const burgerListProps = {
@@ -53,7 +77,10 @@ function BurgerIngredients() {
           };
           return (
             ingredients && (
-              <div ref={(tabRef) => (tabRefs[key] = tabRef)} key={`${tab.value}-list`}>
+              <div
+                ref={(tabRef) => (tabRefs[key] = tabRef)}
+                key={`${tab.value}-list`}
+                id={tab.value}>
                 <BurgerIngredientsList {...burgerListProps} />
               </div>
             )

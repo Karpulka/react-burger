@@ -3,12 +3,10 @@ import PropTypes from 'prop-types';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './tabs.module.css';
 
-function Tabs({ tabs, onTabChange }) {
+function Tabs({ tabs, onTabChange, current }) {
   const isTabs = tabs && tabs.length;
-  const [current, setCurrent] = React.useState(tabs[0].value);
 
   const onTabClick = (tabValue) => {
-    setCurrent(tabValue);
     onTabChange(tabValue);
   };
 
@@ -41,6 +39,7 @@ Tabs.propTypes = {
     })
   ),
   onTabChange: PropTypes.func,
+  current: PropTypes.string,
 };
 
 export default Tabs;
