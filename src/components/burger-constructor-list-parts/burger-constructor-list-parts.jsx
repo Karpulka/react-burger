@@ -3,10 +3,13 @@ import BurgerConstructorList from '../burger-constructor-list/burger-constructor
 import { IngredientTypes } from '../burger-ingredients/burger-ingredients';
 import styles from './burger-constructor-list-parts.module.css';
 import { removeElementInArrayByIndex } from '../../utils/utils';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useDrop } from 'react-dnd';
+import { addIngredient } from '../../services/reducers/ingredients';
 
 function BurgerConstructorListParts() {
   const { selected: selectedIngredients } = useSelector((state) => state.ingredients);
+  const dispatch = useDispatch();
 
   const prepareIngredients = () => {
     const bunIndex = selectedIngredients.findIndex(
@@ -47,10 +50,25 @@ function BurgerConstructorListParts() {
     isIngredients && ingredients[ingredients.length - 1].type === IngredientTypes.bun;
   const lastPartIngredients = isLastPartIngredients ? [ingredients[ingredients.length - 1]] : [];
 
+  const [props, dropTarget] = useDrop({
+    accept: 'ingredient',
+    // collect: (monitor) => {
+    //   console.log(dropTarget);
+    //   return {
+    //     isHover: monitor.isOver(),
+    //     type: monitor,
+    //   };
+    // },
+    drop(ingredient) {
+      console.log(props);
+      dispatch(addIngredient(ingredient));
+    },
+  });
+
   return (
     <>
       <BurgerConstructorList ingredients={firstPartIngredients} />
-      <div className={styles['custom-scroll']}>
+      <div className={styles['custom-scroll']} ref={dropTarget}>
         <BurgerConstructorList ingredients={centralPart} />
       </div>
       <BurgerConstructorList ingredients={lastPartIngredients} isLastPart={true} />

@@ -4,6 +4,8 @@ import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
 import { getIngredients } from '../../services/actions/ingredients';
 import { useDispatch, useSelector } from 'react-redux';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import { DndProvider } from 'react-dnd';
 import styles from './app.module.css';
 
 function App() {
@@ -22,8 +24,10 @@ function App() {
       </section>
       {!ingredientsRequest && !ingredientsFailed ? (
         <main className={styles.container}>
-          <BurgerIngredients />
-          <BurgerConstructor />
+          <DndProvider backend={HTML5Backend}>
+            <BurgerIngredients />
+            <BurgerConstructor />
+          </DndProvider>
         </main>
       ) : (
         ingredientsFailed && (

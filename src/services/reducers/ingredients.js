@@ -46,6 +46,22 @@ const ingredientsSlice = createSlice({
     setCurrentIngredient: (state, action) => {
       state.currentIngredient = action.payload ?? {};
     },
+    insertIngredient: (state, action) => {
+      const fromIndex = state.selected.findIndex(
+        (ingredient) => (ingredient.key = action.payload.movingIngredientKey)
+      );
+      const toIndex = state.selected.findIndex(
+        (ingredient) => (ingredient.key = action.payload.targetElementKey)
+      );
+      const ingredients = [...state.selected];
+      ingredients.splice(toIndex, 0, ingredients.splice(fromIndex, 1)[0]);
+      state.selected = ingredients;
+      // state.selected = insertElementToArrayAfterIndex(
+      //   state.selected,
+      //   movingIngredient,
+      //   targetElement
+      // );
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getIngredients.pending, (state) => {
@@ -63,7 +79,12 @@ const ingredientsSlice = createSlice({
   },
 });
 
-export const { addIngredient, removeIngredient, removeAllIngredients, setCurrentIngredient } =
-  ingredientsSlice.actions;
+export const {
+  addIngredient,
+  removeIngredient,
+  removeAllIngredients,
+  setCurrentIngredient,
+  insertIngredient,
+} = ingredientsSlice.actions;
 
 export default ingredientsSlice.reducer;

@@ -5,7 +5,7 @@ import IngredientDetails from '../ingredient-details/ingredient-details';
 import Modal from '../modal/modal';
 import { IngredientType } from '../../utils/types';
 import styles from './burger-ingredients-list.module.css';
-import { addIngredient, setCurrentIngredient } from '../../services/reducers/ingredients';
+import { setCurrentIngredient } from '../../services/reducers/ingredients';
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -20,7 +20,7 @@ function BurgerIngredientsList({ title, ingredients }) {
   const onIngredientClick = (ingredient) => {
     setIsModalOpen(true);
     dispatch(setCurrentIngredient(ingredient));
-    dispatch(addIngredient(ingredient));
+    // dispatch(addIngredient(ingredient));
   };
 
   const ingredientCount = useMemo(
