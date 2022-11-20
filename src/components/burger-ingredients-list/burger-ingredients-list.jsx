@@ -20,7 +20,6 @@ function BurgerIngredientsList({ title, ingredients }) {
   const onIngredientClick = (ingredient) => {
     setIsModalOpen(true);
     dispatch(setCurrentIngredient(ingredient));
-    // dispatch(addIngredient(ingredient));
   };
 
   const ingredientCount = useMemo(

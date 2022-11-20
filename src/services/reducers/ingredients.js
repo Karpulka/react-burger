@@ -1,6 +1,5 @@
 import { IngredientTypes } from '../../components/burger-ingredients/burger-ingredients';
 import { updateElementInArrayByIndex } from '../../utils/utils';
-import { v1 as uuid } from 'uuid';
 
 import { createSlice } from '@reduxjs/toolkit';
 import { getIngredients } from '../actions/ingredients';
@@ -20,7 +19,7 @@ const ingredientsSlice = createSlice({
   initialState,
   reducers: {
     addIngredient: (state, action) => {
-      const ingredient = { ...action.payload, key: uuid() };
+      const ingredient = action.payload;
       const isIngredientBun = ingredient.type === IngredientTypes.bun;
       const isBunInIngridientsIndex = state.selected.findIndex(
         (ingredient) => ingredient.type === IngredientTypes.bun
@@ -47,20 +46,13 @@ const ingredientsSlice = createSlice({
       state.currentIngredient = action.payload ?? {};
     },
     insertIngredient: (state, action) => {
-      const fromIndex = state.selected.findIndex(
-        (ingredient) => (ingredient.key = action.payload.movingIngredientKey)
-      );
-      const toIndex = state.selected.findIndex(
-        (ingredient) => (ingredient.key = action.payload.targetElementKey)
-      );
       const ingredients = [...state.selected];
-      ingredients.splice(toIndex, 0, ingredients.splice(fromIndex, 1)[0]);
+      ingredients.splice(
+        action.payload.targetElementKey,
+        0,
+        ingredients.splice(action.payload.movingIngredientKey, 1)[0]
+      );
       state.selected = ingredients;
-      // state.selected = insertElementToArrayAfterIndex(
-      //   state.selected,
-      //   movingIngredient,
-      //   targetElement
-      // );
     },
   },
   extraReducers: (builder) => {

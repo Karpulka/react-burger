@@ -6,6 +6,7 @@ import { removeElementInArrayByIndex } from '../../utils/utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { useDrop } from 'react-dnd';
 import { addIngredient } from '../../services/reducers/ingredients';
+import { v1 as uuid } from 'uuid';
 
 function BurgerConstructorListParts() {
   const { selected: selectedIngredients } = useSelector((state) => state.ingredients);
@@ -50,25 +51,22 @@ function BurgerConstructorListParts() {
     isIngredients && ingredients[ingredients.length - 1].type === IngredientTypes.bun;
   const lastPartIngredients = isLastPartIngredients ? [ingredients[ingredients.length - 1]] : [];
 
-  const [props, dropTarget] = useDrop({
+  const [{ handlerId }, dropTarget] = useDrop({
     accept: 'ingredient',
-    // collect: (monitor) => {
-    //   console.log(dropTarget);
-    //   return {
-    //     isHover: monitor.isOver(),
-    //     type: monitor,
-    //   };
-    // },
+    collect(monitor) {
+      return {
+        handlerId: monitor.getHandlerId(),
+      };
+    },
     drop(ingredient) {
-      console.log(props);
-      dispatch(addIngredient(ingredient));
+      dispatch(addIngredient({ ...ingredient, key: uuid() }));
     },
   });
 
   return (
     <>
       <BurgerConstructorList ingredients={firstPartIngredients} />
-      <div className={styles['custom-scroll']} ref={dropTarget}>
+      <div className={styles['custom-scroll']} ref={dropTarget} data-handler-id={handlerId}>
         <BurgerConstructorList ingredients={centralPart} />
       </div>
       <BurgerConstructorList ingredients={lastPartIngredients} isLastPart={true} />
