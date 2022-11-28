@@ -1,44 +1,19 @@
-import React, { useEffect } from 'react';
-import AppHeader from '../app-header/app-header';
-import BurgerIngredients from '../burger-ingredients/burger-ingredients';
-import BurgerConstructor from '../burger-constructor/burger-constructor';
-import { getIngredients } from '../../services/actions/ingredients';
-import { useDispatch, useSelector } from 'react-redux';
-import { HTML5Backend } from 'react-dnd-html5-backend';
-import { DndProvider } from 'react-dnd';
-import styles from './app.module.css';
+import React from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { WithHomePage, WithNotFound404 } from '../../pages';
 
 function App() {
-  const dispatch = useDispatch();
-  const { ingredientsRequest, ingredientsFailed } = useSelector((state) => state.ingredients);
-
-  useEffect(() => {
-    dispatch(getIngredients());
-  }, [dispatch]);
-
   return (
-    <div className="main">
-      <AppHeader />
-      <section className="container">
-        <h1 className={styles.h1}>Соберите бургер</h1>
-      </section>
-      {!ingredientsRequest && !ingredientsFailed ? (
-        <main className={styles.container}>
-          <DndProvider backend={HTML5Backend}>
-            <BurgerIngredients />
-            <BurgerConstructor />
-          </DndProvider>
-        </main>
-      ) : (
-        ingredientsFailed && (
-          <h2 className={styles.error}>
-            Сервис временно не доступен :(
-            <br />
-            Пожалуйста, попробуйте позже.
-          </h2>
-        )
-      )}
-    </div>
+    <Router>
+      <Switch>
+        <Route path="/" exact={true}>
+          <WithHomePage />
+        </Route>
+        <Route>
+          <WithNotFound404 />
+        </Route>
+      </Switch>
+    </Router>
   );
 }
 
