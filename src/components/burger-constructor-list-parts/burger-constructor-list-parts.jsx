@@ -1,12 +1,16 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import BurgerConstructorList from '../burger-constructor-list/burger-constructor-list';
 import { IngredientTypes } from '../burger-ingredients/burger-ingredients';
 import styles from './burger-constructor-list-parts.module.css';
-import { IngredientsContext } from '../../services/ingredientsContext';
 import { removeElementInArrayByIndex } from '../../utils/utils';
+import { useDispatch, useSelector } from 'react-redux';
+import { useDrop } from 'react-dnd';
+import { addIngredient } from '../../services/reducers/ingredients';
+import { v1 as uuid } from 'uuid';
 
 function BurgerConstructorListParts() {
-  const { selectedIngredients } = useContext(IngredientsContext);
+  const { selected: selectedIngredients } = useSelector((state) => state.ingredients);
+  const dispatch = useDispatch();
 
   const prepareIngredients = () => {
     const bunIndex = selectedIngredients.findIndex(
@@ -47,10 +51,22 @@ function BurgerConstructorListParts() {
     isIngredients && ingredients[ingredients.length - 1].type === IngredientTypes.bun;
   const lastPartIngredients = isLastPartIngredients ? [ingredients[ingredients.length - 1]] : [];
 
+  const [{ handlerId }, dropTarget] = useDrop({
+    accept: 'ingredient',
+    collect(monitor) {
+      return {
+        handlerId: monitor.getHandlerId(),
+      };
+    },
+    drop(ingredient) {
+      dispatch(addIngredient({ ...ingredient, key: uuid() }));
+    },
+  });
+
   return (
     <>
       <BurgerConstructorList ingredients={firstPartIngredients} />
-      <div className={styles['custom-scroll']}>
+      <div className={styles['custom-scroll']} ref={dropTarget} data-handler-id={handlerId}>
         <BurgerConstructorList ingredients={centralPart} />
       </div>
       <BurgerConstructorList ingredients={lastPartIngredients} isLastPart={true} />

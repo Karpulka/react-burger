@@ -1,23 +1,17 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './burger-constructor-list.module.css';
 import { IngredientTypes } from '../burger-ingredients/burger-ingredients';
-import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import BurgerConstructorItem from '../burger-constructor-item/burger-constructor-item';
 import { IngredientType } from '../../utils/types';
-import { ResultPriceContext } from '../../services/resultPriceContext';
-import { IngredientsContext } from '../../services/ingredientsContext';
+import { removeIngredient } from '../../services/reducers/ingredients';
+import { useDispatch } from 'react-redux';
 
 function BurgerConstructorList(props) {
-  const { selectedIngredients, setSelectedIngredients } = useContext(IngredientsContext);
-  const { priceDispatcher } = useContext(ResultPriceContext);
-
-  const removeIngredient = (ingredient) => {
-    setSelectedIngredients(selectedIngredients.filter((item) => item.key !== ingredient.key));
-    priceDispatcher({ type: 'remove', payload: ingredient.price });
-  };
+  const dispatch = useDispatch();
 
   const onDeleteClick = (ingredient) => {
-    removeIngredient(ingredient);
+    dispatch(removeIngredient(ingredient));
   };
 
   return (
@@ -29,6 +23,7 @@ function BurgerConstructorList(props) {
               text: ingredient.name,
               thumbnail: ingredient.image_mobile,
               price: ingredient.price,
+              key: ingredient.key,
             };
             const isBun = ingredient.type === IngredientTypes.bun;
             let classValue = '';
@@ -46,11 +41,8 @@ function BurgerConstructorList(props) {
             }
 
             return (
-              <div
-                className={`${styles.item} ${classValue} constructor__item`}
-                key={ingredient.key}>
-                {!elementProps.type && <DragIcon type="primary" />}
-                <ConstructorElement {...elementProps} />
+              <div key={ingredient.key} className={`${classValue} constructor__item`}>
+                <BurgerConstructorItem ingredient={elementProps} classValue={classValue} />
               </div>
             );
           })}
