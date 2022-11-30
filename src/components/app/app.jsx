@@ -1,19 +1,40 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { WithHomePage, WithNotFound404 } from '../../pages';
+import { Route, Switch } from 'react-router-dom';
+import {
+  WithPageWrapperHomePage,
+  WithPageWrapperNotFound404,
+  WithPageWrapperLoginPage,
+  WithPageWrapperRegisterPage,
+} from '../../pages';
 
 function App() {
   return (
-    <Router>
-      <Switch>
-        <Route path="/" exact={true}>
-          <WithHomePage />
-        </Route>
-        <Route>
-          <WithNotFound404 />
-        </Route>
-      </Switch>
-    </Router>
+    <Switch>
+      <Route path="/" exact>
+        <WithPageWrapperHomePage />
+      </Route>
+      <Route path="/login" exact>
+        <WithPageWrapperLoginPage />
+      </Route>
+      <Route path="/register" exact>
+        <WithPageWrapperRegisterPage />
+      </Route>
+      <Route path="/forgot-password" exact>
+        <WithPageWrapperHomePage />
+      </Route>
+      <Route path="/reset-password" exact>
+        <WithPageWrapperHomePage />
+      </Route>
+      <Route path="/profile" exact>
+        <WithPageWrapperHomePage />
+      </Route>
+      <Route path="/ingredients/:id" exact>
+        <WithPageWrapperHomePage />
+      </Route>
+      <Route>
+        <WithPageWrapperNotFound404 />
+      </Route>
+    </Switch>
   );
 }
 
