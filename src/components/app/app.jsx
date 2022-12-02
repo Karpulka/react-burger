@@ -5,7 +5,11 @@ import {
   WithPageWrapperNotFound404,
   WithPageWrapperLoginPage,
   WithPageWrapperRegisterPage,
+  WithPageWrapperForgotPasswordPage,
+  WithPageWrapperResetPasswordPage,
+  WithPageWrapperProfilePage,
 } from '../../pages';
+import ProtectedRoute from '../protected-route/protected-route';
 
 function App() {
   return (
@@ -20,14 +24,14 @@ function App() {
         <WithPageWrapperRegisterPage />
       </Route>
       <Route path="/forgot-password" exact>
-        <WithPageWrapperHomePage />
+        <WithPageWrapperForgotPasswordPage />
       </Route>
       <Route path="/reset-password" exact>
-        <WithPageWrapperHomePage />
+        <WithPageWrapperResetPasswordPage />
       </Route>
-      <Route path="/profile" exact>
-        <WithPageWrapperHomePage />
-      </Route>
+      <ProtectedRoute path="/profile" exact>
+        <WithPageWrapperProfilePage />
+      </ProtectedRoute>
       <Route path="/ingredients/:id" exact>
         <WithPageWrapperHomePage />
       </Route>

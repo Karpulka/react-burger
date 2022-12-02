@@ -5,12 +5,16 @@ import {
   EmailInput,
   PasswordInput,
 } from '@ya.praktikum/react-developer-burger-ui-components';
+import { useDispatch } from 'react-redux';
+import { register } from '../services/actions/user';
 import { Link } from 'react-router-dom';
 
 function RegisterPage() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const dispatch = useDispatch();
 
   const onChangeEmail = (e) => {
     setEmail(e.target.value);
@@ -21,7 +25,7 @@ function RegisterPage() {
   };
 
   const onSubmitForm = () => {
-    console.log('submit');
+    dispatch(register({ name, email, password }));
   };
 
   const formProps = {
@@ -40,25 +44,36 @@ function RegisterPage() {
     ),
   };
 
+  const inputNameProps = {
+    type: 'text',
+    placeholder: 'Имя',
+    onChange: (e) => setName(e.target.value),
+    value: name,
+    name: 'name',
+    error: false,
+    size: 'default',
+    extraClass: 'ml-1',
+  };
+
+  const passwordProps = {
+    value: password,
+    onChange: onChangePassword,
+    name: 'password',
+    extraClass: 'mb-2',
+  };
+
+  const emailProps = {
+    value: email,
+    onChange: onChangeEmail,
+    name: 'email',
+    isIcon: false,
+  };
+
   return (
     <AppForm {...formProps}>
-      <Input
-        type={'text'}
-        placeholder={'Имя'}
-        onChange={(e) => setName(e.target.value)}
-        value={name}
-        name={'name'}
-        error={false}
-        size={'default'}
-        extraClass="ml-1"
-      />
-      <EmailInput onChange={onChangeEmail} value={email} name={'email'} isIcon={false} />
-      <PasswordInput
-        onChange={onChangePassword}
-        value={password}
-        name={'password'}
-        extraClass="mb-2"
-      />
+      <Input {...inputNameProps} />
+      <EmailInput {...emailProps} />
+      <PasswordInput {...passwordProps} />
     </AppForm>
   );
 }

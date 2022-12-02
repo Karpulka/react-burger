@@ -8,6 +8,7 @@ export const apiRequest = async (url, data = {}, method = 'GET') => {
           method,
           headers: {
             'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + window.localStorage.getItem('token'),
           },
           body: JSON.stringify(data),
         };

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import styles from './app-form.module.css';
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -6,10 +6,13 @@ import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
 function AppForm(props) {
   const { title, btnText, onSubmitForm, children, description } = props;
 
-  const onSubmit = (e) => {
-    e.preventDefault();
-    onSubmitForm();
-  };
+  const onSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
+      onSubmitForm();
+    },
+    [onSubmitForm]
+  );
 
   return (
     <div className={styles['form-wrapper']}>

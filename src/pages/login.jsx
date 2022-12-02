@@ -1,11 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import AppForm from '../components/app-form/app-form';
+import { useDispatch, useSelector } from 'react-redux';
+import { login } from '../services/actions/user';
 import { EmailInput, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const { user } = useSelector((state) => state.user);
+
+  const dispatch = useDispatch();
+  const history = useHistory();
+
+  const isUserInfo = Object.keys(user).length;
+
+  useEffect(() => {
+    isUserInfo && history.push('/');
+  }, [isUserInfo, history]);
 
   const onChangeEmail = (e) => {
     setEmail(e.target.value);
@@ -16,7 +28,7 @@ function LoginPage() {
   };
 
   const onSubmitForm = () => {
-    console.log('submit');
+    dispatch(login({ email, password }));
   };
 
   const formProps = {

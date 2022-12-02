@@ -23,14 +23,20 @@ function HeaderButton(props) {
     }
   };
 
-  const { icon, children } = props;
+  const { icon, children, onButtonClick } = props;
   const IconComponent = icon ? uiComponents[icon] : '';
   const textColorClass = buttonType === ButtonTypes.secondary ? 'text_color_inactive' : '';
+
+  const onClick = () => {
+    onButtonClick && onButtonClick();
+  };
+
   return (
     <button
       className={styles.button}
       onMouseEnter={toggleButtonType}
-      onMouseLeave={toggleButtonType}>
+      onMouseLeave={toggleButtonType}
+      onClick={onClick}>
       <span className={styles.button__icon}>
         {IconComponent && <IconComponent type={buttonType} />}
       </span>
@@ -47,6 +53,7 @@ HeaderButton.propTypes = {
   icon: PropTypes.string.isRequired,
   children: PropTypes.string.isRequired,
   isActive: PropTypes.bool,
+  onButtonClick: PropTypes.func,
 };
 
 export default HeaderButton;
