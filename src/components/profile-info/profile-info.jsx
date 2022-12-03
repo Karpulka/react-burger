@@ -13,8 +13,6 @@ function ProfileInfo() {
   const [name, setName] = useState(initialName);
   const [email, setEmail] = useState(initialEmail);
 
-  // const dispatch = useDispatch();
-
   const inputNameProps = {
     type: 'text',
     placeholder: 'Имя',

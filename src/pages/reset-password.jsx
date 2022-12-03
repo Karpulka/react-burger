@@ -18,7 +18,7 @@ function ResetPasswordPage() {
     return () => {
       dispatch(resetIsResetPasswordSuccess());
     };
-  }, [history, dispatch, isResetPasswordSuccess, resetIsResetPasswordSuccess]);
+  }, [history, dispatch, isResetPasswordSuccess]);
 
   const onChangePassword = (e) => {
     setPassword(e.target.value);

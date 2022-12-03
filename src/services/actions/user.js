@@ -31,32 +31,91 @@ export const login = createAsyncThunk('user/login', async (payload, { rejectWith
   }
 });
 
-export const forgotPassword = createAsyncThunk('user/forgotPassword', async (payload, { rejectWithValue }) => {
+export const forgotPassword = createAsyncThunk(
+  'user/forgotPassword',
+  async (payload, { rejectWithValue }) => {
+    try {
+      const response = await apiRequest(`/password-reset`, payload, 'POST');
+      if (response.success) {
+        return response;
+      } else {
+        throw response;
+      }
+    } catch (e) {
+      console.log('Fetch forgot password error', e);
+      console.error(e);
+      return rejectWithValue('Fetch forgot password error');
+    }
+  }
+);
+
+export const resetPassword = createAsyncThunk(
+  'user/resetPassword',
+  async (payload, { rejectWithValue }) => {
+    try {
+      const response = await apiRequest(`/password-reset/reset`, payload, 'POST');
+      if (response.success) {
+        return response;
+      } else {
+        throw response;
+      }
+    } catch (e) {
+      console.log('Fetch reset password error', e);
+      console.error(e);
+      return rejectWithValue('Fetch reset password error');
+    }
+  }
+);
+
+export const logout = createAsyncThunk('user/logout', async (payload, { rejectWithValue }) => {
   try {
-    const response = await apiRequest(`/password-reset`, payload, 'POST');
+    const token = window.localStorage.getItem('refreshToken');
+    const response = await apiRequest(`/auth/logout`, { token }, 'POST');
     if (response.success) {
       return response;
     } else {
       throw response;
     }
   } catch (e) {
-    console.log('Fetch forgot password error', e);
+    console.log('Fetch logout error', e);
     console.error(e);
-    return rejectWithValue('Fetch forgot password error');
+    return rejectWithValue('Fetch logout error');
   }
 });
 
-export const resetPassword = createAsyncThunk('user/resetPassword', async (payload, { rejectWithValue }) => {
-  try {
-    const response = await apiRequest(`/password-reset/reset`, payload, 'POST');
-    if (response.success) {
-      return response;
-    } else {
-      throw response;
+export const refreshToken = createAsyncThunk(
+  'user/refreshToken',
+  async (payload, { rejectWithValue }) => {
+    try {
+      const token = window.localStorage.getItem('refreshToken');
+      const response = await apiRequest(`/auth/token`, { token }, 'POST');
+      if (response.success) {
+        return response;
+      } else {
+        throw response;
+      }
+    } catch (e) {
+      console.log('Fetch refreshToken error', e);
+      console.error(e);
+      return rejectWithValue('Fetch refreshToken error');
     }
-  } catch (e) {
-    console.log('Fetch reset password error', e);
-    console.error(e);
-    return rejectWithValue('Fetch reset password error');
   }
-});
+);
+
+export const getUserInfo = createAsyncThunk(
+  'user/getUserInfo',
+  async (payload, { rejectWithValue }) => {
+    try {
+      const response = await apiRequest(`/auth/user`);
+      if (response.success) {
+        return response;
+      } else {
+        throw response;
+      }
+    } catch (e) {
+      console.log('Fetch getUserInfo error', e);
+      console.error(e);
+      return rejectWithValue('Fetch getUserInfo error');
+    }
+  }
+);

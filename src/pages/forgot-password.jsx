@@ -18,7 +18,7 @@ function ForgotPasswordPage() {
     return () => {
       dispatch(resetIsForgotPasswordSuccess());
     };
-  }, [history, isForgotPasswordSuccess, dispatch, resetIsForgotPasswordSuccess]);
+  }, [history, isForgotPasswordSuccess, dispatch]);
 
   const onChangeEmail = (e) => {
     setEmail(e.target.value);

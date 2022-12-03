@@ -1,5 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { login, register, forgotPassword, resetPassword } from '../actions/user';
+import {
+  login,
+  register,
+  forgotPassword,
+  resetPassword,
+  logout,
+  refreshToken,
+  getUserInfo,
+} from '../actions/user';
 
 const initialState = {
   registerRequest: false,
@@ -16,6 +24,16 @@ const initialState = {
   resetPasswordRequest: false,
   resetPasswordFailed: false,
   isResetPasswordSuccess: false,
+
+  logoutRequest: false,
+  logoutFailed: false,
+
+  refreshTokenRequest: false,
+  refreshTokenFailed: false,
+  isRefreshTokenSuccess: false,
+
+  getUserInfoRequest: false,
+  getUserInfoFailed: false,
 };
 
 const userSlice = createSlice({
@@ -48,6 +66,7 @@ const userSlice = createSlice({
     });
     builder.addCase(login.pending, (state) => {
       state.loginRequest = true;
+      state.isRefreshTokenSuccess = false;
     });
     builder.addCase(login.fulfilled, (state, { payload }) => {
       state.user = payload.user;
@@ -58,6 +77,7 @@ const userSlice = createSlice({
 
       state.loginFailed = false;
       state.loginRequest = false;
+      state.isRefreshTokenSuccess = true;
     });
     builder.addCase(login.rejected, (state) => {
       state.loginFailed = true;
@@ -78,7 +98,7 @@ const userSlice = createSlice({
     builder.addCase(resetPassword.pending, (state) => {
       state.resetPasswordRequest = true;
     });
-    builder.addCase(resetPassword.fulfilled, (state, { payload }) => {
+    builder.addCase(resetPassword.fulfilled, (state) => {
       state.resetPasswordFailed = false;
       state.resetPasswordRequest = false;
       state.isResetPasswordSuccess = true;
@@ -86,6 +106,52 @@ const userSlice = createSlice({
     builder.addCase(resetPassword.rejected, (state) => {
       state.resetPasswordFailed = true;
       state.resetPasswordRequest = false;
+    });
+    builder.addCase(logout.pending, (state) => {
+      state.logoutRequest = true;
+    });
+    builder.addCase(logout.fulfilled, (state) => {
+      state.logoutFailed = false;
+      state.logoutRequest = false;
+      state.user = {};
+    });
+    builder.addCase(logout.rejected, (state) => {
+      state.logoutFailed = true;
+      state.logoutRequest = false;
+    });
+    builder.addCase(refreshToken.pending, (state) => {
+      state.isRefreshTokenSuccess = false;
+      state.refreshTokenRequest = true;
+    });
+    builder.addCase(refreshToken.fulfilled, (state, { payload }) => {
+      const token = payload.accessToken.split('Bearer ')[1];
+      window.localStorage.setItem('token', token);
+      window.localStorage.setItem('refreshToken', payload.refreshToken);
+
+      state.refreshTokenFailed = false;
+      state.refreshTokenRequest = false;
+      state.isRefreshTokenSuccess = true;
+    });
+    builder.addCase(refreshToken.rejected, (state) => {
+      state.refreshTokenFailed = true;
+      state.refreshTokenRequest = false;
+      state.user = {};
+      window.localStorage.removeItem('token');
+      window.localStorage.removeItem('refreshToken');
+    });
+    builder.addCase(getUserInfo.pending, (state) => {
+      state.getUserInfoRequest = true;
+    });
+    builder.addCase(getUserInfo.fulfilled, (state, { payload }) => {
+      state.user = payload.user;
+
+      state.getUserInfoRequest = false;
+      state.getUserInfoFailed = false;
+    });
+    builder.addCase(getUserInfo.rejected, (state) => {
+      state.getUserInfoFailed = true;
+      state.getUserInfoRequest = false;
+      state.user = {};
     });
   },
 });
