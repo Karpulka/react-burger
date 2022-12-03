@@ -1,21 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import AppForm from '../components/app-form/app-form';
 import { EmailInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, useHistory } from 'react-router-dom';
-// import {register} from '../services/actions/user';
+import { forgotPassword } from '../services/actions/user';
+import { useDispatch, useSelector } from 'react-redux';
+import { resetIsForgotPasswordSuccess } from '../services/reducers/user';
 
 function ForgotPasswordPage() {
   const [email, setEmail] = useState('');
-
+  const { isForgotPasswordSuccess } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
   const history = useHistory();
+
+  useEffect(() => {
+    isForgotPasswordSuccess && history.push('/reset-password');
+
+    return () => {
+      dispatch(resetIsForgotPasswordSuccess());
+    };
+  }, [history, isForgotPasswordSuccess, dispatch, resetIsForgotPasswordSuccess]);
 
   const onChangeEmail = (e) => {
     setEmail(e.target.value);
   };
 
   const onSubmitForm = () => {
-    // dispatch(register({ name, email, password }));
-    history.push('/reset-password');
+    dispatch(forgotPassword({ email }));
   };
 
   const formProps = {
