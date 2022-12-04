@@ -7,6 +7,7 @@ import {
   logout,
   refreshToken,
   getUserInfo,
+  updateUserInfo,
 } from '../actions/user';
 
 const initialState = {
@@ -30,10 +31,12 @@ const initialState = {
 
   refreshTokenRequest: false,
   refreshTokenFailed: false,
-  isRefreshTokenSuccess: false,
 
   getUserInfoRequest: false,
   getUserInfoFailed: false,
+
+  updateUserInfoRequest: false,
+  updateUserInfoFailed: false,
 };
 
 const userSlice = createSlice({
@@ -66,7 +69,6 @@ const userSlice = createSlice({
     });
     builder.addCase(login.pending, (state) => {
       state.loginRequest = true;
-      state.isRefreshTokenSuccess = false;
     });
     builder.addCase(login.fulfilled, (state, { payload }) => {
       state.user = payload.user;
@@ -77,7 +79,6 @@ const userSlice = createSlice({
 
       state.loginFailed = false;
       state.loginRequest = false;
-      state.isRefreshTokenSuccess = true;
     });
     builder.addCase(login.rejected, (state) => {
       state.loginFailed = true;
@@ -120,7 +121,6 @@ const userSlice = createSlice({
       state.logoutRequest = false;
     });
     builder.addCase(refreshToken.pending, (state) => {
-      state.isRefreshTokenSuccess = false;
       state.refreshTokenRequest = true;
     });
     builder.addCase(refreshToken.fulfilled, (state, { payload }) => {
@@ -130,7 +130,6 @@ const userSlice = createSlice({
 
       state.refreshTokenFailed = false;
       state.refreshTokenRequest = false;
-      state.isRefreshTokenSuccess = true;
     });
     builder.addCase(refreshToken.rejected, (state) => {
       state.refreshTokenFailed = true;
@@ -152,6 +151,19 @@ const userSlice = createSlice({
       state.getUserInfoFailed = true;
       state.getUserInfoRequest = false;
       state.user = {};
+    });
+    builder.addCase(updateUserInfo.pending, (state) => {
+      state.updateUserInfoRequest = true;
+    });
+    builder.addCase(updateUserInfo.fulfilled, (state, { payload }) => {
+      state.user = payload.user;
+
+      state.updateUserInfoRequest = false;
+      state.updateUserInfoFailed = false;
+    });
+    builder.addCase(updateUserInfo.rejected, (state) => {
+      state.updateUserInfoFailed = true;
+      state.updateUserInfoRequest = false;
     });
   },
 });

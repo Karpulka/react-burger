@@ -119,3 +119,21 @@ export const getUserInfo = createAsyncThunk(
     }
   }
 );
+
+export const updateUserInfo = createAsyncThunk(
+  'user/updateUserInfo',
+  async (payload, { rejectWithValue }) => {
+    try {
+      const response = await apiRequest(`/auth/user`, payload, 'PATCH');
+      if (response.success) {
+        return response;
+      } else {
+        throw response;
+      }
+    } catch (e) {
+      console.log('Fetch getUserInfo error', e);
+      console.error(e);
+      return rejectWithValue('Fetch getUserInfo error');
+    }
+  }
+);

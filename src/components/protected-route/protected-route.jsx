@@ -29,8 +29,6 @@ function ProtectedRoute({ children, ...rest }) {
   return <Route {...rest} render={() => (isUserInfo ? children : <Redirect to="/login" />)} />;
 }
 
-ProtectedRoute.propTypes = {
-  children: PropTypes.node,
-};
+ProtectedRoute.propTypes = { children: PropTypes.node };
 
 export default ProtectedRoute;
