@@ -16,7 +16,7 @@ function LoginPage() {
   const isUserInfo = Object.keys(user).length;
 
   useEffect(() => {
-    isUserInfo && history.push('/');
+    isUserInfo && history.goBack();
   }, [isUserInfo, history]);
 
   const onChangeEmail = (e) => {
