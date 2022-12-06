@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import AppForm from '../components/app-form/app-form';
 import {
   Input,
@@ -8,24 +8,19 @@ import {
 import { useDispatch } from 'react-redux';
 import { register } from '../services/actions/user';
 import { Link } from 'react-router-dom';
+import { useForm } from '../hooks/useForm';
 
 function RegisterPage() {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const { values, handleChange } = useForm({
+    name: '',
+    email: '',
+    password: '',
+  });
 
   const dispatch = useDispatch();
 
-  const onChangeEmail = (e) => {
-    setEmail(e.target.value);
-  };
-
-  const onChangePassword = (e) => {
-    setPassword(e.target.value);
-  };
-
   const onSubmitForm = () => {
-    dispatch(register({ name, email, password }));
+    dispatch(register(values));
   };
 
   const formProps = {
@@ -47,8 +42,8 @@ function RegisterPage() {
   const inputNameProps = {
     type: 'text',
     placeholder: 'Имя',
-    onChange: (e) => setName(e.target.value),
-    value: name,
+    onChange: handleChange,
+    value: values.name,
     name: 'name',
     error: false,
     size: 'default',
@@ -56,15 +51,15 @@ function RegisterPage() {
   };
 
   const passwordProps = {
-    value: password,
-    onChange: onChangePassword,
+    value: values.password,
+    onChange: handleChange,
     name: 'password',
     extraClass: 'mb-2',
   };
 
   const emailProps = {
-    value: email,
-    onChange: onChangeEmail,
+    value: values.email,
+    onChange: handleChange,
     name: 'email',
     isIcon: false,
   };

@@ -8,6 +8,7 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { updateUserInfo } from '../../services/actions/user';
 import { useDispatch } from 'react-redux';
+import { useForm } from '../../hooks/useForm';
 import styles from './profile-info.module.css';
 
 function ProfileInfo() {
@@ -16,9 +17,12 @@ function ProfileInfo() {
     updateUserInfoFailed,
   } = useSelector((state) => state.user);
   const initialPassword = '';
-  const [password, setPassword] = useState(initialPassword);
-  const [name, setName] = useState(initialName);
-  const [email, setEmail] = useState(initialEmail);
+  const initialValues = {
+    name: initialName,
+    email: initialEmail,
+    password: initialPassword,
+  };
+  const { values, handleChange, setValues } = useForm(initialValues);
   const [isChanges, setIsChanges] = useState(false);
 
   const dispatch = useDispatch();
@@ -27,14 +31,16 @@ function ProfileInfo() {
     updateUserInfoFailed && onCancelClick();
   }, [updateUserInfoFailed]);
 
+  const onFiledChange = (event) => {
+    handleChange(event);
+    setIsChanges(true);
+  };
+
   const inputNameProps = {
     type: 'text',
     placeholder: 'Имя',
-    onChange: (e) => {
-      setName(e.target.value);
-      setIsChanges(true);
-    },
-    value: name,
+    onChange: onFiledChange,
+    value: values.name,
     name: 'name',
     error: false,
     size: 'default',
@@ -43,32 +49,24 @@ function ProfileInfo() {
   };
 
   const passwordProps = {
-    value: password,
-    onChange: (e) => {
-      setPassword(e.target.value);
-      setIsChanges(true);
-    },
+    value: values.password,
+    onChange: onFiledChange,
     name: 'password',
     icon: 'EditIcon',
     extraClass: 'profile-field',
   };
 
   const emailProps = {
-    value: email,
+    value: values.email,
     placeholder: 'Логин',
-    onChange: (e) => {
-      setEmail(e.target.value);
-      setIsChanges(true);
-    },
+    onChange: onFiledChange,
     name: 'email',
     icon: 'EditIcon',
     extraClass: 'profile-field',
   };
 
   const onCancelClick = () => {
-    setName(initialName);
-    setEmail(initialEmail);
-    setPassword(initialPassword);
+    setValues(initialValues);
     setIsChanges(false);
   };
 
@@ -77,15 +75,11 @@ function ProfileInfo() {
 
     let params = {};
 
-    if (name !== initialName) {
-      params.name = name;
-    }
-    if (email !== initialEmail) {
-      params.email = email;
-    }
-    if (password !== initialPassword) {
-      params.password = password;
-    }
+    Object.keys(values).forEach((name) => {
+      if (values[name] !== initialValues[name]) {
+        params[name] = values[name];
+      }
+    });
 
     dispatch(updateUserInfo(params));
     setIsChanges(false);

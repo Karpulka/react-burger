@@ -1,13 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import AppForm from '../components/app-form/app-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../services/actions/user';
 import { EmailInput, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, useHistory } from 'react-router-dom';
+import { useForm } from '../hooks/useForm';
 
 function LoginPage() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const { values, handleChange } = useForm({
+    email: '',
+    password: '',
+  });
+
   const { user } = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
@@ -19,16 +23,8 @@ function LoginPage() {
     isUserInfo && history.goBack();
   }, [isUserInfo, history]);
 
-  const onChangeEmail = (e) => {
-    setEmail(e.target.value);
-  };
-
-  const onChangePassword = (e) => {
-    setPassword(e.target.value);
-  };
-
   const onSubmitForm = () => {
-    dispatch(login({ email, password }));
+    dispatch(login(values));
   };
 
   const formProps = {
@@ -55,10 +51,10 @@ function LoginPage() {
 
   return (
     <AppForm {...formProps}>
-      <EmailInput onChange={onChangeEmail} value={email} name={'email'} isIcon={false} />
+      <EmailInput onChange={handleChange} value={values.email} name={'email'} isIcon={false} />
       <PasswordInput
-        onChange={onChangePassword}
-        value={password}
+        onChange={handleChange}
+        value={values.password}
         name={'password'}
         extraClass="mb-2"
       />

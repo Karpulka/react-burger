@@ -1,14 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import AppForm from '../components/app-form/app-form';
 import { PasswordInput, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, useHistory } from 'react-router-dom';
 import { resetPassword } from '../services/actions/user';
 import { useDispatch, useSelector } from 'react-redux';
 import { resetIsResetPasswordSuccess } from '../services/reducers/user';
+import { useForm } from '../hooks/useForm';
 
 function ResetPasswordPage() {
-  const [password, setPassword] = useState('');
-  const [code, setCode] = useState('');
+  const { values, handleChange } = useForm({
+    token: '',
+    password: '',
+  });
   const { isResetPasswordSuccess } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const history = useHistory();
@@ -20,16 +23,8 @@ function ResetPasswordPage() {
     };
   }, [history, dispatch, isResetPasswordSuccess]);
 
-  const onChangePassword = (e) => {
-    setPassword(e.target.value);
-  };
-
-  const onChangeCode = (e) => {
-    setCode(e.target.value);
-  };
-
   const onSubmitForm = () => {
-    dispatch(resetPassword({ password, token: code }));
+    dispatch(resetPassword(values));
   };
 
   const formProps = {
@@ -49,8 +44,8 @@ function ResetPasswordPage() {
   };
 
   const passwordProps = {
-    value: password,
-    onChange: onChangePassword,
+    value: values.password,
+    onChange: handleChange,
     name: 'password',
     placeholder: 'Введите новый пароль',
     extraClass: 'mb-2',
@@ -60,9 +55,9 @@ function ResetPasswordPage() {
   const inputCodeProps = {
     type: 'text',
     placeholder: 'Введите код из письма',
-    onChange: onChangeCode,
-    value: code,
-    name: 'code',
+    onChange: handleChange,
+    value: values.token,
+    name: 'token',
     error: false,
     size: 'default',
     extraClass: 'ml-1 mb-2',
