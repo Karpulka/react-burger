@@ -9,6 +9,7 @@ import {
   getUserInfo,
   updateUserInfo,
 } from '../actions/user';
+import { logout as clearUser } from '../../utils/utils';
 
 const initialState = {
   registerRequest: false,
@@ -114,11 +115,12 @@ const userSlice = createSlice({
     builder.addCase(logout.fulfilled, (state) => {
       state.logoutFailed = false;
       state.logoutRequest = false;
-      state.user = {};
+      clearUser(state);
     });
     builder.addCase(logout.rejected, (state) => {
       state.logoutFailed = true;
       state.logoutRequest = false;
+      clearUser(state);
     });
     builder.addCase(refreshToken.pending, (state) => {
       state.refreshTokenRequest = true;
@@ -134,9 +136,7 @@ const userSlice = createSlice({
     builder.addCase(refreshToken.rejected, (state) => {
       state.refreshTokenFailed = true;
       state.refreshTokenRequest = false;
-      state.user = {};
-      window.localStorage.removeItem('token');
-      window.localStorage.removeItem('refreshToken');
+      clearUser(state);
     });
     builder.addCase(getUserInfo.pending, (state) => {
       state.getUserInfoRequest = true;

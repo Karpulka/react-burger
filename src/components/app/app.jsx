@@ -33,19 +33,19 @@ function App() {
         <Route path="/" exact>
           <WithPageWrapperHomePage />
         </Route>
-        <Route path="/login" exact>
+        <ProtectedRoute path="/login" exact>
           <WithPageWrapperLoginPage />
-        </Route>
-        <Route path="/register" exact>
+        </ProtectedRoute>
+        <ProtectedRoute path="/register" exact>
           <WithPageWrapperRegisterPage />
-        </Route>
-        <Route path="/forgot-password" exact>
+        </ProtectedRoute>
+        <ProtectedRoute path="/forgot-password" exact>
           <WithPageWrapperForgotPasswordPage />
-        </Route>
-        <Route path="/reset-password" exact>
+        </ProtectedRoute>
+        <ProtectedRoute path="/reset-password" exact>
           <WithPageWrapperResetPasswordPage />
-        </Route>
-        <ProtectedRoute path="/profile" exact>
+        </ProtectedRoute>
+        <ProtectedRoute path="/profile" onlyForAuth exact>
           <WithPageWrapperProfilePage />
         </ProtectedRoute>
         <Route path="/ingredients/:ingredientId" exact>

@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import AppForm from '../components/app-form/app-form';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { login } from '../services/actions/user';
 import { EmailInput, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useForm } from '../hooks/useForm';
 
 function LoginPage() {
@@ -12,16 +12,7 @@ function LoginPage() {
     password: '',
   });
 
-  const { user } = useSelector((state) => state.user);
-
   const dispatch = useDispatch();
-  const history = useHistory();
-
-  const isUserInfo = Object.keys(user).length;
-
-  useEffect(() => {
-    isUserInfo && history.goBack();
-  }, [isUserInfo, history]);
 
   const onSubmitForm = () => {
     dispatch(login(values));

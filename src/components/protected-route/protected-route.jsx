@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Route, Redirect, useLocation } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getUserInfo, refreshToken } from '../../services/actions/user';
 
-function ProtectedRoute({ children, ...rest }) {
+function ProtectedRoute({ onlyForAuth, children, ...rest }) {
   const { user } = useSelector((state) => state.user);
   const [isUserLoaded, setIsUserLoaded] = useState(false);
+  const [isUserInfo, setIsUserInfo] = useState(!!Object.keys(user).length);
   const dispatch = useDispatch();
   const location = useLocation();
 
@@ -21,22 +22,35 @@ function ProtectedRoute({ children, ...rest }) {
     init();
   }, []);
 
+  useEffect(() => {
+    setIsUserInfo(!!Object.keys(user).length);
+  }, [user, setIsUserInfo]);
+
   if (!isUserLoaded) {
-    return null;
+    return <>Loading...</>;
   }
 
-  let isUserInfo = Object.keys(user).length;
+  if (!onlyForAuth && isUserInfo) {
+    const { from } = location.state || { from: { pathname: '/' } };
 
-  return (
-    <Route
-      {...rest}
-      render={() =>
-        isUserInfo ? children : <Redirect to={{ pathname: '/login', state: { from: location } }} />
-      }
-    />
-  );
+    return (
+      <Route {...rest}>
+        <Redirect to={from} />
+      </Route>
+    );
+  }
+
+  if (onlyForAuth && !isUserInfo) {
+    return (
+      <Route {...rest}>
+        <Redirect to={{ pathname: '/login', state: { from: location } }} />
+      </Route>
+    );
+  }
+
+  return <Route {...rest}>{children}</Route>;
 }
 
-ProtectedRoute.propTypes = { children: PropTypes.node };
+ProtectedRoute.propTypes = { onlyForAuth: PropTypes.bool, children: PropTypes.node };
 
 export default ProtectedRoute;
