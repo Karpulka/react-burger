@@ -16,7 +16,7 @@ function BurgerConstructor() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { selected: selectedIngredients } = useSelector((state) => state.ingredients);
   const { user } = useSelector((state) => state.user);
-  const { newOrder, orderRequest } = useSelector((state) => state.order);
+  const { newOrder } = useSelector((state) => state.order);
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -37,15 +37,14 @@ function BurgerConstructor() {
     selectedIngredients.length > 1 &&
     selectedIngredients.find((ingredient) => ingredient.type === IngredientTypes.bun);
 
-  const onCreateOrderClick = async () => {
+  const onCreateOrderClick = () => {
     if (!Object.keys(user).length) {
       history.push('/login');
       return;
     }
-
+    setIsModalOpen(true);
     const ingredients = selectedIngredients.map((ingredient) => ingredient._id);
     dispatch(createOrder({ ingredients }));
-    setIsModalOpen(true);
   };
 
   const onModalClose = () => {
@@ -75,7 +74,7 @@ function BurgerConstructor() {
           </div>
         )}
       </section>
-      {isModalOpen && !orderRequest && (
+      {isModalOpen && (
         <Modal onClose={onModalClose}>
           <OrderDetails orderNumber={orderNumber} />
         </Modal>
