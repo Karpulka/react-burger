@@ -4,7 +4,6 @@ import styles from './ingredient-details.module.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { setCurrentIngredient } from '../../services/reducers/ingredients';
-import { getIngredients } from '../../services/actions/ingredients';
 
 function IngredientDetails(props) {
   const { ingredientId } = useParams();
@@ -12,9 +11,7 @@ function IngredientDetails(props) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!all || !all.length) {
-      dispatch(getIngredients());
-    } else {
+    if (all && all.length) {
       const ingredient = all.find((item) => item._id === ingredientId);
       ingredient && dispatch(setCurrentIngredient(ingredient));
     }

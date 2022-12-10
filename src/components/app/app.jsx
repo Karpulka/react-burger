@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Route, Switch, useHistory, useLocation } from 'react-router-dom';
 import {
   WithPageWrapperHomePage,
@@ -15,12 +15,17 @@ import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import { setCurrentIngredient } from '../../services/reducers/ingredients';
 import { useDispatch } from 'react-redux';
+import { getIngredients } from '../../services/actions/ingredients';
 
 function App() {
   const location = useLocation();
   const history = useHistory();
   const background = location.state && location.state.background;
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getIngredients());
+  }, [dispatch]);
 
   const handleModalClose = () => {
     dispatch(setCurrentIngredient({}));
