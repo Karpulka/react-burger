@@ -1,8 +1,6 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import BurgerIngredientsItem from '../burger-ingredients-item/burger-ingredients-item';
-import IngredientDetails from '../ingredient-details/ingredient-details';
-import Modal from '../modal/modal';
 import { IngredientType } from '../../utils/types';
 import styles from './burger-ingredients-list.module.css';
 import { setCurrentIngredient } from '../../services/reducers/ingredients';
@@ -10,15 +8,10 @@ import { setCurrentIngredient } from '../../services/reducers/ingredients';
 import { useDispatch, useSelector } from 'react-redux';
 
 function BurgerIngredientsList({ title, ingredients }) {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const { selected: selectedIngredients, currentIngredient } = useSelector(
-    (state) => state.ingredients
-  );
+  const { selected: selectedIngredients } = useSelector((state) => state.ingredients);
   const dispatch = useDispatch();
 
   const onIngredientClick = (ingredient) => {
-    setIsModalOpen(true);
     dispatch(setCurrentIngredient(ingredient));
   };
 
@@ -31,11 +24,6 @@ function BurgerIngredientsList({ title, ingredients }) {
     },
     [selectedIngredients]
   );
-
-  const onModalClose = () => {
-    setIsModalOpen(false);
-    dispatch(setCurrentIngredient({}));
-  };
 
   return (
     <>
@@ -54,11 +42,6 @@ function BurgerIngredientsList({ title, ingredients }) {
           })}
         </div>
       </div>
-      {isModalOpen && (
-        <Modal header={'Детали ингредиента'} onClose={onModalClose}>
-          <IngredientDetails {...currentIngredient} />
-        </Modal>
-      )}
     </>
   );
 }

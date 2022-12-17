@@ -5,14 +5,17 @@ export const apiRequest = async (url, data = {}, method = 'GET') => {
     method === 'GET'
       ? {}
       : {
-          method,
-          headers: {
-            'Content-Type': 'application/json',
-          },
           body: JSON.stringify(data),
         };
 
-  const res = await fetch(`${API_URL}${url}`, params);
+  const res = await fetch(`${API_URL}${url}`, {
+    method,
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + window.localStorage.getItem('token'),
+    },
+    ...params,
+  });
 
   if (!res.ok) {
     return Promise.reject(`Ошибка ${res.status}`);

@@ -1,44 +1,74 @@
 import React, { useEffect } from 'react';
-import AppHeader from '../app-header/app-header';
-import BurgerIngredients from '../burger-ingredients/burger-ingredients';
-import BurgerConstructor from '../burger-constructor/burger-constructor';
+import { Route, Switch, useHistory, useLocation } from 'react-router-dom';
+import {
+  WithPageWrapperHomePage,
+  WithPageWrapperNotFound404,
+  WithPageWrapperLoginPage,
+  WithPageWrapperRegisterPage,
+  WithPageWrapperForgotPasswordPage,
+  WithPageWrapperResetPasswordPage,
+  WithPageWrapperProfilePage,
+  WithPageWrapperIngredientDetails,
+} from '../../pages';
+import ProtectedRoute from '../protected-route/protected-route';
+import Modal from '../modal/modal';
+import IngredientDetails from '../ingredient-details/ingredient-details';
+import { setCurrentIngredient } from '../../services/reducers/ingredients';
+import { useDispatch } from 'react-redux';
 import { getIngredients } from '../../services/actions/ingredients';
-import { useDispatch, useSelector } from 'react-redux';
-import { HTML5Backend } from 'react-dnd-html5-backend';
-import { DndProvider } from 'react-dnd';
-import styles from './app.module.css';
 
 function App() {
+  const location = useLocation();
+  const history = useHistory();
+  const background = location.state && location.state.background;
   const dispatch = useDispatch();
-  const { ingredientsRequest, ingredientsFailed } = useSelector((state) => state.ingredients);
 
   useEffect(() => {
     dispatch(getIngredients());
   }, [dispatch]);
 
+  const handleModalClose = () => {
+    dispatch(setCurrentIngredient({}));
+    history.goBack();
+  };
+
   return (
-    <div className="main">
-      <AppHeader />
-      <section className="container">
-        <h1 className={styles.h1}>Соберите бургер</h1>
-      </section>
-      {!ingredientsRequest && !ingredientsFailed ? (
-        <main className={styles.container}>
-          <DndProvider backend={HTML5Backend}>
-            <BurgerIngredients />
-            <BurgerConstructor />
-          </DndProvider>
-        </main>
-      ) : (
-        ingredientsFailed && (
-          <h2 className={styles.error}>
-            Сервис временно не доступен :(
-            <br />
-            Пожалуйста, попробуйте позже.
-          </h2>
-        )
+    <>
+      <Switch location={background || location}>
+        <Route path="/" exact>
+          <WithPageWrapperHomePage />
+        </Route>
+        <ProtectedRoute path="/login" exact>
+          <WithPageWrapperLoginPage />
+        </ProtectedRoute>
+        <ProtectedRoute path="/register" exact>
+          <WithPageWrapperRegisterPage />
+        </ProtectedRoute>
+        <ProtectedRoute path="/forgot-password" exact>
+          <WithPageWrapperForgotPasswordPage />
+        </ProtectedRoute>
+        <ProtectedRoute path="/reset-password" exact>
+          <WithPageWrapperResetPasswordPage />
+        </ProtectedRoute>
+        <ProtectedRoute path="/profile" onlyForAuth exact>
+          <WithPageWrapperProfilePage />
+        </ProtectedRoute>
+        <Route path="/ingredients/:ingredientId" exact>
+          <WithPageWrapperIngredientDetails header={'Детали ингредиента'} />
+        </Route>
+        <Route>
+          <WithPageWrapperNotFound404 />
+        </Route>
+      </Switch>
+
+      {background && (
+        <Route path="/ingredients/:ingredientId">
+          <Modal header={'Детали ингредиента'} onClose={handleModalClose}>
+            <IngredientDetails />
+          </Modal>
+        </Route>
       )}
-    </div>
+    </>
   );
 }
 

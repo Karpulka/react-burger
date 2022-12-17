@@ -4,7 +4,7 @@
 }
 
 .container {
-    composes: container from '../../index.css';
+    composes: container from '../index.css';
     height: calc(100% - 148px);
 }
 

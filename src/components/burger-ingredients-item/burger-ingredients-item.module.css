@@ -5,6 +5,8 @@
     width: 272px;
     cursor: pointer;
     position: relative;
+    text-decoration: none;
+    color: #F2F2F3;
 }
 
 .image {
@@ -18,4 +20,11 @@
     text-align: center;
     min-height: 48px;
     margin-top: 8px;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }

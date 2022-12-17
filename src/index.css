@@ -17,7 +17,6 @@ body {
 
 .main {
     background-color: var(--dark-bg);
-    padding: 40px;
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -37,4 +36,23 @@ body {
 .section {
     width: calc(50% - 20px);
     max-width: 600px;
+}
+
+.form__link {
+    text-decoration: none;
+    margin-left: 8px;
+}
+
+.sidebar .tab {
+    box-shadow: none;
+    text-align: left;
+    padding-left: 0;
+}
+
+.profile-field div:not(.input_status_active) .input__textfield {
+    color: #8585AD;
+}
+
+.profile-field .input__icon {
+    cursor: pointer;
 }

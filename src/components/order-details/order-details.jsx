@@ -3,9 +3,21 @@ import PropTypes from 'prop-types';
 import doneImg from '../../images/done.png';
 import styles from './order-details.module.css';
 import { orderMocks } from '../../utils/data';
+import { useSelector } from 'react-redux';
 
 function OrderDetails(props) {
   const image = orderMocks.image ? orderMocks.image : doneImg;
+  const { orderFailed } = useSelector((state) => state.order);
+
+  if (orderFailed) {
+    return (
+      <div className="text text_type_main-medium mb-15 text_color_inactive">
+        Что-то пошло не так :(
+        <br />
+        Попробуйте оформить заказ позже.
+      </div>
+    );
+  }
 
   return (
     <div className={styles['order-result']}>
@@ -20,11 +32,7 @@ function OrderDetails(props) {
           </p>
         </>
       ) : (
-        <div className="text text_type_main-medium mb-15 text_color_inactive">
-          Что-то пошло не так :(
-          <br />
-          Попробуйте оформить заказ позже.
-        </div>
+        <div className="text text_type_main-medium mb-15 text_color_inactive">Loading...</div>
       )}
     </div>
   );
