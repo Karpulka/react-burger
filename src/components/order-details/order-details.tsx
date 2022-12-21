@@ -1,13 +1,16 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { FC } from 'react';
 import doneImg from '../../images/done.png';
 import styles from './order-details.module.css';
 import { orderMocks } from '../../utils/data';
 import { useSelector } from 'react-redux';
 
-function OrderDetails(props) {
+interface IOrderDeyailsProps {
+  orderNumber?: number;
+}
+
+const OrderDetails: FC<IOrderDeyailsProps> = (props) => {
   const image = orderMocks.image ? orderMocks.image : doneImg;
-  const { orderFailed } = useSelector((state) => state.order);
+  const { orderFailed } = useSelector((state: any) => state.order);
 
   if (orderFailed) {
     return (
@@ -36,10 +39,6 @@ function OrderDetails(props) {
       )}
     </div>
   );
-}
-
-OrderDetails.propTypes = {
-  orderNumber: PropTypes.number,
 };
 
 export default OrderDetails;

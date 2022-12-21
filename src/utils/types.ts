@@ -37,3 +37,17 @@ export interface IConstructorElement {
   handleClose?: () => void;
   key?: string;
 }
+
+export interface IProfile {
+  name: string;
+  email: string;
+  password: string;
+  [key: string]: any;
+}
+
+export interface INavigationItem {
+  title: string;
+  value: string;
+  link: string;
+  onSelectTab?: () => void;
+}

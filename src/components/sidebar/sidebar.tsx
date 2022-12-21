@@ -1,17 +1,22 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState, FC } from 'react';
 import styles from './sidebar.module.css';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useHistory } from 'react-router-dom';
+import { INavigationItem } from '../../utils/types';
 
-function Sidebar(props) {
+interface ISidebarProps {
+  navigation: INavigationItem[];
+  initialActive: string;
+}
+
+const Sidebar: FC<ISidebarProps> = (props) => {
   let { navigation, initialActive } = props;
   initialActive = initialActive ? initialActive : navigation[0].value;
   const [current, setCurrent] = useState(initialActive);
 
   const history = useHistory();
 
-  const onTabClick = (item) => {
+  const onTabClick = (item: INavigationItem) => {
     const { value, link, onSelectTab } = item;
     setCurrent(value);
     onSelectTab && onSelectTab();
@@ -38,18 +43,6 @@ function Sidebar(props) {
       </div>
     </section>
   );
-}
-
-Sidebar.propTypes = {
-  navigation: PropTypes.arrayOf(
-    PropTypes.shape({
-      title: PropTypes.string,
-      value: PropTypes.string,
-      link: PropTypes.string,
-      onSelectTab: PropTypes.func,
-    })
-  ).isRequired,
-  initialActive: PropTypes.string,
 };
 
 export default Sidebar;

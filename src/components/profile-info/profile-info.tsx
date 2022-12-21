@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, FC } from 'react';
 import { useSelector } from 'react-redux';
 import {
   Input,
@@ -10,14 +10,15 @@ import { updateUserInfo } from '../../services/actions/user';
 import { useDispatch } from 'react-redux';
 import { useForm } from '../../hooks/useForm';
 import styles from './profile-info.module.css';
+import { IProfile } from '../../utils/types';
 
-function ProfileInfo() {
+const ProfileInfo: FC = () => {
   const {
     user: { email: initialEmail, name: initialName },
     updateUserInfoFailed,
-  } = useSelector((state) => state.user);
+  } = useSelector((state: any) => state.user);
   const initialPassword = '';
-  const initialValues = {
+  const initialValues: IProfile = {
     name: initialName,
     email: initialEmail,
     password: initialPassword,
@@ -31,7 +32,7 @@ function ProfileInfo() {
     updateUserInfoFailed && onCancelClick();
   }, [updateUserInfoFailed]);
 
-  const onFiledChange = (event) => {
+  const onFiledChange = (event: React.ChangeEvent) => {
     handleChange(event);
     setIsChanges(true);
   };
@@ -70,17 +71,17 @@ function ProfileInfo() {
     setIsChanges(false);
   };
 
-  const onSubmit = (e) => {
+  const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    let params = {};
+    let params: { [key: string]: string } = {};
 
     Object.keys(values).forEach((name) => {
       if (values[name] !== initialValues[name]) {
         params[name] = values[name];
       }
     });
-
+    // @ts-ignore
     dispatch(updateUserInfo(params));
     setIsChanges(false);
   };
@@ -105,6 +106,6 @@ function ProfileInfo() {
       )}
     </form>
   );
-}
+};
 
 export default ProfileInfo;

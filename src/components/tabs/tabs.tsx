@@ -1,13 +1,21 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { FC } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './tabs.module.css';
 
-function Tabs({ tabs, onTabChange, current }) {
+interface ITabsProps {
+  tabs: {
+    value: string;
+    text: string;
+  }[];
+  onTabChange?: (tabValue: string) => void;
+  current?: string;
+}
+
+const Tabs: FC<ITabsProps> = ({ tabs, onTabChange, current }) => {
   const isTabs = tabs && tabs.length;
 
-  const onTabClick = (tabValue) => {
-    onTabChange(tabValue);
+  const onTabClick = (tabValue: string) => {
+    onTabChange && onTabChange(tabValue);
   };
 
   return (
@@ -29,17 +37,6 @@ function Tabs({ tabs, onTabChange, current }) {
       )}
     </>
   );
-}
-
-Tabs.propTypes = {
-  tabs: PropTypes.arrayOf(
-    PropTypes.shape({
-      value: PropTypes.string,
-      text: PropTypes.string,
-    })
-  ),
-  onTabChange: PropTypes.func,
-  current: PropTypes.string,
 };
 
 export default Tabs;

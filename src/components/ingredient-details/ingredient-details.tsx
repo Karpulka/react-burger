@@ -1,18 +1,22 @@
-import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
+import React, { useEffect, FC } from 'react';
 import styles from './ingredient-details.module.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { setCurrentIngredient } from '../../services/reducers/ingredients';
+import { IIngredientType } from '../../utils/types';
 
-function IngredientDetails(props) {
+interface IIngredientDetails {
+  header?: string;
+}
+
+const IngredientDetails: FC<IIngredientDetails> = (props) => {
   const { ingredientId } = useParams();
-  const { currentIngredient, all } = useSelector((state) => state.ingredients);
+  const { currentIngredient, all } = useSelector((state: any) => state.ingredients);
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (all && all.length) {
-      const ingredient = all.find((item) => item._id === ingredientId);
+      const ingredient = all.find((item: IIngredientType) => item._id === ingredientId);
       ingredient && dispatch(setCurrentIngredient(ingredient));
     }
   }, [all, dispatch, ingredientId]);
@@ -50,10 +54,6 @@ function IngredientDetails(props) {
       </div>
     </div>
   );
-}
-
-IngredientDetails.propTypes = {
-  header: PropTypes.string,
 };
 
 export default IngredientDetails;
