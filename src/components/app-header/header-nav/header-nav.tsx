@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { FC } from 'react';
 import HeaderButton from '../header-button/header-button';
 import { useHistory, useRouteMatch } from 'react-router-dom';
 import styles from './header-nav.module.css';
 
-function HeaderNav() {
+const HeaderNav: FC = () => {
   const history = useHistory();
   const isConstructor = !!useRouteMatch({ path: '/', exact: true });
   const isFeed = !!useRouteMatch('/feed');
@@ -23,6 +23,6 @@ function HeaderNav() {
       </HeaderButton>
     </nav>
   );
-}
+};
 
 export default HeaderNav;

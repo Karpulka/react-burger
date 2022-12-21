@@ -8,7 +8,7 @@ import { useDispatch } from 'react-redux';
 
 interface IBurgerConstructorListProps {
   ingredients: IIngredientType[];
-  isLastPart: boolean;
+  isLastPart?: boolean;
 }
 
 const BurgerConstructorList: FC<IBurgerConstructorListProps> = (props) => {

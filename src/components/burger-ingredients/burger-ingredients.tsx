@@ -1,8 +1,9 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, FC } from 'react';
 import Tabs from '../tabs/tabs';
 import BurgerIngredientsList from '../burger-ingredients-list/burger-ingredients-list';
 import styles from './burger-ingredients.module.css';
 import { useSelector } from 'react-redux';
+import { IIngredientType } from '../../utils/types';
 
 export const IngredientTypes = {
   bun: 'bun',
@@ -10,22 +11,24 @@ export const IngredientTypes = {
   sauce: 'sauce',
 };
 
-const filteringredients = (ingredients = [], type) => {
+const filteringredients = (ingredients: IIngredientType[] = [], type: string) => {
   return ingredients.filter((item) => item.type === type);
 };
 
-function BurgerIngredients() {
-  const { all: allIngredients } = useSelector((state) => state.ingredients);
-  const scrollBlockRef = useRef(null);
-  const [currentTab, setCurrentTab] = useState(IngredientTypes.bun);
-  const tabRefs = [];
+const BurgerIngredients: FC = () => {
+  const { all: allIngredients } = useSelector((state: any) => state.ingredients);
+  const scrollBlockRef = useRef<HTMLDivElement>(null);
+  const [currentTab, setCurrentTab] = useState<string>(IngredientTypes.bun);
+  const tabRefs: HTMLDivElement[] = [];
 
   let scrollBlockTop = 0;
 
   const onScrollBlock = () => {
     const targetValue = 0;
     scrollBlockTop =
-      scrollBlockTop === 0 ? scrollBlockRef.current.getBoundingClientRect().top : scrollBlockTop;
+      scrollBlockRef.current && scrollBlockTop === 0
+        ? scrollBlockRef.current.getBoundingClientRect().top
+        : scrollBlockTop;
     const sortTabsByTop = [...tabRefs].sort((currentTab, prevTab) => {
       const { top: prevTop } = prevTab.getBoundingClientRect();
       const { top: currentTop } = currentTab.getBoundingClientRect();
@@ -38,6 +41,7 @@ function BurgerIngredients() {
 
     const tabValue = sortTabsByTop[0].getAttribute('id');
     if (tabValue !== currentTab) {
+      // @ts-ignore
       setCurrentTab(tabValue);
     }
   };
@@ -57,7 +61,7 @@ function BurgerIngredients() {
     },
   ];
 
-  const onTabChange = (tabValue) => {
+  const onTabChange = (tabValue: string) => {
     setCurrentTab(tabValue);
     const tabIndex = tabs.findIndex((tab) => tab.value === tabValue);
     if (tabIndex > -1) {
@@ -78,7 +82,7 @@ function BurgerIngredients() {
           return (
             ingredients && (
               <div
-                ref={(tabRef) => (tabRefs[key] = tabRef)}
+                ref={(tabRef: HTMLDivElement) => (tabRefs[key] = tabRef)}
                 key={`${tab.value}-list`}
                 id={tab.value}>
                 <BurgerIngredientsList {...burgerListProps} />
@@ -89,6 +93,6 @@ function BurgerIngredients() {
       </div>
     </section>
   );
-}
+};
 
 export default BurgerIngredients;

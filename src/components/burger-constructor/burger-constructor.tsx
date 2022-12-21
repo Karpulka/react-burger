@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, FC } from 'react';
 import BurgerConstructorListParts from '../burger-constructor-list-parts/burger-constructor-list-parts';
 import Price from '../price/price';
 import OrderDetails from '../order-details/order-details';
@@ -11,16 +11,17 @@ import { removeAllIngredients } from '../../services/reducers/ingredients';
 import { createOrder } from '../../services/actions/order';
 import { clearNewOrder } from '../../services/reducers/order';
 import { useHistory } from 'react-router-dom';
+import { IIngredientType } from '../../utils/types';
 
-function BurgerConstructor() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const { selected: selectedIngredients } = useSelector((state) => state.ingredients);
-  const { user } = useSelector((state) => state.user);
-  const { newOrder } = useSelector((state) => state.order);
+const BurgerConstructor: FC = () => {
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const { selected: selectedIngredients } = useSelector((state: any) => state.ingredients);
+  const { user } = useSelector((state: any) => state.user);
+  const { newOrder } = useSelector((state: any) => state.order);
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const getResultPrice = (ingredients) => {
+  const getResultPrice = (ingredients: IIngredientType[]): number => {
     if (ingredients && ingredients.length) {
       return ingredients.reduce((sum, ingredient) => {
         const price =
@@ -35,7 +36,9 @@ function BurgerConstructor() {
   const notDisableOrderCreate =
     selectedIngredients &&
     selectedIngredients.length > 1 &&
-    selectedIngredients.find((ingredient) => ingredient.type === IngredientTypes.bun);
+    selectedIngredients.find(
+      (ingredient: IIngredientType) => ingredient.type === IngredientTypes.bun
+    );
 
   const onCreateOrderClick = () => {
     if (!Object.keys(user).length) {
@@ -43,7 +46,8 @@ function BurgerConstructor() {
       return;
     }
     setIsModalOpen(true);
-    const ingredients = selectedIngredients.map((ingredient) => ingredient._id);
+    const ingredients = selectedIngredients.map((ingredient: IIngredientType) => ingredient._id);
+    // @ts-ignore
     dispatch(createOrder({ ingredients }));
   };
 
@@ -81,6 +85,6 @@ function BurgerConstructor() {
       )}
     </>
   );
-}
+};
 
 export default BurgerConstructor;

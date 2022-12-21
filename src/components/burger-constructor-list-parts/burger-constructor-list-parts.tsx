@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import BurgerConstructorList from '../burger-constructor-list/burger-constructor-list';
 import { IngredientTypes } from '../burger-ingredients/burger-ingredients';
 import styles from './burger-constructor-list-parts.module.css';
@@ -7,14 +7,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useDrop } from 'react-dnd';
 import { addIngredient } from '../../services/reducers/ingredients';
 import { v1 as uuid } from 'uuid';
+import { IIngredientType } from '../../utils/types';
 
-function BurgerConstructorListParts() {
-  const { selected: selectedIngredients } = useSelector((state) => state.ingredients);
+const BurgerConstructorListParts: FC = () => {
+  const { selected: selectedIngredients } = useSelector((state: any) => state.ingredients);
   const dispatch = useDispatch();
 
   const prepareIngredients = () => {
     const bunIndex = selectedIngredients.findIndex(
-      (ingredient) => ingredient.type === IngredientTypes.bun
+      (ingredient: IIngredientType) => ingredient.type === IngredientTypes.bun
     );
 
     if (bunIndex === -1) {
@@ -24,21 +25,26 @@ function BurgerConstructorListParts() {
     return addIngredientsWithBun(bunIndex);
   };
 
-  const addIngredientsWithBun = (bunIndex) => {
+  const addIngredientsWithBun = (bunIndex: number) => {
+    const result: IIngredientType[] = [];
     const bunTop = Object.assign({}, selectedIngredients[bunIndex], {
       name: `${selectedIngredients[bunIndex].name} (верх)`,
     });
     const bunBottom = Object.assign({}, selectedIngredients[bunIndex], {
       name: `${selectedIngredients[bunIndex].name} (низ)`,
     });
-    const otherIngredients = removeElementInArrayByIndex(selectedIngredients, bunIndex);
-    return [].concat([bunTop], otherIngredients, [bunBottom]);
+    const otherIngredients: IIngredientType[] = removeElementInArrayByIndex<IIngredientType>(
+      selectedIngredients,
+      bunIndex
+    );
+    return result.concat([bunTop], otherIngredients, [bunBottom]);
   };
 
   const ingredients = prepareIngredients();
   const isIngredients = ingredients && ingredients.length;
   const isBun =
-    isIngredients && ingredients.find((ingredient) => ingredient.type === IngredientTypes.bun);
+    isIngredients &&
+    ingredients.find((ingredient: IIngredientType) => ingredient.type === IngredientTypes.bun);
 
   const isFirstPartIngredients = isIngredients && ingredients[0].type === IngredientTypes.bun;
   const firstPartIngredients = isFirstPartIngredients ? [ingredients[0]] : [];
@@ -59,6 +65,7 @@ function BurgerConstructorListParts() {
       };
     },
     drop(ingredient) {
+      // @ts-ignore
       dispatch(addIngredient({ ...ingredient, key: uuid() }));
     },
   });
@@ -72,6 +79,6 @@ function BurgerConstructorListParts() {
       <BurgerConstructorList ingredients={lastPartIngredients} isLastPart={true} />
     </>
   );
-}
+};
 
 export default BurgerConstructorListParts;
