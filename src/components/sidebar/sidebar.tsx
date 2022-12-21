@@ -6,7 +6,7 @@ import { INavigationItem } from '../../utils/types';
 
 interface ISidebarProps {
   navigation: INavigationItem[];
-  initialActive: string;
+  initialActive?: string;
 }
 
 const Sidebar: FC<ISidebarProps> = (props) => {

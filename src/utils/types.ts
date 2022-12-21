@@ -48,6 +48,6 @@ export interface IProfile {
 export interface INavigationItem {
   title: string;
   value: string;
-  link: string;
+  link?: string;
   onSelectTab?: () => void;
 }

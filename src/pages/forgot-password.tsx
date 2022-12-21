@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, FC } from 'react';
 import AppForm from '../components/app-form/app-form';
 import { EmailInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, useHistory } from 'react-router-dom';
@@ -6,9 +6,9 @@ import { forgotPassword } from '../services/actions/user';
 import { useDispatch, useSelector } from 'react-redux';
 import { resetIsForgotPasswordSuccess } from '../services/reducers/user';
 
-function ForgotPasswordPage() {
+const ForgotPasswordPage: FC = () => {
   const [email, setEmail] = useState('');
-  const { isForgotPasswordSuccess } = useSelector((state) => state.user);
+  const { isForgotPasswordSuccess } = useSelector((state: any) => state.user);
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -20,11 +20,12 @@ function ForgotPasswordPage() {
     };
   }, [history, isForgotPasswordSuccess, dispatch]);
 
-  const onChangeEmail = (e) => {
+  const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
   };
 
   const onSubmitForm = () => {
+    // @ts-ignore
     dispatch(forgotPassword({ email }));
   };
 
@@ -57,6 +58,6 @@ function ForgotPasswordPage() {
       <EmailInput {...emailProps} />
     </AppForm>
   );
-}
+};
 
 export default ForgotPasswordPage;

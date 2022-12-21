@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import AppForm from '../components/app-form/app-form';
 import {
   Input,
@@ -10,7 +10,7 @@ import { register } from '../services/actions/user';
 import { Link } from 'react-router-dom';
 import { useForm } from '../hooks/useForm';
 
-function RegisterPage() {
+const RegisterPage: FC = () => {
   const { values, handleChange } = useForm({
     name: '',
     email: '',
@@ -20,6 +20,7 @@ function RegisterPage() {
   const dispatch = useDispatch();
 
   const onSubmitForm = () => {
+    // @ts-ignore
     dispatch(register(values));
   };
 
@@ -66,11 +67,13 @@ function RegisterPage() {
 
   return (
     <AppForm {...formProps}>
-      <Input {...inputNameProps} />
-      <EmailInput {...emailProps} />
-      <PasswordInput {...passwordProps} />
+      <>
+        <Input {...inputNameProps} />
+        <EmailInput {...emailProps} />
+        <PasswordInput {...passwordProps} />
+      </>
     </AppForm>
   );
-}
+};
 
 export default RegisterPage;

@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { FC } from 'react';
 import Sidebar from '../components/sidebar/sidebar';
 import ProfileInfo from '../components/profile-info/profile-info';
 import { useDispatch } from 'react-redux';
 import { logout } from '../services/actions/user';
 import styles from './profile.module.css';
 
-function ProfilePage() {
+const ProfilePage: FC = () => {
   const dispatch = useDispatch();
 
   const sidebarProps = {
@@ -24,6 +24,7 @@ function ProfilePage() {
         title: 'Выход',
         value: 'logout',
         onSelectTab: () => {
+          // @ts-ignore
           dispatch(logout());
         },
       },
@@ -40,6 +41,6 @@ function ProfilePage() {
       </div>
     </section>
   );
-}
+};
 
 export default ProfilePage;

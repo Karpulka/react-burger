@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import BurgerIngredients from '../components/burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../components/burger-constructor/burger-constructor';
 import { useSelector } from 'react-redux';
@@ -6,8 +6,8 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
 import styles from './home.module.css';
 
-function HomePage() {
-  const { ingredientsRequest, ingredientsFailed } = useSelector((state) => state.ingredients);
+const HomePage: FC = () => {
+  const { ingredientsRequest, ingredientsFailed } = useSelector((state: any) => state.ingredients);
 
   return (
     <>
@@ -32,6 +32,6 @@ function HomePage() {
       )}
     </>
   );
-}
+};
 
 export default HomePage;

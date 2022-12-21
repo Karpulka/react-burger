@@ -32,7 +32,7 @@ const ProfileInfo: FC = () => {
     updateUserInfoFailed && onCancelClick();
   }, [updateUserInfoFailed]);
 
-  const onFiledChange = (event: React.ChangeEvent) => {
+  const onFiledChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     handleChange(event);
     setIsChanges(true);
   };
