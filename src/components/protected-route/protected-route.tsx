@@ -1,11 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
+import React, { useEffect, useState, FC, ReactElement } from 'react';
 import { Route, Redirect, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserInfo, refreshToken } from '../../services/actions/user';
 
-function ProtectedRoute({ onlyForAuth, children, ...rest }) {
-  const { user } = useSelector((state) => state.user);
+interface IProtectedRouteProps {
+  onlyForAuth?: boolean;
+  children: ReactElement;
+  path: string;
+  exact?: boolean;
+}
+
+const ProtectedRoute: FC<IProtectedRouteProps> = ({ onlyForAuth, children, ...rest }) => {
+  const { user } = useSelector((state: any) => state.user);
   const [isUserLoaded, setIsUserLoaded] = useState(false);
   const [isUserInfo, setIsUserInfo] = useState(!!Object.keys(user).length);
   const dispatch = useDispatch();
@@ -13,7 +19,9 @@ function ProtectedRoute({ onlyForAuth, children, ...rest }) {
 
   const init = async () => {
     const token = window.localStorage.getItem('refreshToken');
+    // @ts-ignore
     token && (await dispatch(refreshToken()));
+    // @ts-ignore
     await dispatch(getUserInfo());
     setIsUserLoaded(true);
   };
@@ -49,8 +57,6 @@ function ProtectedRoute({ onlyForAuth, children, ...rest }) {
   }
 
   return <Route {...rest}>{children}</Route>;
-}
-
-ProtectedRoute.propTypes = { onlyForAuth: PropTypes.bool, children: PropTypes.node };
+};
 
 export default ProtectedRoute;

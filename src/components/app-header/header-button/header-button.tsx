@@ -1,5 +1,4 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { FC } from 'react';
 import styles from './header-button.module.css';
 import * as uiComponents from '@ya.praktikum/react-developer-burger-ui-components';
 
@@ -10,7 +9,14 @@ export const ButtonTypes = {
   success: 'success',
 };
 
-function HeaderButton(props) {
+interface IHeaderButtonProps {
+  icon: string;
+  children: string;
+  isActive?: boolean;
+  onButtonClick?: () => void;
+}
+
+const HeaderButton: FC<IHeaderButtonProps> = (props) => {
   const [buttonType, setButtonType] = React.useState(
     props.isActive ? ButtonTypes.primary : ButtonTypes.secondary
   );
@@ -43,17 +49,10 @@ function HeaderButton(props) {
       <span className={`${styles.button__text} ${textColorClass}`}>{children}</span>
     </button>
   );
-}
+};
 
 HeaderButton.defaultProps = {
   isActive: false,
-};
-
-HeaderButton.propTypes = {
-  icon: PropTypes.string.isRequired,
-  children: PropTypes.string.isRequired,
-  isActive: PropTypes.bool,
-  onButtonClick: PropTypes.func,
 };
 
 export default HeaderButton;

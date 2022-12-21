@@ -1,13 +1,20 @@
-import React, { useCallback } from 'react';
-import PropTypes from 'prop-types';
+import React, { useCallback, FC, ReactElement } from 'react';
 import styles from './app-form.module.css';
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
 
-function AppForm(props) {
+interface IAppForm {
+  title?: string;
+  btnText?: string;
+  onSubmitForm: () => void;
+  description?: ReactElement;
+  children?: ReactElement;
+}
+
+const AppForm: FC<IAppForm> = (props) => {
   const { title, btnText, onSubmitForm, children, description } = props;
 
   const onSubmit = useCallback(
-    (e) => {
+    (e: React.FormEvent) => {
       e.preventDefault();
       onSubmitForm();
     },
@@ -26,14 +33,6 @@ function AppForm(props) {
       </form>
     </div>
   );
-}
-
-AppForm.propTypes = {
-  title: PropTypes.string,
-  btnText: PropTypes.string,
-  onSubmitForm: PropTypes.func.isRequired,
-  description: PropTypes.node,
-  children: PropTypes.node,
 };
 
 export default AppForm;
