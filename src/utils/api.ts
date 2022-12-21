@@ -1,8 +1,14 @@
+import { RequestMethods } from './types';
+
 const API_URL = 'https://norma.nomoreparties.space/api';
 
-export const apiRequest = async (url, data = {}, method = 'GET') => {
+export const apiRequest = async <T, R>(
+  url: string,
+  data: T | {} = {},
+  method: RequestMethods = RequestMethods.GET
+): Promise<R> => {
   const params =
-    method === 'GET'
+    method === RequestMethods.GET
       ? {}
       : {
           body: JSON.stringify(data),

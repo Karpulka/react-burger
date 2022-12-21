@@ -1,16 +1,20 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { FC } from 'react';
 import styles from './burger-constructor-list.module.css';
 import { IngredientTypes } from '../burger-ingredients/burger-ingredients';
 import BurgerConstructorItem from '../burger-constructor-item/burger-constructor-item';
-import { IngredientType } from '../../utils/types';
+import { IIngredientType, IConstructorElement } from '../../utils/types';
 import { removeIngredient } from '../../services/reducers/ingredients';
 import { useDispatch } from 'react-redux';
 
-function BurgerConstructorList(props) {
+interface IBurgerConstructorListProps {
+  ingredients: IIngredientType[];
+  isLastPart: boolean;
+}
+
+const BurgerConstructorList: FC<IBurgerConstructorListProps> = (props) => {
   const dispatch = useDispatch();
 
-  const onDeleteClick = (ingredient) => {
+  const onDeleteClick = (ingredient: IIngredientType) => {
     dispatch(removeIngredient(ingredient));
   };
 
@@ -19,7 +23,7 @@ function BurgerConstructorList(props) {
       {props.ingredients && props.ingredients.length ? (
         <div className={styles.list}>
           {props.ingredients.map((ingredient, key) => {
-            let elementProps = {
+            let elementProps: IConstructorElement = {
               text: ingredient.name,
               thumbnail: ingredient.image_mobile,
               price: ingredient.price,
@@ -50,15 +54,10 @@ function BurgerConstructorList(props) {
       ) : null}
     </>
   );
-}
+};
 
 BurgerConstructorList.defaultProps = {
   isLastPart: false,
-};
-
-BurgerConstructorList.propTypes = {
-  ingredients: PropTypes.arrayOf(PropTypes.shape(IngredientType)),
-  isLastPart: PropTypes.bool,
 };
 
 export default BurgerConstructorList;

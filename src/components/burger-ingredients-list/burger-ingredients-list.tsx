@@ -1,24 +1,29 @@
-import React, { useMemo } from 'react';
-import PropTypes from 'prop-types';
+import React, { useMemo, FC } from 'react';
 import BurgerIngredientsItem from '../burger-ingredients-item/burger-ingredients-item';
-import { IngredientType } from '../../utils/types';
+import { IIngredientType } from '../../utils/types';
 import styles from './burger-ingredients-list.module.css';
 import { setCurrentIngredient } from '../../services/reducers/ingredients';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-function BurgerIngredientsList({ title, ingredients }) {
-  const { selected: selectedIngredients } = useSelector((state) => state.ingredients);
+interface IBurgerIngredientsListProps {
+  title: string;
+  ingredients: IIngredientType[];
+}
+
+const BurgerIngredientsList: FC<IBurgerIngredientsListProps> = ({ title, ingredients }) => {
+  const { selected: selectedIngredients } = useSelector((state: any) => state.ingredients);
   const dispatch = useDispatch();
 
-  const onIngredientClick = (ingredient) => {
+  const onIngredientClick = (ingredient: IIngredientType) => {
     dispatch(setCurrentIngredient(ingredient));
   };
 
   const ingredientCount = useMemo(
-    () => (ingredientId) => {
+    () => (ingredientId: string) => {
       return selectedIngredients.reduce(
-        (count, ingredient) => (ingredient._id === ingredientId ? count + 1 : count),
+        (count: number, ingredient: IIngredientType) =>
+          ingredient._id === ingredientId ? count + 1 : count,
         0
       );
     },
@@ -44,11 +49,6 @@ function BurgerIngredientsList({ title, ingredients }) {
       </div>
     </>
   );
-}
-
-BurgerIngredientsList.propTypes = {
-  title: PropTypes.string,
-  ingredients: PropTypes.arrayOf(PropTypes.shape(IngredientType)),
 };
 
 export default BurgerIngredientsList;
