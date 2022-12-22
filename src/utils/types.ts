@@ -1,8 +1,8 @@
-export enum RequestMethods {
-  GET = 'GET',
-  POST = 'POST',
-  PATCH = 'PATCH',
-}
+export const RequestMethods = {
+  GET: 'GET',
+  POST: 'POST',
+  PATCH: 'PATCH',
+};
 
 export interface IIngredientType {
   readonly _id: string;

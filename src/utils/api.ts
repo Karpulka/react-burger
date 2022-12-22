@@ -5,7 +5,7 @@ const API_URL = 'https://norma.nomoreparties.space/api';
 export const apiRequest = async <T, R>(
   url: string,
   data: T | {} = {},
-  method: RequestMethods = RequestMethods.GET
+  method: string = RequestMethods.GET
 ): Promise<R> => {
   const params =
     method === RequestMethods.GET
