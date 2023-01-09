@@ -40,8 +40,7 @@ const BurgerIngredients: FC = () => {
     });
 
     const tabValue = sortTabsByTop[0].getAttribute('id');
-    if (tabValue !== currentTab) {
-      // @ts-ignore
+    if (tabValue && tabValue !== currentTab) {
       setCurrentTab(tabValue);
     }
   };
