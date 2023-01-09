@@ -59,6 +59,7 @@
     "@types/jest": "27.5.2",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
-    "prettier": "^2.7.1"
+    "prettier": "^2.7.1",
+    "utility-types": "^3.10.0"
   }
 }

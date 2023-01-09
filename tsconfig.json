@@ -4,7 +4,9 @@
     "lib": [
       "dom",
       "dom.iterable",
-      "esnext"
+      "esnext",
+      "es2015.core",
+      "es5"
     ],
     "allowJs": true,
     "skipLibCheck": true,
