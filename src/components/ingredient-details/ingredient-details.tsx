@@ -1,6 +1,7 @@
 import React, { useEffect, FC } from 'react';
 import styles from './ingredient-details.module.css';
-import { useSelector, useDispatch } from 'react-redux';
+import { useAppDispatch } from '../../hooks/useAppDispatch';
+import { useAppSelector } from '../../hooks/useAppSelector';
 import { useParams } from 'react-router-dom';
 import { setCurrentIngredient } from '../../services/reducers/ingredients';
 import { IIngredientType } from '../../utils/types';
@@ -11,8 +12,8 @@ interface IIngredientDetails {
 
 const IngredientDetails: FC<IIngredientDetails> = (props) => {
   const { ingredientId } = useParams();
-  const { currentIngredient, all } = useSelector((state: any) => state.ingredients);
-  const dispatch = useDispatch();
+  const { currentIngredient, all } = useAppSelector((state) => state.ingredients);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (all && all.length) {
@@ -21,7 +22,8 @@ const IngredientDetails: FC<IIngredientDetails> = (props) => {
     }
   }, [all, dispatch, ingredientId]);
 
-  const { name, proteins, fat, carbohydrates, calories, image_large } = currentIngredient;
+  const { name, proteins, fat, carbohydrates, calories, image_large } =
+    currentIngredient as IIngredientType;
 
   const info = [
     { title: 'Калории, ккал', value: calories, code: 'calories' },

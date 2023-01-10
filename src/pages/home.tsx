@@ -1,13 +1,13 @@
 import React, { FC } from 'react';
 import BurgerIngredients from '../components/burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../components/burger-constructor/burger-constructor';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../hooks/useAppSelector';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
 import styles from './home.module.css';
 
 const HomePage: FC = () => {
-  const { ingredientsRequest, ingredientsFailed } = useSelector((state: any) => state.ingredients);
+  const { ingredientsRequest, ingredientsFailed } = useAppSelector((state) => state.ingredients);
 
   return (
     <>

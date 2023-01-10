@@ -6,7 +6,8 @@ import Modal from '../modal/modal';
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-constructor.module.css';
 import { IngredientTypes } from '../burger-ingredients/burger-ingredients';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch } from '../../hooks/useAppDispatch';
+import { useAppSelector } from '../../hooks/useAppSelector';
 import { removeAllIngredients } from '../../services/reducers/ingredients';
 import { createOrder } from '../../services/actions/order';
 import { clearNewOrder } from '../../services/reducers/order';
@@ -15,10 +16,10 @@ import { IIngredientType } from '../../utils/types';
 
 const BurgerConstructor: FC = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const { selected: selectedIngredients } = useSelector((state: any) => state.ingredients);
-  const { user } = useSelector((state: any) => state.user);
-  const { newOrder } = useSelector((state: any) => state.order);
-  const dispatch = useDispatch();
+  const { selected: selectedIngredients } = useAppSelector((state) => state.ingredients);
+  const { user } = useAppSelector((state) => state.user);
+  const { newOrder } = useAppSelector((state) => state.order);
+  const dispatch = useAppDispatch();
   const history = useHistory();
 
   const getResultPrice = (ingredients: IIngredientType[]): number => {
@@ -47,7 +48,6 @@ const BurgerConstructor: FC = () => {
     }
     setIsModalOpen(true);
     const ingredients = selectedIngredients.map((ingredient: IIngredientType) => ingredient._id);
-    // @ts-ignore
     dispatch(createOrder({ ingredients }));
   };
 
@@ -57,7 +57,7 @@ const BurgerConstructor: FC = () => {
     dispatch(clearNewOrder());
   };
 
-  const orderNumber = newOrder && newOrder.order && newOrder.order.number;
+  const orderNumber = newOrder?.order?.number;
   const resultPrice = getResultPrice(selectedIngredients);
 
   return (

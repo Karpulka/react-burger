@@ -1,12 +1,12 @@
 import React, { FC } from 'react';
 import Sidebar from '../components/sidebar/sidebar';
 import ProfileInfo from '../components/profile-info/profile-info';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch } from '../hooks/useAppDispatch';
 import { logout } from '../services/actions/user';
 import styles from './profile.module.css';
 
 const ProfilePage: FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const sidebarProps = {
     navigation: [
@@ -24,7 +24,6 @@ const ProfilePage: FC = () => {
         title: 'Выход',
         value: 'logout',
         onSelectTab: () => {
-          // @ts-ignore
           dispatch(logout());
         },
       },

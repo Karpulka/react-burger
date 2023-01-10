@@ -1,7 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { createOrder } from '../actions/order';
 
-const initialState = {
+import { IOrderStore } from '../../utils/types';
+
+const initialState: IOrderStore = {
   newOrder: {},
   orderRequest: false,
   orderFailed: false,

@@ -1,21 +1,21 @@
 import React, { FC } from 'react';
 import AppForm from '../components/app-form/app-form';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch } from '../hooks/useAppDispatch';
 import { login } from '../services/actions/user';
 import { EmailInput, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link } from 'react-router-dom';
 import { useForm } from '../hooks/useForm';
+import { IUserActionsFields } from '../utils/types';
 
 const LoginPage: FC = () => {
-  const { values, handleChange } = useForm({
+  const { values, handleChange } = useForm<IUserActionsFields>({
     email: '',
     password: '',
   });
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const onSubmitForm = () => {
-    // @ts-ignore
     dispatch(login(values));
   };
 

@@ -1,5 +1,4 @@
 import React, { useState, useEffect, FC } from 'react';
-import { useSelector } from 'react-redux';
 import {
   Input,
   EmailInput,
@@ -7,26 +6,25 @@ import {
   Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { updateUserInfo } from '../../services/actions/user';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch } from '../../hooks/useAppDispatch';
+import { useAppSelector } from '../../hooks/useAppSelector';
 import { useForm } from '../../hooks/useForm';
 import styles from './profile-info.module.css';
-import { IProfile } from '../../utils/types';
+import { IProfile, IUserFields } from '../../utils/types';
 
 const ProfileInfo: FC = () => {
-  const {
-    user: { email: initialEmail, name: initialName },
-    updateUserInfoFailed,
-  } = useSelector((state: any) => state.user);
+  const { user, updateUserInfoFailed } = useAppSelector((state) => state.user);
+  const { email: initialEmail, name: initialName } = user as IUserFields;
   const initialPassword = '';
   const initialValues: IProfile = {
-    name: initialName,
-    email: initialEmail,
+    name: initialName as string,
+    email: initialEmail as string,
     password: initialPassword,
   };
   const { values, handleChange, setValues } = useForm(initialValues);
   const [isChanges, setIsChanges] = useState(false);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     updateUserInfoFailed && onCancelClick();
@@ -81,7 +79,6 @@ const ProfileInfo: FC = () => {
         params[name] = values[name];
       }
     });
-    // @ts-ignore
     dispatch(updateUserInfo(params));
     setIsChanges(false);
   };

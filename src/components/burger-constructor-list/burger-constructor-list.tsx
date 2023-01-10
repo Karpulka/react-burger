@@ -4,7 +4,7 @@ import { IngredientTypes } from '../burger-ingredients/burger-ingredients';
 import BurgerConstructorItem from '../burger-constructor-item/burger-constructor-item';
 import { IIngredientType, IConstructorElement } from '../../utils/types';
 import { removeIngredient } from '../../services/reducers/ingredients';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch } from '../../hooks/useAppDispatch';
 
 interface IBurgerConstructorListProps {
   ingredients: IIngredientType[];
@@ -12,7 +12,7 @@ interface IBurgerConstructorListProps {
 }
 
 const BurgerConstructorList: FC<IBurgerConstructorListProps> = (props) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const onDeleteClick = (ingredient: IIngredientType) => {
     dispatch(removeIngredient(ingredient));

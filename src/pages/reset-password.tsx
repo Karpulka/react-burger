@@ -3,17 +3,19 @@ import AppForm from '../components/app-form/app-form';
 import { PasswordInput, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, useHistory } from 'react-router-dom';
 import { resetPassword } from '../services/actions/user';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch } from '../hooks/useAppDispatch';
+import { useAppSelector } from '../hooks/useAppSelector';
 import { resetIsResetPasswordSuccess } from '../services/reducers/user';
 import { useForm } from '../hooks/useForm';
+import { IUserActionsFields } from '../utils/types';
 
 const ResetPasswordPage: FC = () => {
-  const { values, handleChange } = useForm({
+  const { values, handleChange } = useForm<IUserActionsFields>({
     token: '',
     password: '',
   });
-  const { isResetPasswordSuccess } = useSelector((state: any) => state.user);
-  const dispatch = useDispatch();
+  const { isResetPasswordSuccess } = useAppSelector((state) => state.user);
+  const dispatch = useAppDispatch();
   const history = useHistory();
 
   useEffect(() => {
@@ -24,7 +26,6 @@ const ResetPasswordPage: FC = () => {
   }, [history, dispatch, isResetPasswordSuccess]);
 
   const onSubmitForm = () => {
-    // @ts-ignore
     dispatch(resetPassword(values));
   };
 

@@ -14,7 +14,7 @@ import ProtectedRoute from '../protected-route/protected-route';
 import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import { setCurrentIngredient } from '../../services/reducers/ingredients';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { getIngredients } from '../../services/actions/ingredients';
 import { getUserInfo } from '../../services/actions/user';
 
@@ -22,12 +22,10 @@ function App() {
   const location = useLocation();
   const history = useHistory();
   const background = location.state && location.state.background;
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    // @ts-ignore
     dispatch(getIngredients());
-    // @ts-ignore
     dispatch(getUserInfo());
   }, [dispatch]);
 

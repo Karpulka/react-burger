@@ -11,7 +11,9 @@ import {
 } from '../actions/user';
 import { logout as clearUser } from '../../utils/utils';
 
-const initialState = {
+import { IUserStore } from '../../utils/types';
+
+const initialState: IUserStore = {
   registerRequest: false,
   registerFailed: false,
   user: {},
