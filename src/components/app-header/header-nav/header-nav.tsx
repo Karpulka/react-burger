@@ -18,7 +18,12 @@ const HeaderNav: FC = () => {
         }}>
         Конструктор
       </HeaderButton>
-      <HeaderButton icon="ListIcon" isActive={isFeed}>
+      <HeaderButton
+        icon="ListIcon"
+        isActive={isFeed}
+        onButtonClick={() => {
+          history.push('/feed');
+        }}>
         Лента заказов
       </HeaderButton>
     </nav>

@@ -73,20 +73,20 @@ export interface IIngredientsStore {
 }
 
 interface IOrderParams {
-  ingredients?: IIngredientType[];
-  _id?: string;
+  ingredients: IIngredientType[];
+  _id: string;
   owner?: {
     name?: string;
     email?: string;
     createdAt?: string;
     updatedAt?: string;
   };
-  status?: string;
-  name?: string;
-  createdAt?: string;
+  status: string;
+  name: string;
+  createdAt: string;
   updatedAt?: string;
-  number?: number;
-  price?: number;
+  number: number;
+  price: number;
 }
 
 export interface IOrder {

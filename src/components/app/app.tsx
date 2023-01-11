@@ -9,6 +9,7 @@ import {
   WithPageWrapperResetPasswordPage,
   WithPageWrapperProfilePage,
   WithPageWrapperIngredientDetails,
+  WithFeedPage,
 } from '../../pages';
 import ProtectedRoute from '../protected-route/protected-route';
 import Modal from '../modal/modal';
@@ -52,12 +53,22 @@ function App() {
         <ProtectedRoute path="/reset-password" exact>
           <WithPageWrapperResetPasswordPage />
         </ProtectedRoute>
+        {/*<ProtectedRoute path="/profile/orders" exact>*/}
+        {/*  */}
+        {/*</ProtectedRoute>*/}
+        {/*<ProtectedRoute path="/profile/orders/:id" exact>*/}
+        {/*  */}
+        {/*</ProtectedRoute>*/}
         <ProtectedRoute path="/profile" onlyForAuth exact>
           <WithPageWrapperProfilePage />
         </ProtectedRoute>
         <Route path="/ingredients/:ingredientId" exact>
           <WithPageWrapperIngredientDetails header={'Детали ингредиента'} />
         </Route>
+        <Route path="/feed" exact>
+          <WithFeedPage />
+        </Route>
+        <Route path="/feed/:id" exact></Route>
         <Route>
           <WithPageWrapperNotFound404 />
         </Route>

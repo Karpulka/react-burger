@@ -4,11 +4,11 @@ import styles from './order-details.module.css';
 import { orderMocks } from '../../utils/data';
 import { useAppSelector } from '../../hooks/useAppSelector';
 
-interface IOrderDeyailsProps {
+interface IOrderDetailsProps {
   orderNumber?: number;
 }
 
-const OrderDetails: FC<IOrderDeyailsProps> = (props) => {
+const OrderDetails: FC<IOrderDetailsProps> = (props) => {
   const image = orderMocks.image ? orderMocks.image : doneImg;
   const { orderFailed } = useAppSelector((state) => state.order);
 

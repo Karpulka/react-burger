@@ -1,0 +1,55 @@
+.order {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 24px;
+    gap: 24px;
+    background: #1C1C21;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 0px 2px rgba(0, 0, 0, 0.06), 0px 0px 1px rgba(0, 0, 0, 0.04);
+    border-radius: 40px;
+    width: 100%;
+}
+
+.top {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.bottom {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.ingredients {
+    display: flex;
+    padding-left: 8px;
+}
+
+.ingredient {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: linear-gradient(#131316, #131316) padding-box,
+    linear-gradient(to right, #801ab2, #4c4cff) border-box;
+    border: 2px solid transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    margin-left: -8px;
+}
+
+.ingredient img {
+    display: block;
+    width: 112px;
+}
+
+.lastIngredientsCount {
+    composes: text text_type_main-default from '~@ya.praktikum/react-developer-burger-ui-components/dist/ui/common.css';
+    position: absolute;
+    display: block;
+    text-align: center;
+}

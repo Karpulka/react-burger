@@ -6,6 +6,7 @@ import ForgotPasswordPage from './forgot-password';
 import ResetPasswordPage from './reset-password';
 import ProfilePage from './profile';
 import IngredientDetails from '../components/ingredient-details/ingredient-details';
+import FeedPage from './feed';
 import withPageWrapper from '../hocs/with-page-wrapper';
 
 const WithPageWrapperHomePage = withPageWrapper(HomePage);
@@ -16,6 +17,7 @@ const WithPageWrapperForgotPasswordPage = withPageWrapper(ForgotPasswordPage);
 const WithPageWrapperResetPasswordPage = withPageWrapper(ResetPasswordPage);
 const WithPageWrapperProfilePage = withPageWrapper(ProfilePage);
 const WithPageWrapperIngredientDetails = withPageWrapper(IngredientDetails);
+const WithFeedPage = withPageWrapper(FeedPage);
 
 export {
   WithPageWrapperHomePage,
@@ -26,4 +28,5 @@ export {
   WithPageWrapperResetPasswordPage,
   WithPageWrapperProfilePage,
   WithPageWrapperIngredientDetails,
+  WithFeedPage,
 };
