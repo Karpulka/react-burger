@@ -155,3 +155,25 @@ export interface IGetIngredientsResponse {
   data: IIngredientType[];
   success: boolean;
 }
+
+export enum WebsocketStatus {
+  CONNECTING = 'CONNECTING...',
+  ONLINE = 'ONLINE',
+  OFFLINE = 'OFFLINE',
+}
+
+export interface IOrdersAllItem {
+  ingredients: string[];
+  _id: string;
+  status: string;
+  number: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface IOrdersAll {
+  success: boolean;
+  orders: IOrdersAllItem[];
+  total: number;
+  totalToday: number;
+}

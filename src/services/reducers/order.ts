@@ -35,4 +35,6 @@ const orderSlice = createSlice({
 
 export const { clearNewOrder } = orderSlice.actions;
 
+export type TOrderActions = ReturnType<typeof clearNewOrder>;
+
 export default orderSlice.reducer;

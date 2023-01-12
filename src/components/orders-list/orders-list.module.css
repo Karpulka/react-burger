@@ -17,6 +17,10 @@
     border-radius: 0;
 }
 
+.custom-scroll::-webkit-scrollbar-track {
+    margin-bottom: 60px;
+}
+
 .list {
     max-width: 600px;
     height: 100%;

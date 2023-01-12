@@ -87,4 +87,11 @@ export const {
   insertIngredient,
 } = ingredientsSlice.actions;
 
+export type TIngredientsActions =
+  | ReturnType<typeof addIngredient>
+  | ReturnType<typeof removeIngredient>
+  | ReturnType<typeof removeAllIngredients>
+  | ReturnType<typeof setCurrentIngredient>
+  | ReturnType<typeof insertIngredient>;
+
 export default ingredientsSlice.reducer;

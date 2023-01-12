@@ -38,7 +38,10 @@
       "eslint:recommended",
       "plugin:react/recommended",
       "plugin:prettier/recommended"
-    ]
+    ],
+    "rules": {
+      "no-unused-vars": "off"
+    }
   },
   "browserslist": {
     "production": [

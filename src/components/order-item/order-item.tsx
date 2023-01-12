@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
+import Price from '../price/price';
 import styles from './order-item.module.css';
 import { IOrder } from '../../utils/types';
 
@@ -10,7 +11,7 @@ const OrderItem: FC<IOrder> = ({ order }) => {
 
   const showedIngredientsCount = 6;
   let lastIngredientsCount = order.ingredients.length;
-  let showedIngredients = order.ingredients.slice();
+  let showedIngredients = order.ingredients.slice().reverse();
 
   if (order.ingredients.length > showedIngredientsCount) {
     lastIngredientsCount = order.ingredients.length - showedIngredientsCount;
@@ -32,7 +33,7 @@ const OrderItem: FC<IOrder> = ({ order }) => {
           {showedIngredients.map((ingredient, index) => (
             <div className={styles.ingredient} key={`${ingredient._id}-${index}`}>
               <img src={ingredient.image} alt={ingredient.name} />
-              {index === showedIngredientsCount - 1 && lastIngredientsCount ? (
+              {index === 0 && lastIngredientsCount ? (
                 <span className={styles.lastIngredientsCount}>+{lastIngredientsCount}</span>
               ) : (
                 ''
@@ -40,6 +41,7 @@ const OrderItem: FC<IOrder> = ({ order }) => {
             </div>
           ))}
         </div>
+        <Price price={order.price} />
       </div>
     </article>
   );

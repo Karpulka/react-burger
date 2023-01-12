@@ -171,5 +171,8 @@ const userSlice = createSlice({
 });
 
 export const { resetIsForgotPasswordSuccess, resetIsResetPasswordSuccess } = userSlice.actions;
+export type TUserActions =
+  | ReturnType<typeof resetIsForgotPasswordSuccess>
+  | ReturnType<typeof resetIsResetPasswordSuccess>;
 
 export default userSlice.reducer;
