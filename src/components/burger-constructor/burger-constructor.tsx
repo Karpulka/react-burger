@@ -13,6 +13,7 @@ import { createOrder } from '../../services/actions/order';
 import { clearNewOrder } from '../../services/reducers/order';
 import { useHistory } from 'react-router-dom';
 import { IIngredientType } from '../../utils/types';
+import { getResultPrice } from '../../utils/utils';
 
 const BurgerConstructor: FC = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -21,18 +22,6 @@ const BurgerConstructor: FC = () => {
   const { newOrder } = useAppSelector((state) => state.order);
   const dispatch = useAppDispatch();
   const history = useHistory();
-
-  const getResultPrice = (ingredients: IIngredientType[]): number => {
-    if (ingredients && ingredients.length) {
-      return ingredients.reduce((sum, ingredient) => {
-        const price =
-          ingredient.type === IngredientTypes.bun ? ingredient.price * 2 : ingredient.price;
-        return sum + price;
-      }, 0);
-    }
-
-    return 0;
-  };
 
   const notDisableOrderCreate =
     selectedIngredients &&

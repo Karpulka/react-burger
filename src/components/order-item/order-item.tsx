@@ -2,46 +2,63 @@ import React, { FC } from 'react';
 import { FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
 import Price from '../price/price';
 import styles from './order-item.module.css';
-import { IOrder } from '../../utils/types';
+import { IIngredientType, IOrdersAllItem } from '../../utils/types';
+import { useAppSelector } from '../../hooks/useAppSelector';
+import { getResultPrice } from '../../utils/utils';
 
-const OrderItem: FC<IOrder> = ({ order }) => {
-  if (!order) {
+const OrderItem: FC<IOrdersAllItem> = (params) => {
+  const { all: allIngredients } = useAppSelector((state) => state.ingredients);
+
+  if (!params.number) {
     return null;
   }
 
-  const showedIngredientsCount = 6;
-  let lastIngredientsCount = order.ingredients.length;
-  let showedIngredients = order.ingredients.slice().reverse();
+  const { ingredients: ingredientsIds, number, createdAt, name } = params;
 
-  if (order.ingredients.length > showedIngredientsCount) {
-    lastIngredientsCount = order.ingredients.length - showedIngredientsCount;
+  const showedIngredientsCount = 6;
+  let lastIngredientsCount = ingredientsIds.length;
+  let showedIngredients = ingredientsIds.slice().reverse();
+
+  if (ingredientsIds.length > showedIngredientsCount) {
+    lastIngredientsCount = ingredientsIds.length - showedIngredientsCount;
     showedIngredients = showedIngredients.splice(0, showedIngredientsCount);
   }
+
+  const ingredients = showedIngredients.map(
+    (ingredientId) => allIngredients.find((item) => item._id === ingredientId) as IIngredientType
+  );
+
+  const price = getResultPrice(ingredients);
 
   return (
     <article className={styles.order}>
       <div className={styles.top}>
-        <div className="text text_type_digits-default">#{order.number}</div>
+        <div className="text text_type_digits-default">#{number}</div>
         <FormattedDate
-          date={new Date(order.createdAt)}
+          date={new Date(createdAt)}
           className="text text_type_main-default text_color_inactive"
         />
       </div>
-      <div className="text_type_main-medium">{order.name}</div>
+      <div className="text_type_main-medium">{name}</div>
       <div className={styles.bottom}>
         <div className={styles.ingredients}>
-          {showedIngredients.map((ingredient, index) => (
-            <div className={styles.ingredient} key={`${ingredient._id}-${index}`}>
-              <img src={ingredient.image} alt={ingredient.name} />
-              {index === 0 && lastIngredientsCount ? (
-                <span className={styles.lastIngredientsCount}>+{lastIngredientsCount}</span>
-              ) : (
-                ''
-              )}
-            </div>
-          ))}
+          {ingredients.map((ingredient, index) => {
+            if (ingredient) {
+              return (
+                <div className={styles.ingredient} key={`${ingredient._id}-${index}`}>
+                  <img src={ingredient.image} alt={ingredient.name} />
+                  {index === 0 && lastIngredientsCount ? (
+                    <span className={styles.lastIngredientsCount}>+{lastIngredientsCount}</span>
+                  ) : (
+                    ''
+                  )}
+                </div>
+              );
+            }
+            return null;
+          })}
         </div>
-        <Price price={order.price} />
+        <Price price={price} />
       </div>
     </article>
   );

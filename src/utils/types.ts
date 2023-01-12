@@ -167,6 +167,7 @@ export interface IOrdersAllItem {
   _id: string;
   status: string;
   number: number;
+  name: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -176,4 +177,10 @@ export interface IOrdersAll {
   orders: IOrdersAllItem[];
   total: number;
   totalToday: number;
+}
+
+export enum OrderStatus {
+  DONE = 'done',
+  PENDING = 'pending',
+  CREATED = 'created',
 }

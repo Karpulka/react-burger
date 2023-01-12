@@ -1,4 +1,5 @@
-import { IUser } from './types';
+import { IIngredientType, IUser } from './types';
+import { IngredientTypes } from '../components/burger-ingredients/burger-ingredients';
 
 export const updateElementInArrayByIndex = <T>(
   array: T[],
@@ -18,4 +19,16 @@ export const logout = <T extends IUser>(state: T) => {
   state.user = {};
   window.localStorage.removeItem('token');
   window.localStorage.removeItem('refreshToken');
+};
+
+export const getResultPrice = (ingredients: IIngredientType[]): number => {
+  if (ingredients && ingredients.length) {
+    return ingredients.reduce((sum, ingredient) => {
+      const price =
+        ingredient.type === IngredientTypes.bun ? ingredient.price * 2 : ingredient.price;
+      return sum + price;
+    }, 0);
+  }
+
+  return 0;
 };

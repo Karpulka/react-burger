@@ -1,16 +1,17 @@
 import React, { FC } from 'react';
-import { ordersListMocks } from '../../utils/data';
 import OrderItem from '../order-item/order-item';
+import { useAppSelector } from '../../hooks/useAppSelector';
 import styles from './orders-list.module.css';
 
 const OrdersList: FC = () => {
-  const orders = ordersListMocks;
+  const { orders } = useAppSelector((state) => state.feed);
+
   return (
     <>
       <section className={styles.list}>
         <div className={styles['custom-scroll']}>
           {orders.map((order) => (
-            <OrderItem order={order} key={order._id} />
+            <OrderItem {...order} key={order._id} />
           ))}
         </div>
       </section>

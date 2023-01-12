@@ -1,6 +1,7 @@
 import React, { FC, useEffect } from 'react';
 import styles from './home.module.css';
 import OrdersList from '../components/orders-list/orders-list';
+import FeedInfo from '../components/feed-info/feed-info';
 import { useAppDispatch } from '../hooks/useAppDispatch';
 import { connect, disconnect } from '../services/reducers/feed';
 
@@ -22,6 +23,7 @@ const FeedPage: FC = () => {
       </section>
       <main className={styles.container}>
         <OrdersList />
+        <FeedInfo />
       </main>
     </>
   );
