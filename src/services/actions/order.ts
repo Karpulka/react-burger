@@ -1,6 +1,6 @@
 import { apiRequest } from '../../utils/api';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { IOrderResponse } from '../../utils/types';
+import { IGetOrderInfoResponse, IOrderResponse, IOrdersAllItem } from '../../utils/types';
 import { Omit } from 'utility-types';
 
 interface ICreateOrderPayload {
@@ -24,6 +24,24 @@ export const createOrder = createAsyncThunk<ICreateOrderActionResponse, ICreateO
       console.log('Fetch post order error', e);
       console.error(e);
       return rejectWithValue('Fetch post order error');
+    }
+  }
+);
+
+export const getOrderInfo = createAsyncThunk<IOrdersAllItem, string>(
+  'order/getInfo',
+  async (payload, { rejectWithValue }) => {
+    try {
+      const response: IGetOrderInfoResponse = await apiRequest(`/orders/${payload}`);
+      if (response.success) {
+        return response.orders[0] as IOrdersAllItem;
+      } else {
+        throw response;
+      }
+    } catch (e) {
+      console.log('Fetch get order info error', e);
+      console.error(e);
+      return rejectWithValue('Fetch get order info error');
     }
   }
 );

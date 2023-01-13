@@ -9,11 +9,13 @@ import {
   WithPageWrapperResetPasswordPage,
   WithPageWrapperProfilePage,
   WithPageWrapperIngredientDetails,
+  WithPageWrapperOrderInfo,
   WithFeedPage,
 } from '../../pages';
 import ProtectedRoute from '../protected-route/protected-route';
 import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
+import OrderInfo from '../order-info/order-info';
 import { setCurrentIngredient } from '../../services/reducers/ingredients';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { getIngredients } from '../../services/actions/ingredients';
@@ -68,7 +70,22 @@ function App() {
         <Route path="/feed" exact>
           <WithFeedPage />
         </Route>
-        <Route path="/feed/:id" exact></Route>
+        <Route
+          path="/feed/:id"
+          render={({ history }: { history: any }) => {
+            if (history.action === 'POP') {
+              return <WithPageWrapperOrderInfo />;
+            }
+            return (
+              <>
+                <WithFeedPage />
+                <Modal onClose={history.goBack}>
+                  <OrderInfo />
+                </Modal>
+              </>
+            );
+          }}
+          exact></Route>
         <Route>
           <WithPageWrapperNotFound404 />
         </Route>

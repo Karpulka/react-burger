@@ -97,6 +97,9 @@ export interface IOrderStore {
   newOrder: IOrder;
   orderRequest: boolean;
   orderFailed: boolean;
+  getOrderInfoRequest: boolean;
+  getOrderInfoFailed: boolean;
+  orderInfo: IOrdersAllItem | null;
 }
 
 export interface IUserStore {
@@ -170,6 +173,8 @@ export interface IOrdersAllItem {
   name: string;
   createdAt: string;
   updatedAt: string;
+  owner?: string;
+  __v?: string;
 }
 
 export interface IOrdersAll {
@@ -183,4 +188,15 @@ export enum OrderStatus {
   DONE = 'done',
   PENDING = 'pending',
   CREATED = 'created',
+}
+
+export const OrderStatusValue = {
+  [OrderStatus.DONE]: 'Выполнен',
+  [OrderStatus.PENDING]: 'В работе',
+  [OrderStatus.CREATED]: 'Принят',
+};
+
+export interface IGetOrderInfoResponse {
+  orders: IOrdersAllItem[];
+  success: boolean;
 }

@@ -5,9 +5,12 @@ import styles from './order-item.module.css';
 import { IIngredientType, IOrdersAllItem } from '../../utils/types';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { getResultPrice } from '../../utils/utils';
+import { useHistory } from 'react-router-dom';
 
 const OrderItem: FC<IOrdersAllItem> = (params) => {
   const { all: allIngredients } = useAppSelector((state) => state.ingredients);
+
+  const history = useHistory();
 
   if (!params.number) {
     return null;
@@ -30,8 +33,14 @@ const OrderItem: FC<IOrdersAllItem> = (params) => {
 
   const price = getResultPrice(ingredients);
 
+  const openInfo = () => {
+    history.push({
+      pathname: `/feed/${number}`,
+    });
+  };
+
   return (
-    <article className={styles.order}>
+    <article className={styles.order} onClick={openInfo}>
       <div className={styles.top}>
         <div className="text text_type_digits-default">#{number}</div>
         <FormattedDate
