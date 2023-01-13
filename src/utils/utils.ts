@@ -32,3 +32,17 @@ export const getResultPrice = (ingredients: IIngredientType[]): number => {
 
   return 0;
 };
+
+export const divideArray = <T>(elements: T[], countInColumn: number = 10): T[][] => {
+  const res: T[][] = [];
+
+  const columnCount = Math.ceil(elements.length / countInColumn);
+  let k = 0;
+
+  for (let i = 0; i < columnCount; i++) {
+    res.push(elements.slice(k, k + countInColumn));
+    k = k + countInColumn;
+  }
+
+  return res;
+};
