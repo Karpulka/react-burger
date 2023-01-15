@@ -1,8 +1,9 @@
-import React, { useState, FC } from 'react';
+import React, { useState, FC, useEffect } from 'react';
 import styles from './sidebar.module.css';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useHistory } from 'react-router-dom';
 import { INavigationItem } from '../../utils/types';
+import { useLocation } from 'react-router-dom';
 
 interface ISidebarProps {
   navigation: INavigationItem[];
@@ -15,6 +16,12 @@ const Sidebar: FC<ISidebarProps> = (props) => {
   const [current, setCurrent] = useState(initialActive);
 
   const history = useHistory();
+  const location = useLocation();
+
+  useEffect(() => {
+    const currentPage = navigation.find((item) => location.pathname === item.link);
+    currentPage && setCurrent(currentPage.value);
+  }, []);
 
   const onTabClick = (item: INavigationItem) => {
     const { value, link, onSelectTab } = item;

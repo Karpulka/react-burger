@@ -63,3 +63,7 @@ body {
     margin-bottom: 120px;
     max-width: 640px;
 }
+
+.profile-page .order-list {
+    max-width: 100%;
+}

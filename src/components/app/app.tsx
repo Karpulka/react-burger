@@ -55,12 +55,26 @@ function App() {
         <ProtectedRoute path="/reset-password" exact>
           <WithPageWrapperResetPasswordPage />
         </ProtectedRoute>
-        {/*<ProtectedRoute path="/profile/orders" exact>*/}
-        {/*  */}
-        {/*</ProtectedRoute>*/}
-        {/*<ProtectedRoute path="/profile/orders/:id" exact>*/}
-        {/*  */}
-        {/*</ProtectedRoute>*/}
+        <ProtectedRoute path="/profile/orders" onlyForAuth exact>
+          <WithPageWrapperProfilePage />
+        </ProtectedRoute>
+        <ProtectedRoute
+          path="/profile/orders/:id"
+          onlyForAuth
+          render={({ history }: { history: any }) => {
+            if (['POP', 'REPLACE'].includes(history.action)) {
+              return <WithPageWrapperOrderInfo />;
+            }
+            return (
+              <>
+                <WithPageWrapperProfilePage />
+                <Modal onClose={history.goBack}>
+                  <OrderInfo />
+                </Modal>
+              </>
+            );
+          }}
+          exact></ProtectedRoute>
         <ProtectedRoute path="/profile" onlyForAuth exact>
           <WithPageWrapperProfilePage />
         </ProtectedRoute>

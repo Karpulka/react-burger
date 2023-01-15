@@ -5,12 +5,13 @@ import styles from './order-item.module.css';
 import { IIngredientType, IOrdersAllItem } from '../../utils/types';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { getResultPrice } from '../../utils/utils';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 
 const OrderItem: FC<IOrdersAllItem> = (params) => {
   const { all: allIngredients } = useAppSelector((state) => state.ingredients);
 
   const history = useHistory();
+  const location = useLocation();
 
   if (!params.number) {
     return null;
@@ -35,7 +36,7 @@ const OrderItem: FC<IOrdersAllItem> = (params) => {
 
   const openInfo = () => {
     history.push({
-      pathname: `/feed/${number}`,
+      pathname: `${location.pathname}/${number}`,
     });
   };
 

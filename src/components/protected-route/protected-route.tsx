@@ -1,14 +1,13 @@
-import React, { useEffect, useState, FC, ReactElement } from 'react';
+import React, { useEffect, useState, FC } from 'react';
 import { Route, Redirect, useLocation } from 'react-router-dom';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { getUserInfo, refreshToken } from '../../services/actions/user';
+import { RouteProps } from 'react-router';
 
-interface IProtectedRouteProps {
+interface IProtectedRouteProps extends RouteProps {
   onlyForAuth?: boolean;
-  children: ReactElement;
   path: string;
-  exact?: boolean;
 }
 
 const ProtectedRoute: FC<IProtectedRouteProps> = ({ onlyForAuth, children, ...rest }) => {

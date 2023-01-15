@@ -13,6 +13,16 @@ import {
   wsMessage as FeedWsMessage,
   TFeedActions,
 } from './services/reducers/feed';
+import {
+  connect as PersonalOrdersWsConnect,
+  disconnect as PersonalOrdersWsDisconnect,
+  wsConnecting as PersonalOrdersWsConnecting,
+  wsError as PersonalOrdersWsError,
+  wsClose as PersonalOrdersWsClose,
+  wsOpen as PersonalOrdersWsOpen,
+  wsMessage as PersonalOrdersWsMessage,
+  TPersonalOrdersActions,
+} from './services/reducers/personal-orders';
 import { TIngredientsActions } from './services/reducers/ingredients';
 import { TOrderActions } from './services/reducers/order';
 import { TUserActions } from './services/reducers/user';
@@ -20,7 +30,7 @@ import { TUserActions } from './services/reducers/user';
 import { ThunkAction } from 'redux-thunk';
 import type {} from 'redux-thunk/extend-redux';
 
-const wsActions = {
+const wsFeedActions = {
   wsConnect: FeedWsConnect,
   wsDisconnect: FeedWsDisconnect,
   wsConnecting: FeedWsConnecting,
@@ -30,18 +40,34 @@ const wsActions = {
   onMessage: FeedWsMessage,
 };
 
-const liveFeedMiddleware = socketMiddleware(wsActions);
+const wsPersonalOrdersActions = {
+  wsConnect: PersonalOrdersWsConnect,
+  wsDisconnect: PersonalOrdersWsDisconnect,
+  wsConnecting: PersonalOrdersWsConnecting,
+  onOpen: PersonalOrdersWsOpen,
+  onClose: PersonalOrdersWsClose,
+  onError: PersonalOrdersWsError,
+  onMessage: PersonalOrdersWsMessage,
+};
+
+const liveFeedMiddleware = socketMiddleware(wsFeedActions);
+const livePersonalOrdersMiddleware = socketMiddleware(wsPersonalOrdersActions);
 
 export const store = configureStore({
   reducer: rootReducer,
   devTools: process.env.NODE_ENV !== 'production',
   middleware: (getDefaultMiddleware) => {
-    return getDefaultMiddleware().concat(liveFeedMiddleware);
+    return getDefaultMiddleware().concat(liveFeedMiddleware, livePersonalOrdersMiddleware);
   },
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
 
-export type AppActions = TFeedActions | TIngredientsActions | TOrderActions | TUserActions;
+export type AppActions =
+  | TFeedActions
+  | TIngredientsActions
+  | TOrderActions
+  | TUserActions
+  | TPersonalOrdersActions;
 export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, RootState, unknown, AppActions>;
 export type AppDispatch<TReturnType = void> = (action: AppActions | AppThunk) => TReturnType;
