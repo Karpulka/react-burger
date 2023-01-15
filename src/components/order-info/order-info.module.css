@@ -1,17 +1,35 @@
 .info {
     display: flex;
     flex-direction: column;
+    margin: 0 auto;
 }
 
-.number {}
+.number {
+    composes: text text_type_digits-default from '~@ya.praktikum/react-developer-burger-ui-components/dist/ui/common.css';
+    text-align: center;
+    margin-bottom: 40px;
+}
 
-.name {}
+.name {
+    composes: text text_type_main-medium from '~@ya.praktikum/react-developer-burger-ui-components/dist/ui/common.css';
+    margin-bottom: 12px;
+}
 
-.status {}
+.status {
+    composes: text text_type_main-default from '~@ya.praktikum/react-developer-burger-ui-components/dist/ui/common.css';
+    color: #00CCCC;
+}
 
-.consist {}
+.consist {
+    margin-top: 60px;
+    margin-bottom: 40px;
+    width: 100%;
+}
 
-.result {}
+.result {
+    display: flex;
+    justify-content: space-between;
+}
 
 .custom-scroll {
     composes: custom-scroll from '~@ya.praktikum/react-developer-burger-ui-components/dist/ui/common.css';
@@ -21,6 +39,8 @@
     flex-wrap: wrap;
     row-gap: 16px;
     padding-right: 16px;
+    max-height: 304px;
+    width: inherit;
 }
 
 .custom-scroll::-webkit-scrollbar {
@@ -32,4 +52,43 @@
     border-radius: 0;
 }
 
-.ingredients {}
+.ingredients {
+    display: flex;
+    flex-direction: column;
+    row-gap: 16px;
+    width: inherit;
+}
+
+.ingredient {
+    display: flex;
+    align-items: center;
+    column-gap: 16px;
+}
+
+.ingredient-price {
+    margin-left: auto;
+    display: flex;
+}
+
+.ingredient-image {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: linear-gradient(#131316, #131316) padding-box,
+    linear-gradient(to right, #801ab2, #4c4cff) border-box;
+    border: 2px solid transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ingredient-image img {
+    display: block;
+    width: 112px;
+}
+
+.ingredient-name {
+    composes: text text_type_main-default from '~@ya.praktikum/react-developer-burger-ui-components/dist/ui/common.css';
+    max-width: 320px;
+}

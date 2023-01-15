@@ -73,20 +73,23 @@ const OrderInfo: FC = () => {
   const statusValue: string = (OrderStatusValue as { [key: string]: string })[status];
 
   return (
-    <article className={styles.info}>
+    <article className={`${styles.info} ingredient-content`}>
       <div className={styles.number}>#{number}</div>
       <div className={styles.name}>{name}</div>
       <div className={styles.status}>{statusValue}</div>
       <div className={styles.consist}>
-        <div>Cостав:</div>
-        <div className={styles.customScroll}>
+        <div className="text text_type_main-medium mb-3">Cостав:</div>
+        <div className={styles['custom-scroll']}>
           <div className={styles.ingredients}>
             {ingredients.map((ingredient) => (
-              <div key={uuid()}>
-                <img src={ingredient.image} alt={ingredient.name} />
-                <span>{ingredient.name}</span>
-                <div>
-                  {ingredient.count} x <Price price={ingredient.price} />
+              <div key={uuid()} className={styles.ingredient}>
+                <div className={styles['ingredient-image']}>
+                  <img src={ingredient.image} alt={ingredient.name} />
+                </div>
+                <span className={styles['ingredient-name']}>{ingredient.name}</span>
+                <div className={styles['ingredient-price']}>
+                  <span className="text text_type_digits-default">{ingredient.count} x&nbsp;</span>
+                  <Price price={ingredient.price} />
                 </div>
               </div>
             ))}

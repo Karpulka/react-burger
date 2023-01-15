@@ -56,3 +56,10 @@ body {
 .profile-field .input__icon {
     cursor: pointer;
 }
+
+
+.main .ingredient-content {
+    margin-top: 120px;
+    margin-bottom: 120px;
+    max-width: 640px;
+}

@@ -19,7 +19,7 @@ const OrderItem: FC<IOrdersAllItem> = (params) => {
   const { ingredients: ingredientsIds, number, createdAt, name } = params;
 
   const showedIngredientsCount = 6;
-  let lastIngredientsCount = ingredientsIds.length;
+  let lastIngredientsCount = 0;
   let showedIngredients = ingredientsIds.slice().reverse();
 
   if (ingredientsIds.length > showedIngredientsCount) {
