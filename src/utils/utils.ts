@@ -24,9 +24,13 @@ export const logout = <T extends IUser>(state: T) => {
 export const getResultPrice = (ingredients: IIngredientType[]): number => {
   if (ingredients && ingredients.length) {
     return ingredients.reduce((sum, ingredient) => {
-      const price =
-        ingredient.type === IngredientTypes.bun ? ingredient.price * 2 : ingredient.price;
-      return sum + price;
+      if (ingredient) {
+        const price =
+          ingredient.type === IngredientTypes.bun ? ingredient.price * 2 : ingredient.price;
+        return sum + price;
+      }
+
+      return sum;
     }, 0);
   }
 

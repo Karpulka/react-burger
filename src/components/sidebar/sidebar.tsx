@@ -21,7 +21,7 @@ const Sidebar: FC<ISidebarProps> = (props) => {
   useEffect(() => {
     const currentPage = navigation.find((item) => location.pathname === item.link);
     currentPage && setCurrent(currentPage.value);
-  }, []);
+  }, [location]);
 
   const onTabClick = (item: INavigationItem) => {
     const { value, link, onSelectTab } = item;

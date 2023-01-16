@@ -22,7 +22,11 @@ const personalOrderSlice = createSlice({
   initialState,
   reducers: {
     connect: (state, action: PayloadAction<string>) => {},
-    disconnect: () => {},
+    disconnect: (state) => {
+      state.orders = [];
+      state.total = 0;
+      state.totalToday = 0;
+    },
     wsConnecting: (state) => {
       state.status = WebsocketStatus.CONNECTING;
     },
