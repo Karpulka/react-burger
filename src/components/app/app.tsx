@@ -20,6 +20,7 @@ import { setCurrentIngredient } from '../../services/reducers/ingredients';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { getIngredients } from '../../services/actions/ingredients';
 import { getUserInfo } from '../../services/actions/user';
+import { RouteComponentProps } from 'react-router';
 
 function App() {
   const location = useLocation();
@@ -61,7 +62,8 @@ function App() {
         <ProtectedRoute
           path="/profile/orders/:id"
           onlyForAuth
-          render={({ history }: { history: any }) => {
+          render={(params: RouteComponentProps) => {
+            const { history } = params;
             if (['POP', 'REPLACE'].includes(history.action)) {
               return <WithPageWrapperOrderInfo />;
             }
@@ -86,7 +88,8 @@ function App() {
         </Route>
         <Route
           path="/feed/:id"
-          render={({ history }: { history: any }) => {
+          render={(params: RouteComponentProps) => {
+            const { history } = params;
             if (history.action === 'POP') {
               return <WithPageWrapperOrderInfo />;
             }

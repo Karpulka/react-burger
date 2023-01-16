@@ -58,9 +58,10 @@ const OrderInfo: FC = () => {
 
       const count = doublesCount(ingredientId);
       const resultHasIngredient = result.find((element) => element._id === ingredientId);
+      const key = uuid();
 
       if (!resultHasIngredient) {
-        result.push({ ...ingredient, count });
+        result.push({ ...ingredient, count, key });
       }
     });
 
@@ -81,8 +82,8 @@ const OrderInfo: FC = () => {
         <div className="text text_type_main-medium mb-3">Cостав:</div>
         <div className={styles['custom-scroll']}>
           <div className={styles.ingredients}>
-            {ingredients.map((ingredient) => (
-              <div key={uuid()} className={styles.ingredient}>
+            {ingredients.map((ingredient, index) => (
+              <div key={ingredient.key} className={styles.ingredient}>
                 <div className={styles['ingredient-image']}>
                   <img src={ingredient.image} alt={ingredient.name} />
                 </div>

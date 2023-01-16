@@ -14,12 +14,8 @@ export const createOrder = createAsyncThunk<ICreateOrderActionResponse, ICreateO
   async (payload, { rejectWithValue }) => {
     try {
       const response: IOrderResponse = await apiRequest(`/orders`, payload, 'POST');
-      if (response.success) {
-        const { success, ...orderProps } = response;
-        return orderProps as ICreateOrderActionResponse;
-      } else {
-        throw response;
-      }
+      const { success, ...orderProps } = response;
+      return orderProps as ICreateOrderActionResponse;
     } catch (e) {
       console.log('Fetch post order error', e);
       console.error(e);
@@ -33,11 +29,7 @@ export const getOrderInfo = createAsyncThunk<IOrdersAllItem, string>(
   async (payload, { rejectWithValue }) => {
     try {
       const response: IGetOrderInfoResponse = await apiRequest(`/orders/${payload}`);
-      if (response.success) {
-        return response.orders[0] as IOrdersAllItem;
-      } else {
-        throw response;
-      }
+      return response.orders[0] as IOrdersAllItem;
     } catch (e) {
       console.log('Fetch get order info error', e);
       console.error(e);

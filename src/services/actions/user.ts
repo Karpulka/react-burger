@@ -13,12 +13,7 @@ export const register = createAsyncThunk<ILoginResponse, IProfile>(
   'user/register',
   async (payload, { rejectWithValue }) => {
     try {
-      const response: ILoginResponse = await apiRequest(`/auth/register`, payload, 'POST');
-      if (response.success) {
-        return response;
-      } else {
-        throw response;
-      }
+      return (await apiRequest(`/auth/register`, payload, 'POST')) as ILoginResponse;
     } catch (e) {
       console.log('Fetch register error', e);
       console.error(e);
@@ -31,12 +26,7 @@ export const login = createAsyncThunk<ILoginResponse, IUserActionsFields>(
   'user/login',
   async (payload, { rejectWithValue }) => {
     try {
-      const response: ILoginResponse = await apiRequest(`/auth/login`, payload, 'POST');
-      if (response.success) {
-        return response;
-      } else {
-        throw response;
-      }
+      return (await apiRequest(`/auth/login`, payload, 'POST')) as ILoginResponse;
     } catch (e) {
       console.log('Fetch login error', e);
       console.error(e);
@@ -49,12 +39,7 @@ export const forgotPassword = createAsyncThunk<IMessageResponse, IUserActionsFie
   'user/forgotPassword',
   async (payload, { rejectWithValue }) => {
     try {
-      const response: IMessageResponse = await apiRequest(`/password-reset`, payload, 'POST');
-      if (response.success) {
-        return response;
-      } else {
-        throw response;
-      }
+      return (await apiRequest(`/password-reset`, payload, 'POST')) as IMessageResponse;
     } catch (e) {
       console.log('Fetch forgot password error', e);
       console.error(e);
@@ -67,12 +52,7 @@ export const resetPassword = createAsyncThunk<IMessageResponse, IUserActionsFiel
   'user/resetPassword',
   async (payload, { rejectWithValue }) => {
     try {
-      const response: IMessageResponse = await apiRequest(`/password-reset/reset`, payload, 'POST');
-      if (response.success) {
-        return response;
-      } else {
-        throw response;
-      }
+      return (await apiRequest(`/password-reset/reset`, payload, 'POST')) as IMessageResponse;
     } catch (e) {
       console.log('Fetch reset password error', e);
       console.error(e);
@@ -86,12 +66,7 @@ export const logout = createAsyncThunk<IMessageResponse, undefined>(
   async (payload, { rejectWithValue }) => {
     try {
       const token = window.localStorage.getItem('refreshToken');
-      const response: IMessageResponse = await apiRequest(`/auth/logout`, { token }, 'POST');
-      if (response.success) {
-        return response;
-      } else {
-        throw response;
-      }
+      return (await apiRequest(`/auth/logout`, { token }, 'POST')) as IMessageResponse;
     } catch (e) {
       console.log('Fetch logout error', e);
       console.error(e);
@@ -105,12 +80,7 @@ export const refreshToken = createAsyncThunk<IRefreshTokenResponse, undefined>(
   async (payload, { rejectWithValue }) => {
     try {
       const token = window.localStorage.getItem('refreshToken');
-      const response: IRefreshTokenResponse = await apiRequest(`/auth/token`, { token }, 'POST');
-      if (response.success) {
-        return response;
-      } else {
-        throw response;
-      }
+      return (await apiRequest(`/auth/token`, { token }, 'POST')) as IRefreshTokenResponse;
     } catch (e) {
       console.log('Fetch refreshToken error', e);
       console.error(e);
@@ -123,12 +93,7 @@ export const getUserInfo = createAsyncThunk<IGetUserResponse, undefined>(
   'user/getUserInfo',
   async (payload, { rejectWithValue }) => {
     try {
-      const response: IGetUserResponse = await apiRequest(`/auth/user`);
-      if (response.success) {
-        return response;
-      } else {
-        throw response;
-      }
+      return (await apiRequest(`/auth/user`)) as IGetUserResponse;
     } catch (e) {
       console.log('Fetch getUserInfo error', e);
       console.error(e);
@@ -141,12 +106,7 @@ export const updateUserInfo = createAsyncThunk<IGetUserResponse, { [key: string]
   'user/updateUserInfo',
   async (payload, { rejectWithValue }) => {
     try {
-      const response: IGetUserResponse = await apiRequest(`/auth/user`, payload, 'PATCH');
-      if (response.success) {
-        return response;
-      } else {
-        throw response;
-      }
+      return (await apiRequest(`/auth/user`, payload, 'PATCH')) as IGetUserResponse;
     } catch (e) {
       console.log('Fetch getUserInfo error', e);
       console.error(e);

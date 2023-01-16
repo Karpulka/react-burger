@@ -1,5 +1,6 @@
 import { IIngredientType, IUser } from './types';
 import { IngredientTypes } from '../components/burger-ingredients/burger-ingredients';
+import { v1 as uuid } from 'uuid';
 
 export const updateElementInArrayByIndex = <T>(
   array: T[],
@@ -37,16 +38,27 @@ export const getResultPrice = (ingredients: IIngredientType[]): number => {
   return 0;
 };
 
-export const divideArray = <T>(elements: T[], countInColumn: number = 10): T[][] => {
-  const res: T[][] = [];
+export interface IOrdersByColumnsItem<S> {
+  items: S[];
+  key: string;
+}
+
+export const divideArray = <T>(
+  elements: T[],
+  countInColumn: number = 10
+): IOrdersByColumnsItem<T>[] => {
+  const res: IOrdersByColumnsItem<T>[] = [];
 
   const columnCount = Math.ceil(elements.length / countInColumn);
   let k = 0;
 
   for (let i = 0; i < columnCount; i++) {
-    res.push(elements.slice(k, k + countInColumn));
+    res.push({ items: elements.slice(k, k + countInColumn), key: uuid() });
     k = k + countInColumn;
   }
 
   return res;
 };
+
+declare const OrdersByColumnsItem: IOrdersByColumnsItem<{ _id: string; number: number }>;
+export default OrdersByColumnsItem;

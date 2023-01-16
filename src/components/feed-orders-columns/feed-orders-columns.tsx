@@ -1,19 +1,21 @@
 import React, { FC } from 'react';
 import { IOrdersAllItem } from '../../utils/types';
 import styles from '../feed-info/feed-info.module.css';
-import { v1 as uuid } from 'uuid';
+import OrdersByColumnsItem from '../../utils/utils';
+
+type TOrdersByColumnsItem<T extends { _id: string; number: number }> = typeof OrdersByColumnsItem;
 
 interface IFeedOrdersColumnsParams {
-  orders: IOrdersAllItem[][];
+  orders: TOrdersByColumnsItem<IOrdersAllItem>[];
 }
 
 const FeedOrdersColumns: FC<IFeedOrdersColumnsParams> = ({ orders }) => {
   return (
     <>
-      {orders.map((blocks) => {
+      {orders.map((block) => {
         return (
-          <div key={uuid()} className={styles.column}>
-            {blocks.map((order) => (
+          <div key={block.key} className={styles.column}>
+            {block.items.map((order) => (
               <span key={order._id}>{order.number}</span>
             ))}{' '}
           </div>

@@ -27,7 +27,10 @@ const Sidebar: FC<ISidebarProps> = (props) => {
     const { value, link, onSelectTab } = item;
     setCurrent(value);
     onSelectTab && onSelectTab();
-    link && history.push(link);
+    if (link) {
+      location.pathname = link;
+      history.push(link);
+    }
   };
 
   return (

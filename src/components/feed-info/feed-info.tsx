@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import styles from './feed-info.module.css';
-import { v1 as uuid } from 'uuid';
 import { IOrdersAllItem, OrderStatus } from '../../utils/types';
 import { divideArray } from '../../utils/utils';
 import FeedOrdersColumns from '../feed-orders-columns/feed-orders-columns';

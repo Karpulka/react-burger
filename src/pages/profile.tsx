@@ -2,27 +2,32 @@ import React, { FC, useEffect } from 'react';
 import Sidebar from '../components/sidebar/sidebar';
 import ProfileInfo from '../components/profile-info/profile-info';
 import { useAppDispatch } from '../hooks/useAppDispatch';
+import { useAppSelector } from '../hooks/useAppSelector';
 import { logout } from '../services/actions/user';
 import styles from './profile.module.css';
 import { connect, disconnect } from '../services/reducers/personal-orders';
 import { useLocation } from 'react-router-dom';
 import OrdersList from '../components/orders-list/orders-list';
+import { WebsocketStatus } from '../utils/types';
 
 const ProfilePage: FC = () => {
   const dispatch = useAppDispatch();
   const location = useLocation();
   const personalOrdersPath = '/profile/orders';
+  const { status } = useAppSelector((state) => state.personalOrders);
 
   useEffect(() => {
-    if (location.pathname === personalOrdersPath) {
+    if (location.pathname === personalOrdersPath && status === WebsocketStatus.OFFLINE) {
       const token = window.localStorage.getItem('token');
       dispatch(connect(`wss://norma.nomoreparties.space/orders?token=${token}`));
     }
 
     return () => {
-      dispatch(disconnect());
+      if (!location.pathname.includes(personalOrdersPath)) {
+        dispatch(disconnect());
+      }
     };
-  }, [location]);
+  }, [location, status]);
 
   const sidebarProps = {
     navigation: [
