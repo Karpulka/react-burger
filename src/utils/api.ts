@@ -14,12 +14,22 @@ export const apiRequest = async <T, R>(
           body: JSON.stringify(data),
         };
 
+  const token = window.localStorage.getItem('token');
+
+  let headers: { [key: string]: string } = {
+    'Content-Type': 'application/json',
+  };
+
+  if (token) {
+    headers = {
+      ...headers,
+      Authorization: 'Bearer ' + token,
+    };
+  }
+
   const res = await fetch(`${API_URL}${url}`, {
     method,
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: 'Bearer ' + window.localStorage.getItem('token'),
-    },
+    headers,
     ...params,
   });
 

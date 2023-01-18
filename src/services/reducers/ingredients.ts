@@ -1,10 +1,12 @@
 import { IngredientTypes } from '../../components/burger-ingredients/burger-ingredients';
 import { updateElementInArrayByIndex } from '../../utils/utils';
 
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { getIngredients } from '../actions/ingredients';
 
-const initialState = {
+import { IIngredientsStore, IIngredientType } from '../../utils/types';
+
+const initialState: IIngredientsStore = {
   all: [],
   ingredientsRequest: false,
   ingredientsFailed: false,
@@ -18,7 +20,7 @@ const ingredientsSlice = createSlice({
   name: 'ingredients',
   initialState,
   reducers: {
-    addIngredient: (state, action) => {
+    addIngredient: (state, action: PayloadAction<IIngredientType>) => {
       const ingredient = action.payload;
       const isIngredientBun = ingredient.type === IngredientTypes.bun;
       const isBunInIngridientsIndex = state.selected.findIndex(
@@ -39,13 +41,19 @@ const ingredientsSlice = createSlice({
     removeAllIngredients: (state) => {
       state.selected = [];
     },
-    removeIngredient: (state, action) => {
+    removeIngredient: (state, action: PayloadAction<IIngredientType>) => {
       state.selected = state.selected.filter((item) => item.key !== action.payload.key);
     },
-    setCurrentIngredient: (state, action) => {
+    setCurrentIngredient: (state, action: PayloadAction<IIngredientType | {}>) => {
       state.currentIngredient = action.payload ?? {};
     },
-    insertIngredient: (state, action) => {
+    insertIngredient: (
+      state,
+      action: PayloadAction<{
+        targetElementKey: number;
+        movingIngredientKey: number;
+      }>
+    ) => {
       const ingredients = [...state.selected];
       ingredients.splice(
         action.payload.targetElementKey,
@@ -78,5 +86,12 @@ export const {
   setCurrentIngredient,
   insertIngredient,
 } = ingredientsSlice.actions;
+
+export type TIngredientsActions =
+  | ReturnType<typeof addIngredient>
+  | ReturnType<typeof removeIngredient>
+  | ReturnType<typeof removeAllIngredients>
+  | ReturnType<typeof setCurrentIngredient>
+  | ReturnType<typeof insertIngredient>;
 
 export default ingredientsSlice.reducer;

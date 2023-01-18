@@ -2,7 +2,7 @@ import React, { useState, useRef, FC } from 'react';
 import Tabs from '../tabs/tabs';
 import BurgerIngredientsList from '../burger-ingredients-list/burger-ingredients-list';
 import styles from './burger-ingredients.module.css';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../../hooks/useAppSelector';
 import { IIngredientType } from '../../utils/types';
 
 export const IngredientTypes = {
@@ -16,7 +16,7 @@ const filteringredients = (ingredients: IIngredientType[] = [], type: string) =>
 };
 
 const BurgerIngredients: FC = () => {
-  const { all: allIngredients } = useSelector((state: any) => state.ingredients);
+  const { all: allIngredients } = useAppSelector((state) => state.ingredients);
   const scrollBlockRef = useRef<HTMLDivElement>(null);
   const [currentTab, setCurrentTab] = useState<string>(IngredientTypes.bun);
   const tabRefs: HTMLDivElement[] = [];
@@ -40,8 +40,7 @@ const BurgerIngredients: FC = () => {
     });
 
     const tabValue = sortTabsByTop[0].getAttribute('id');
-    if (tabValue !== currentTab) {
-      // @ts-ignore
+    if (tabValue && tabValue !== currentTab) {
       setCurrentTab(tabValue);
     }
   };

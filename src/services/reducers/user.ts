@@ -11,7 +11,9 @@ import {
 } from '../actions/user';
 import { logout as clearUser } from '../../utils/utils';
 
-const initialState = {
+import { IUserStore } from '../../utils/types';
+
+const initialState: IUserStore = {
   registerRequest: false,
   registerFailed: false,
   user: {},
@@ -169,5 +171,8 @@ const userSlice = createSlice({
 });
 
 export const { resetIsForgotPasswordSuccess, resetIsResetPasswordSuccess } = userSlice.actions;
+export type TUserActions =
+  | ReturnType<typeof resetIsForgotPasswordSuccess>
+  | ReturnType<typeof resetIsResetPasswordSuccess>;
 
 export default userSlice.reducer;

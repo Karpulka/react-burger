@@ -3,13 +3,14 @@ import AppForm from '../components/app-form/app-form';
 import { EmailInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, useHistory } from 'react-router-dom';
 import { forgotPassword } from '../services/actions/user';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch } from '../hooks/useAppDispatch';
+import { useAppSelector } from '../hooks/useAppSelector';
 import { resetIsForgotPasswordSuccess } from '../services/reducers/user';
 
 const ForgotPasswordPage: FC = () => {
   const [email, setEmail] = useState('');
-  const { isForgotPasswordSuccess } = useSelector((state: any) => state.user);
-  const dispatch = useDispatch();
+  const { isForgotPasswordSuccess } = useAppSelector((state) => state.user);
+  const dispatch = useAppDispatch();
   const history = useHistory();
 
   useEffect(() => {
@@ -25,7 +26,6 @@ const ForgotPasswordPage: FC = () => {
   };
 
   const onSubmitForm = () => {
-    // @ts-ignore
     dispatch(forgotPassword({ email }));
   };
 

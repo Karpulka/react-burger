@@ -9,25 +9,27 @@ import {
   WithPageWrapperResetPasswordPage,
   WithPageWrapperProfilePage,
   WithPageWrapperIngredientDetails,
+  WithPageWrapperOrderInfo,
+  WithFeedPage,
 } from '../../pages';
 import ProtectedRoute from '../protected-route/protected-route';
 import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
+import OrderInfo from '../order-info/order-info';
 import { setCurrentIngredient } from '../../services/reducers/ingredients';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { getIngredients } from '../../services/actions/ingredients';
 import { getUserInfo } from '../../services/actions/user';
+import { RouteComponentProps } from 'react-router';
 
 function App() {
   const location = useLocation();
   const history = useHistory();
   const background = location.state && location.state.background;
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    // @ts-ignore
     dispatch(getIngredients());
-    // @ts-ignore
     dispatch(getUserInfo());
   }, [dispatch]);
 
@@ -54,12 +56,53 @@ function App() {
         <ProtectedRoute path="/reset-password" exact>
           <WithPageWrapperResetPasswordPage />
         </ProtectedRoute>
+        <ProtectedRoute path="/profile/orders" onlyForAuth exact>
+          <WithPageWrapperProfilePage />
+        </ProtectedRoute>
+        <ProtectedRoute
+          path="/profile/orders/:id"
+          onlyForAuth
+          render={(params: RouteComponentProps) => {
+            const { history } = params;
+            if (['POP', 'REPLACE'].includes(history.action)) {
+              return <WithPageWrapperOrderInfo />;
+            }
+            return (
+              <>
+                <WithPageWrapperProfilePage />
+                <Modal onClose={history.goBack}>
+                  <OrderInfo />
+                </Modal>
+              </>
+            );
+          }}
+          exact></ProtectedRoute>
         <ProtectedRoute path="/profile" onlyForAuth exact>
           <WithPageWrapperProfilePage />
         </ProtectedRoute>
         <Route path="/ingredients/:ingredientId" exact>
           <WithPageWrapperIngredientDetails header={'Детали ингредиента'} />
         </Route>
+        <Route path="/feed" exact>
+          <WithFeedPage />
+        </Route>
+        <Route
+          path="/feed/:id"
+          render={(params: RouteComponentProps) => {
+            const { history } = params;
+            if (history.action === 'POP') {
+              return <WithPageWrapperOrderInfo />;
+            }
+            return (
+              <>
+                <WithFeedPage />
+                <Modal onClose={history.goBack}>
+                  <OrderInfo />
+                </Modal>
+              </>
+            );
+          }}
+          exact></Route>
         <Route>
           <WithPageWrapperNotFound404 />
         </Route>

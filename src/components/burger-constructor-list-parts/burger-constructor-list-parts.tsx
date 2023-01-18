@@ -3,15 +3,16 @@ import BurgerConstructorList from '../burger-constructor-list/burger-constructor
 import { IngredientTypes } from '../burger-ingredients/burger-ingredients';
 import styles from './burger-constructor-list-parts.module.css';
 import { removeElementInArrayByIndex } from '../../utils/utils';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch } from '../../hooks/useAppDispatch';
+import { useAppSelector } from '../../hooks/useAppSelector';
 import { useDrop } from 'react-dnd';
 import { addIngredient } from '../../services/reducers/ingredients';
 import { v1 as uuid } from 'uuid';
 import { IIngredientType } from '../../utils/types';
 
 const BurgerConstructorListParts: FC = () => {
-  const { selected: selectedIngredients } = useSelector((state: any) => state.ingredients);
-  const dispatch = useDispatch();
+  const { selected: selectedIngredients } = useAppSelector((state) => state.ingredients);
+  const dispatch = useAppDispatch();
 
   const prepareIngredients = () => {
     const bunIndex = selectedIngredients.findIndex(
@@ -65,8 +66,7 @@ const BurgerConstructorListParts: FC = () => {
       };
     },
     drop(ingredient) {
-      // @ts-ignore
-      dispatch(addIngredient({ ...ingredient, key: uuid() }));
+      dispatch(addIngredient({ ...(ingredient as IIngredientType), key: uuid() }));
     },
   });
 

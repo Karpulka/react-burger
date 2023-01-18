@@ -1,27 +1,25 @@
-import React, { useEffect, useState, FC, ReactElement } from 'react';
+import React, { useEffect, useState, FC } from 'react';
 import { Route, Redirect, useLocation } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch } from '../../hooks/useAppDispatch';
+import { useAppSelector } from '../../hooks/useAppSelector';
 import { getUserInfo, refreshToken } from '../../services/actions/user';
+import { RouteProps } from 'react-router';
 
-interface IProtectedRouteProps {
+interface IProtectedRouteProps extends RouteProps {
   onlyForAuth?: boolean;
-  children: ReactElement;
   path: string;
-  exact?: boolean;
 }
 
 const ProtectedRoute: FC<IProtectedRouteProps> = ({ onlyForAuth, children, ...rest }) => {
-  const { user } = useSelector((state: any) => state.user);
+  const { user } = useAppSelector((state) => state.user);
   const [isUserLoaded, setIsUserLoaded] = useState(false);
   const [isUserInfo, setIsUserInfo] = useState(!!Object.keys(user).length);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const location = useLocation();
 
   const init = async () => {
     const token = window.localStorage.getItem('refreshToken');
-    // @ts-ignore
     token && (await dispatch(refreshToken()));
-    // @ts-ignore
     await dispatch(getUserInfo());
     setIsUserLoaded(true);
   };

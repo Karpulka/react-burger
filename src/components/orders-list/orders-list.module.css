@@ -1,0 +1,27 @@
+.custom-scroll {
+    composes: custom-scroll from '~@ya.praktikum/react-developer-burger-ui-components/dist/ui/common.css';
+    height: inherit;
+    overflow-y: scroll;
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 16px;
+    padding-right: 16px;
+}
+
+.custom-scroll::-webkit-scrollbar {
+    width: 8px;
+}
+
+.custom-scroll::-webkit-scrollbar-thumb {
+    border: 0;
+    border-radius: 0;
+}
+
+.custom-scroll::-webkit-scrollbar-track {
+    margin-bottom: 60px;
+}
+
+.list {
+    max-width: 600px;
+    height: 100%;
+}

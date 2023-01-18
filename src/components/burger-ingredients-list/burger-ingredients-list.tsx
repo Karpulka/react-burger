@@ -4,7 +4,8 @@ import { IIngredientType } from '../../utils/types';
 import styles from './burger-ingredients-list.module.css';
 import { setCurrentIngredient } from '../../services/reducers/ingredients';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch } from '../../hooks/useAppDispatch';
+import { useAppSelector } from '../../hooks/useAppSelector';
 
 interface IBurgerIngredientsListProps {
   title: string;
@@ -12,8 +13,8 @@ interface IBurgerIngredientsListProps {
 }
 
 const BurgerIngredientsList: FC<IBurgerIngredientsListProps> = ({ title, ingredients }) => {
-  const { selected: selectedIngredients } = useSelector((state: any) => state.ingredients);
-  const dispatch = useDispatch();
+  const { selected: selectedIngredients } = useAppSelector((state) => state.ingredients);
+  const dispatch = useAppDispatch();
 
   const onIngredientClick = (ingredient: IIngredientType) => {
     dispatch(setCurrentIngredient(ingredient));

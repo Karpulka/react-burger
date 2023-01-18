@@ -5,22 +5,22 @@ import {
   EmailInput,
   PasswordInput,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch } from '../hooks/useAppDispatch';
 import { register } from '../services/actions/user';
 import { Link } from 'react-router-dom';
 import { useForm } from '../hooks/useForm';
+import { IProfile } from '../utils/types';
 
 const RegisterPage: FC = () => {
-  const { values, handleChange } = useForm({
+  const { values, handleChange } = useForm<IProfile>({
     name: '',
     email: '',
     password: '',
   });
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const onSubmitForm = () => {
-    // @ts-ignore
     dispatch(register(values));
   };
 

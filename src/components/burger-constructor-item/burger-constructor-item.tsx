@@ -3,28 +3,38 @@ import styles from './burger-constructor-item.module.css';
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDrag, useDrop } from 'react-dnd';
 import { insertIngredient } from '../../services/reducers/ingredients';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch } from '../../hooks/useAppDispatch';
+import { useAppSelector } from '../../hooks/useAppSelector';
 import { IIngredientType, IConstructorElement } from '../../utils/types';
+import type { Identifier } from 'dnd-core';
 
 interface IBurgerConstructorItemProps {
   ingredient: IConstructorElement;
   classValue?: string;
 }
 
+interface IDragObject {
+  index: number;
+}
+
+interface ICollectedProps {
+  handlerId: Identifier | null;
+}
+
 const BurgerConstructorItem: FC<IBurgerConstructorItemProps> = (props) => {
   const { ingredient } = props;
-  const dispatch = useDispatch();
-  const { selected: selectedIngredients } = useSelector((state: any) => state.ingredients);
+  const dispatch = useAppDispatch();
+  const { selected: selectedIngredients } = useAppSelector((state) => state.ingredients);
 
   const ref = useRef<HTMLDivElement>(null);
-  const [{ handlerId }, drop] = useDrop({
+  const [{ handlerId }, drop] = useDrop<IDragObject, undefined, ICollectedProps>({
     accept: 'selected-ingredient',
     collect(monitor) {
       return {
         handlerId: monitor.getHandlerId(),
       };
     },
-    hover(item: any, monitor) {
+    hover(item, monitor) {
       if (!ref.current) {
         return;
       }

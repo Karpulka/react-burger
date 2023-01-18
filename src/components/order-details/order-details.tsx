@@ -2,15 +2,15 @@ import React, { FC } from 'react';
 import doneImg from '../../images/done.png';
 import styles from './order-details.module.css';
 import { orderMocks } from '../../utils/data';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../../hooks/useAppSelector';
 
-interface IOrderDeyailsProps {
+interface IOrderDetailsProps {
   orderNumber?: number;
 }
 
-const OrderDetails: FC<IOrderDeyailsProps> = (props) => {
+const OrderDetails: FC<IOrderDetailsProps> = (props) => {
   const image = orderMocks.image ? orderMocks.image : doneImg;
-  const { orderFailed } = useSelector((state: any) => state.order);
+  const { orderFailed } = useAppSelector((state) => state.order);
 
   if (orderFailed) {
     return (
