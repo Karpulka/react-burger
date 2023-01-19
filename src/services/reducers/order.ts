@@ -3,7 +3,7 @@ import { createOrder, getOrderInfo } from '../actions/order';
 
 import { IOrderStore } from '../../utils/types';
 
-const initialState: IOrderStore = {
+export const initialState: IOrderStore = {
   newOrder: {},
   orderRequest: false,
   orderFailed: false,

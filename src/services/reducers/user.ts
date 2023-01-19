@@ -13,7 +13,7 @@ import { logout as clearUser } from '../../utils/utils';
 
 import { IUserStore } from '../../utils/types';
 
-const initialState: IUserStore = {
+export const initialState: IUserStore = {
   registerRequest: false,
   registerFailed: false,
   user: {},
