@@ -13,7 +13,9 @@ import {
   previousIngredientsStateWithoutSelectedBun,
   previousIngredientsStateWithSelectedBun,
   previousIngredientsState,
+  mocks as ingredients,
 } from '../../utils/data';
+import { getIngredients } from '../actions/ingredients';
 
 describe('Ingredients reducer', () => {
   test('Reducer without additional parameters should return initial state', () => {
@@ -87,5 +89,49 @@ describe('Ingredients reducer', () => {
     );
     expect(updatedState.selected[0]).toEqual(secondIngredient);
     expect(updatedState.selected[1]).toEqual(firstIngredient);
+  });
+
+  test('Reducer getIngredients fulfilled', async () => {
+    const action = {
+      type: getIngredients.fulfilled.type,
+      payload: ingredients,
+    };
+
+    expect(
+      reducer(
+        {
+          ...initialState,
+          ingredientsFailed: true,
+          ingredientsRequest: true,
+        },
+        action
+      )
+    ).toEqual({
+      ...initialState,
+      all: ingredients,
+    });
+  });
+
+  test('Reducer getIngredients pending', async () => {
+    const action = {
+      type: getIngredients.pending.type,
+    };
+
+    expect(reducer(initialState, action)).toEqual({
+      ...initialState,
+      ingredientsRequest: true,
+    });
+  });
+
+  test('Reducer getIngredients rejected', async () => {
+    const action = {
+      type: getIngredients.rejected.type,
+    };
+
+    expect(reducer({ ...initialState, ingredientsRequest: true }, action)).toEqual({
+      ...initialState,
+      ingredientsRequest: false,
+      ingredientsFailed: true,
+    });
   });
 });
