@@ -7,11 +7,11 @@ import reducer, {
   wsClose,
   wsOpen,
   wsMessage,
-} from './feed';
+} from './personal-orders';
 import { WebsocketStatus } from '../../utils/types';
 import { feedOrderMock } from '../../utils/data';
 
-describe('Feed reducer', () => {
+describe('Personal orders reducer', () => {
   test('Reducer without additional parameters should return initial state', () => {
     // @ts-ignore
     expect(reducer(undefined, {})).toEqual(initialState);
