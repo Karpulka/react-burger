@@ -1,5 +1,5 @@
 Link on github (deploy)
-https://karpulka.github.io/react-burger
+[https://karpulka.github.io/react-burger](https://karpulka.github.io/react-burger)
 
 # Getting Started with Create React App
 
