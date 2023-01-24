@@ -9,7 +9,7 @@ type TFeedStore = {
   totalToday: number;
 };
 
-const initialState: TFeedStore = {
+export const initialState: TFeedStore = {
   status: WebsocketStatus.OFFLINE,
   connectionError: '',
   orders: [],

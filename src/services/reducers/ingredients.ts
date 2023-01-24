@@ -6,7 +6,7 @@ import { getIngredients } from '../actions/ingredients';
 
 import { IIngredientsStore, IIngredientType } from '../../utils/types';
 
-const initialState: IIngredientsStore = {
+export const initialState: IIngredientsStore = {
   all: [],
   ingredientsRequest: false,
   ingredientsFailed: false,
